@@ -1655,7 +1655,7 @@ input[type=range]::-moz-range-thumb {
 <!-- ════════════════════════════════════════
      JAVASCRIPT
 ════════════════════════════════════════ -->
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 const API = 'https://career-blueprint-api.raneesh-ifars.workers.dev';
 
 // ── State ────────────────────────────────
@@ -2209,7 +2209,7 @@ function buildFinancial(){
     const rate = 0.10/12, n = 120;
     const emi = Math.round(loan*rate*Math.pow(1+rate,n)/(Math.pow(1+rate,n)-1));
     const total = Math.round(emi*n);
-    cards.push('<div class="rp-fin-card"><div class="k">Loan You'd Consider</div><div class="v">'+fmtINR(loan)+'</div><div class="sub">Maximum education debt indicated.</div></div>');
+    cards.push('<div class="rp-fin-card"><div class="k">Loan Considered</div><div class="v">'+fmtINR(loan)+'</div><div class="sub">Maximum education debt indicated.</div></div>');
     cards.push('<div class="rp-fin-card"><div class="k">Projected Monthly EMI</div><div class="v">₹'+emi.toLocaleString('en-IN')+'<span style="font-size:13px;font-weight:500;color:var(--ink-soft)">/mo</span></div><div class="sub">Over 10 years at ~10% — total ≈ '+fmtINR(total)+'.</div></div>');
     cards.push('<div class="rp-fin-callout"><div class="k">What this means</div><p>That EMI must be comfortably covered by your starting salary. Where earnings sit close to this figure, prioritise scholarships or lower-cost entry points.</p></div>');
   } else {
