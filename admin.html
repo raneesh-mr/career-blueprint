@@ -5,406 +5,565 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Career Blueprint — Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
 :root {
-  --navy: #0a0f1e; --navy2: #111827; --card: #141d2e; --card2: #1a2540;
-  --border: #1e2d45; --cream: #f0ebe0; --text: #c8c0b0; --text2: #8090a0;
-  --amber: #e8a020; --amber2: #f0b840; --teal: #2a7a6a; --teal2: #35997f;
-  --red: #c0392b; --green: #27ae60;
-  --font: 'DM Sans', sans-serif; --mono: 'DM Mono', monospace;
+  --navy:#0a0f1e;--navy2:#111827;--card:#141d2e;--card2:#1a2540;
+  --border:#1e2d45;--cream:#f0ebe0;--text:#c8c0b0;--text2:#8090a0;
+  --amber:#e8a020;--amber2:#f0b840;--teal:#2a7a6a;--teal2:#35997f;
+  --red:#c0392b;--green:#27ae60;
+  --font:'DM Sans',sans-serif;--mono:'DM Mono',monospace;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: var(--font); background: var(--navy); color: var(--cream); min-height: 100vh; font-size: 14px; }
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font);background:var(--navy);color:var(--cream);min-height:100vh;font-size:14px;}
 
 /* LOGIN */
-#login-screen {
-  min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px;
-}
-.login-card {
-  background: var(--card); border: 1px solid var(--border); border-radius: 12px;
-  padding: 40px 32px; max-width: 400px; width: 100%; text-align: center;
-}
-.login-card h1 { font-size: 22px; color: var(--cream); margin-bottom: 6px; }
-.login-card p { font-size: 13px; color: var(--text2); margin-bottom: 28px; }
-.field { margin-bottom: 16px; text-align: left; }
-.field label { display: block; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text2); margin-bottom: 6px; }
-.field input { width: 100%; padding: 11px 14px; background: var(--navy2); border: 1px solid var(--border); border-radius: 6px; color: var(--cream); font-family: var(--mono); font-size: 13px; outline: none; }
-.field input:focus { border-color: var(--amber); }
-.btn { width: 100%; padding: 12px; background: var(--amber); color: var(--navy); border: none; border-radius: 6px; font-family: var(--font); font-weight: 600; font-size: 14px; cursor: pointer; }
-.btn:hover { background: var(--amber2); }
-.btn:disabled { opacity: 0.5; cursor: not-allowed; }
-.error-msg { font-size: 12px; color: #e06060; margin-top: 10px; }
+#login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;}
+.login-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:40px 32px;max-width:400px;width:100%;text-align:center;}
+.login-card h1{font-size:22px;color:var(--cream);margin-bottom:6px;}
+.login-card p{font-size:13px;color:var(--text2);margin-bottom:28px;}
+.field{margin-bottom:16px;text-align:left;}
+.field label{display:block;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text2);margin-bottom:6px;}
+.field input,.field select{width:100%;padding:11px 14px;background:var(--navy2);border:1px solid var(--border);border-radius:6px;color:var(--cream);font-family:var(--mono);font-size:13px;outline:none;}
+.field input:focus,.field select:focus{border-color:var(--amber);}
+.btn-login{width:100%;padding:12px;background:var(--amber);color:var(--navy);border:none;border-radius:6px;font-family:var(--font);font-weight:600;font-size:14px;cursor:pointer;}
+.btn-login:hover{background:var(--amber2);}
+.error-msg{font-size:12px;color:#e06060;margin-top:10px;}
 
 /* DASHBOARD */
-#dashboard { display: none; }
+#dashboard{display:none;}
+.topbar{background:var(--card);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
+.topbar-logo{font-size:15px;font-weight:600;color:var(--cream);}
+.topbar-logo span{color:var(--amber);}
+.topbar-right{display:flex;align-items:center;gap:10px;}
+.btn-sm{padding:7px 14px;border-radius:6px;font-family:var(--font);font-size:12px;font-weight:500;cursor:pointer;transition:all .2s;border:1px solid var(--border);background:transparent;color:var(--text);}
+.btn-sm:hover{border-color:var(--amber);color:var(--amber);}
+.btn-sm.green{background:var(--teal);color:white;border-color:var(--teal);}
+.btn-sm.green:hover{background:var(--teal2);border-color:var(--teal2);}
 
-/* TOPBAR */
-.topbar {
-  background: var(--card); border-bottom: 1px solid var(--border);
-  padding: 14px 24px; display: flex; align-items: center; justify-content: space-between;
-  position: sticky; top: 0; z-index: 50;
-}
-.topbar-left { display: flex; align-items: center; gap: 12px; }
-.topbar-logo { font-size: 15px; font-weight: 600; color: var(--cream); }
-.topbar-logo span { color: var(--amber); }
-.topbar-right { display: flex; align-items: center; gap: 12px; }
-.btn-sm { padding: 7px 16px; border-radius: 6px; font-family: var(--font); font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; border: 1px solid var(--border); background: transparent; color: var(--text); }
-.btn-sm:hover { border-color: var(--amber); color: var(--amber); }
-.btn-refresh { background: var(--teal); color: white; border-color: var(--teal); }
-.btn-refresh:hover { background: var(--teal2); border-color: var(--teal2); color: white; }
+/* TABS */
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--border);background:var(--card);padding:0 24px;}
+.tab{padding:14px 20px;font-size:13px;font-weight:500;color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;}
+.tab:hover{color:var(--cream);}
+.tab.active{color:var(--amber);border-bottom-color:var(--amber);}
 
 /* STATS ROW */
-.stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; padding: 20px 24px; }
-.stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; }
-.stat-card .label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text2); margin-bottom: 8px; }
-.stat-card .value { font-size: 28px; font-weight: 600; color: var(--cream); line-height: 1; }
-.stat-card .value.amber { color: var(--amber); }
-.stat-card .value.green { color: #40c070; }
-.stat-card .value.red { color: #e06060; }
+.stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;padding:20px 24px;}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px 20px;}
+.stat-card .lbl{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text2);margin-bottom:8px;}
+.stat-card .val{font-size:26px;font-weight:600;color:var(--cream);line-height:1;}
+.stat-card .val.amber{color:var(--amber);}
+.stat-card .val.green{color:#40c070;}
+.stat-card .val.teal{color:var(--teal2);}
 
-/* MAIN CONTENT */
-.content { padding: 0 24px 40px; }
+/* TAB PANELS */
+.tab-panel{display:none;padding:0 24px 40px;}
+.tab-panel.active{display:block;}
 
 /* SECTION HEADER */
-.section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; padding-top: 8px; }
-.section-title { font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text2); }
+.sec-header{display:flex;align-items:center;justify-content:space-between;padding:20px 0 14px;}
+.sec-title{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text2);}
 
 /* FILTERS */
-.filters { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
-.filter-btn { padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: transparent; color: var(--text2); transition: all 0.15s; }
-.filter-btn.active { background: var(--amber); color: var(--navy); border-color: var(--amber); }
-.filter-btn:hover:not(.active) { border-color: var(--text); color: var(--text); }
+.filters{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+.filter-btn{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--text2);transition:all .15s;}
+.filter-btn.active{background:var(--amber);color:var(--navy);border-color:var(--amber);}
+.filter-btn:hover:not(.active){border-color:var(--text);color:var(--text);}
 
-/* ORDERS TABLE */
-.table-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; min-width: 800px; }
-th { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text2); padding: 12px 16px; text-align: left; background: var(--navy2); border-bottom: 1px solid var(--border); white-space: nowrap; }
-td { padding: 13px 16px; border-bottom: 1px solid rgba(30,45,69,0.5); vertical-align: middle; }
-tr:last-child td { border-bottom: none; }
-tr:hover td { background: rgba(255,255,255,0.02); }
+/* TABLE */
+.table-wrap{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;overflow-x:auto;}
+table{width:100%;border-collapse:collapse;min-width:760px;}
+th{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text2);padding:12px 16px;text-align:left;background:var(--navy2);border-bottom:1px solid var(--border);white-space:nowrap;}
+td{padding:12px 16px;border-bottom:1px solid rgba(30,45,69,.5);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:rgba(255,255,255,.02);}
 
-.badge { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 10px; letter-spacing: 0.05em; text-transform: uppercase; }
-.badge-pending { background: rgba(232,160,32,0.15); color: var(--amber); border: 1px solid rgba(232,160,32,0.3); }
-.badge-paid { background: rgba(39,174,96,0.15); color: #40c070; border: 1px solid rgba(39,174,96,0.3); }
-.badge-generated { background: rgba(42,122,106,0.2); color: var(--teal2); border: 1px solid rgba(42,122,106,0.4); }
-.badge-failed { background: rgba(192,57,43,0.15); color: #e06060; border: 1px solid rgba(192,57,43,0.3); }
+.badge{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px;letter-spacing:.05em;text-transform:uppercase;}
+.b-pending{background:rgba(232,160,32,.15);color:var(--amber);border:1px solid rgba(232,160,32,.3);}
+.b-paid{background:rgba(39,174,96,.15);color:#40c070;border:1px solid rgba(39,174,96,.3);}
+.b-done{background:rgba(42,122,106,.2);color:var(--teal2);border:1px solid rgba(42,122,106,.4);}
+.b-failed{background:rgba(192,57,43,.15);color:#e06060;border:1px solid rgba(192,57,43,.3);}
 
-.order-num { font-family: var(--mono); font-size: 12px; color: var(--amber); font-weight: 500; }
-.email-cell { font-size: 13px; color: var(--cream); }
-.ref-cell { font-family: var(--mono); font-size: 11px; color: var(--text2); max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.time-cell { font-size: 11px; color: var(--text2); white-space: nowrap; }
-.paths-cell { font-size: 11px; color: var(--text); max-width: 160px; }
+.mono{font-family:var(--mono);font-size:12px;color:var(--amber);}
+.sub{font-size:11px;color:var(--text2);}
 
 /* ACTION BUTTONS */
-.action-row { display: flex; gap: 6px; }
-.btn-verify-order { padding: 6px 14px; background: var(--teal); color: white; border: none; border-radius: 5px; font-family: var(--font); font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
-.btn-verify-order:hover { background: var(--teal2); }
-.btn-verify-order:disabled { opacity: 0.4; cursor: not-allowed; }
-.btn-view-report { padding: 6px 12px; background: transparent; color: var(--text2); border: 1px solid var(--border); border-radius: 5px; font-family: var(--font); font-size: 12px; cursor: pointer; transition: all 0.2s; }
-.btn-view-report:hover { border-color: var(--amber); color: var(--amber); }
+.action-row{display:flex;gap:6px;flex-wrap:wrap;}
+.btn-act{padding:5px 12px;border-radius:5px;font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;border:none;white-space:nowrap;}
+.btn-verify-act{background:var(--teal);color:white;}
+.btn-verify-act:hover{background:var(--teal2);}
+.btn-verify-act:disabled{opacity:.4;cursor:not-allowed;}
+.btn-regen-act{background:var(--amber);color:var(--navy);}
+.btn-regen-act:hover{background:var(--amber2);}
+.btn-regen-act:disabled{opacity:.4;cursor:not-allowed;}
+.btn-view-act{background:transparent;color:var(--text2);border:1px solid var(--border);}
+.btn-view-act:hover{border-color:var(--amber);color:var(--amber);}
 
-/* VERIFY MODAL */
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 100; display: none; align-items: center; justify-content: center; padding: 24px; }
-.modal-overlay.open { display: flex; }
-.modal { background: var(--card2); border: 1px solid var(--border); border-radius: 12px; padding: 32px; max-width: 480px; width: 100%; }
-.modal h2 { font-size: 20px; color: var(--cream); margin-bottom: 6px; }
-.modal p { font-size: 13px; color: var(--text); margin-bottom: 24px; }
-.modal-order { background: var(--navy); border: 1px solid var(--amber); border-radius: 8px; padding: 14px 18px; margin-bottom: 20px; }
-.modal-order .lbl { font-size: 10px; color: var(--text2); letter-spacing: 0.1em; text-transform: uppercase; }
-.modal-order .val { font-family: var(--mono); font-size: 18px; color: var(--amber); font-weight: 500; margin-top: 4px; }
-.modal-btns { display: flex; gap: 10px; margin-top: 20px; }
-.btn-cancel { flex: 1; padding: 11px; background: transparent; border: 1px solid var(--border); color: var(--text); border-radius: 6px; font-family: var(--font); cursor: pointer; }
-.btn-cancel:hover { border-color: var(--cream); color: var(--cream); }
-.btn-confirm { flex: 2; padding: 11px; background: var(--teal); color: white; border: none; border-radius: 6px; font-family: var(--font); font-weight: 600; cursor: pointer; }
-.btn-confirm:hover { background: var(--teal2); }
-.btn-confirm:disabled { opacity: 0.5; cursor: not-allowed; }
+/* CHART CARDS */
+.chart-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+.chart-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px;}
+.chart-card h3{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--text2);margin-bottom:16px;}
+.chart-card canvas{max-height:220px;}
 
-/* REPORT MODAL */
-.report-modal { max-width: 680px; max-height: 80vh; overflow-y: auto; }
-.report-modal h2 { margin-bottom: 20px; }
-.report-section { margin-bottom: 20px; }
-.report-section h3 { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--amber); margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
-.report-section p { font-size: 14px; color: var(--text); line-height: 1.6; }
-.path-mini { background: var(--navy); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; margin-bottom: 8px; }
-.path-mini-title { font-size: 15px; color: var(--cream); font-weight: 500; margin-bottom: 4px; }
-.path-mini-meta { font-size: 12px; color: var(--text2); }
-.actions-mini { list-style: none; }
-.actions-mini li { font-size: 13px; color: var(--text); padding: 5px 0; border-bottom: 1px solid var(--border); }
-.actions-mini li::before { content: "→ "; color: var(--amber); }
-.warning-mini { background: rgba(192,57,43,0.08); border: 1px solid rgba(192,57,43,0.2); border-radius: 8px; padding: 14px 16px; font-size: 13px; color: var(--text); line-height: 1.6; }
+/* SESSIONS TABLE extra */
+.progress-bar-wrap{width:80px;height:6px;background:var(--border);border-radius:3px;overflow:hidden;}
+.progress-bar-fill{height:100%;background:var(--amber);border-radius:3px;}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:100;display:none;align-items:center;justify-content:center;padding:24px;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:32px;max-width:500px;width:100%;}
+.modal.wide{max-width:700px;max-height:85vh;overflow-y:auto;}
+.modal h2{font-size:20px;color:var(--cream);margin-bottom:6px;}
+.modal p{font-size:13px;color:var(--text);margin-bottom:20px;}
+.modal-order{background:var(--navy);border:1px solid var(--amber);border-radius:8px;padding:14px 18px;margin-bottom:20px;}
+.modal-order .lbl{font-size:10px;color:var(--text2);letter-spacing:.1em;text-transform:uppercase;}
+.modal-order .val{font-family:var(--mono);font-size:18px;color:var(--amber);font-weight:500;margin-top:4px;}
+.modal-btns{display:flex;gap:10px;margin-top:20px;}
+.btn-cancel{flex:1;padding:11px;background:transparent;border:1px solid var(--border);color:var(--text);border-radius:6px;font-family:var(--font);cursor:pointer;}
+.btn-cancel:hover{border-color:var(--cream);color:var(--cream);}
+.btn-confirm{flex:2;padding:11px;background:var(--teal);color:white;border:none;border-radius:6px;font-family:var(--font);font-weight:600;cursor:pointer;}
+.btn-confirm:hover{background:var(--teal2);}
+.btn-confirm:disabled{opacity:.5;cursor:not-allowed;}
+
+/* REPORT PREVIEW */
+.rp-section{margin-bottom:18px;}
+.rp-section h3{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--amber);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+.rp-section p{font-size:13px;color:var(--text);line-height:1.6;}
+.path-mini{background:var(--navy);border:1px solid var(--border);border-radius:8px;padding:12px 16px;margin-bottom:8px;}
+.path-mini-title{font-size:14px;color:var(--cream);font-weight:500;margin-bottom:3px;}
+.path-mini-meta{font-size:11px;color:var(--text2);}
+.actions-mini{list-style:none;}
+.actions-mini li{font-size:13px;color:var(--text);padding:5px 0;border-bottom:1px solid var(--border);}
+.actions-mini li::before{content:"→ ";color:var(--amber);}
+.warning-mini{background:rgba(192,57,43,.08);border:1px solid rgba(192,57,43,.2);border-radius:8px;padding:14px 16px;font-size:13px;color:var(--text);line-height:1.6;}
 
 /* TOAST */
-.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--card2); border: 1px solid var(--border); color: var(--cream); padding: 10px 20px; border-radius: 8px; font-size: 13px; z-index: 200; opacity: 0; transition: opacity 0.3s; white-space: nowrap; }
-.toast.show { opacity: 1; }
-.toast.success { border-color: var(--teal); color: #80d0b0; }
-.toast.error { border-color: var(--red); color: #e08080; }
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--card2);border:1px solid var(--border);color:var(--cream);padding:10px 20px;border-radius:8px;font-size:13px;z-index:200;opacity:0;transition:opacity .3s;white-space:nowrap;}
+.toast.show{opacity:1;}
+.toast.success{border-color:var(--teal);color:#80d0b0;}
+.toast.error{border-color:var(--red);color:#e08080;}
 
-/* EMPTY STATE */
-.empty { text-align: center; padding: 48px 24px; color: var(--text2); }
-.empty-icon { font-size: 36px; margin-bottom: 12px; }
+/* EMPTY */
+.empty{text-align:center;padding:48px;color:var(--text2);}
+.empty-icon{font-size:32px;margin-bottom:10px;}
 
-@media (max-width: 600px) {
-  .stats-row { grid-template-columns: repeat(2, 1fr); }
-  .topbar { padding: 12px 16px; }
-  .content, .stats-row { padding-left: 16px; padding-right: 16px; }
+@media(max-width:640px){
+  .stats-row{grid-template-columns:repeat(2,1fr);}
+  .chart-row{grid-template-columns:1fr;}
+  .tabs{overflow-x:auto;}
 }
 </style>
 </head>
 <body>
-
 <div class="toast" id="toast"></div>
 
-<!-- ── LOGIN ── -->
+<!-- LOGIN -->
 <div id="login-screen">
   <div class="login-card">
-    <h1>Career Blueprint</h1>
-    <p>Admin Dashboard · Enter your admin key to continue</p>
-    <div class="field">
-      <label>Admin Key</label>
-      <input type="password" id="admin-key-input" placeholder="cb-admin-..." onkeydown="if(event.key==='Enter') doLogin()">
-    </div>
-    <button class="btn" onclick="doLogin()" id="login-btn">Login →</button>
+    <h1>Career <span style="color:var(--amber)">Blueprint</span></h1>
+    <p>Admin Dashboard · Enter your admin key</p>
+    <div class="field"><label>Admin Key</label><input type="password" id="admin-key-input" placeholder="cb-admin-..." onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <button class="btn-login" onclick="doLogin()" id="login-btn">Login →</button>
     <div class="error-msg" id="login-error"></div>
   </div>
 </div>
 
-<!-- ── DASHBOARD ── -->
+<!-- DASHBOARD -->
 <div id="dashboard">
   <div class="topbar">
-    <div class="topbar-left">
-      <div class="topbar-logo">Career <span>Blueprint</span> Admin</div>
-    </div>
+    <div class="topbar-logo">Career <span>Blueprint</span> Admin</div>
     <div class="topbar-right">
       <span id="last-updated" style="font-size:11px;color:var(--text2)"></span>
-      <button class="btn-sm btn-refresh" onclick="loadOrders()">↻ Refresh</button>
+      <button class="btn-sm green" onclick="loadAll()">↻ Refresh</button>
       <button class="btn-sm" onclick="doLogout()">Logout</button>
     </div>
   </div>
 
+  <!-- STATS -->
   <div class="stats-row">
-    <div class="stat-card"><div class="label">Total Orders</div><div class="value" id="stat-total">—</div></div>
-    <div class="stat-card"><div class="label">Pending Verification</div><div class="value amber" id="stat-pending">—</div></div>
-    <div class="stat-card"><div class="label">Reports Generated</div><div class="value green" id="stat-generated">—</div></div>
-    <div class="stat-card"><div class="label">Revenue (INR)</div><div class="value" id="stat-revenue">—</div></div>
+    <div class="stat-card"><div class="lbl">Total Orders</div><div class="val" id="st-orders">—</div></div>
+    <div class="stat-card"><div class="lbl">Pending Verification</div><div class="val amber" id="st-pending">—</div></div>
+    <div class="stat-card"><div class="lbl">Reports Generated</div><div class="val green" id="st-reports">—</div></div>
+    <div class="stat-card"><div class="lbl">Total Customers</div><div class="val teal" id="st-customers">—</div></div>
+    <div class="stat-card"><div class="lbl">Revenue (INR)</div><div class="val" id="st-revenue">—</div></div>
   </div>
 
-  <div class="content">
-    <div class="section-header">
-      <div class="section-title">Orders</div>
-    </div>
+  <!-- TABS -->
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('tab-overview',this)">Overview</div>
+    <div class="tab" onclick="switchTab('tab-orders',this)">Orders</div>
+    <div class="tab" onclick="switchTab('tab-customers',this)">Customers</div>
+    <div class="tab" onclick="switchTab('tab-sessions',this)">Sessions</div>
+  </div>
 
+  <!-- TAB: OVERVIEW -->
+  <div class="tab-panel active" id="tab-overview">
+    <div style="padding:20px 0 14px"><div class="sec-title">Business Overview</div></div>
+    <div class="chart-row">
+      <div class="chart-card"><h3>Daily Orders & Revenue (Last 30 days)</h3><canvas id="chart-daily"></canvas></div>
+      <div class="chart-card"><h3>Order Status Breakdown</h3><canvas id="chart-status"></canvas></div>
+    </div>
+    <div class="chart-row">
+      <div class="chart-card"><h3>Session Funnel</h3><canvas id="chart-funnel"></canvas></div>
+      <div class="chart-card">
+        <h3>Quick Actions</h3>
+        <div id="pending-alerts"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB: ORDERS -->
+  <div class="tab-panel" id="tab-orders">
+    <div class="sec-header"><div class="sec-title">All Orders</div></div>
     <div class="filters">
-      <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
-      <button class="filter-btn" onclick="setFilter('pending', this)">Pending</button>
-      <button class="filter-btn" onclick="setFilter('paid', this)">Paid</button>
-      <button class="filter-btn" onclick="setFilter('report_generated', this)">Report Done</button>
+      <button class="filter-btn active" onclick="setOrderFilter('all',this)">All</button>
+      <button class="filter-btn" onclick="setOrderFilter('pending',this)">Pending</button>
+      <button class="filter-btn" onclick="setOrderFilter('paid',this)">Paid</button>
+      <button class="filter-btn" onclick="setOrderFilter('done',this)">Report Done</button>
     </div>
-
     <div class="table-wrap">
       <table>
-        <thead>
-          <tr>
-            <th>Order #</th>
-            <th>Customer</th>
-            <th>UPI Ref</th>
-            <th>Status</th>
-            <th>Career Paths</th>
-            <th>Date</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody id="orders-body">
-          <tr><td colspan="7"><div class="empty"><div class="empty-icon">⏳</div>Loading orders...</div></td></tr>
-        </tbody>
+        <thead><tr><th>Order #</th><th>Customer</th><th>UPI Ref</th><th>Status</th><th>Career Paths</th><th>Date</th><th>Action</th></tr></thead>
+        <tbody id="orders-body"><tr><td colspan="7"><div class="empty"><div class="empty-icon">⏳</div>Loading...</div></td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAB: CUSTOMERS -->
+  <div class="tab-panel" id="tab-customers">
+    <div class="sec-header"><div class="sec-title">All Customers</div></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Name</th><th>Email</th><th>Sessions</th><th>Orders</th><th>Status</th><th>Joined</th></tr></thead>
+        <tbody id="customers-body"><tr><td colspan="6"><div class="empty"><div class="empty-icon">⏳</div>Loading...</div></td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAB: SESSIONS -->
+  <div class="tab-panel" id="tab-sessions">
+    <div class="sec-header"><div class="sec-title">Diagnostic Sessions</div></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Customer</th><th>OCEAN Top</th><th>RIASEC Top</th><th>Marks</th><th>Loan</th><th>Status</th><th>Date</th></tr></thead>
+        <tbody id="sessions-body"><tr><td colspan="7"><div class="empty"><div class="empty-icon">⏳</div>Loading...</div></td></tr></tbody>
       </table>
     </div>
   </div>
 </div>
 
-<!-- ── VERIFY MODAL ── -->
+<!-- VERIFY MODAL -->
 <div class="modal-overlay" id="verify-modal">
   <div class="modal">
     <h2>Verify Payment</h2>
-    <p>Confirm you've received ₹199 in your UPI app for this order, then click Verify & Generate Report.</p>
-    <div class="modal-order">
-      <div class="lbl">Order Number</div>
-      <div class="val" id="modal-order-num">—</div>
-    </div>
-    <div class="field">
-      <label>UPI Transaction Reference</label>
-      <input type="text" id="modal-ref-input" placeholder="Enter UPI transaction ID">
-    </div>
-    <div class="field">
-      <label>Notes (optional)</label>
-      <input type="text" id="modal-notes-input" placeholder="e.g. Verified in HDFC app">
-    </div>
+    <p>Confirm ₹199 received in your UPI app, then generate the report.</p>
+    <div class="modal-order"><div class="lbl">Order Number</div><div class="val" id="modal-order-num">—</div></div>
+    <div class="field"><label>UPI Transaction Reference</label><input type="text" id="modal-ref-input" placeholder="UPI transaction ID"></div>
+    <div class="field"><label>Notes (optional)</label><input type="text" id="modal-notes-input" placeholder="e.g. Verified in HDFC app"></div>
     <div class="modal-btns">
-      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-cancel" onclick="closeModal('verify-modal')">Cancel</button>
       <button class="btn-confirm" id="btn-confirm-verify" onclick="confirmVerify()">✓ Verify & Generate Report</button>
     </div>
   </div>
 </div>
 
-<!-- ── REPORT MODAL ── -->
+<!-- REGENERATE MODAL -->
+<div class="modal-overlay" id="regen-modal">
+  <div class="modal">
+    <h2>Re-generate Report</h2>
+    <p>Payment already verified. Re-run Claude to generate the missing report for this order.</p>
+    <div class="modal-order"><div class="lbl">Order Number</div><div class="val" id="regen-order-num">—</div></div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal('regen-modal')">Cancel</button>
+      <button class="btn-confirm" id="btn-confirm-regen" onclick="confirmRegen()" style="background:var(--amber);color:var(--navy)">↻ Re-generate Report</button>
+    </div>
+  </div>
+</div>
+
+<!-- REPORT MODAL -->
 <div class="modal-overlay" id="report-modal">
-  <div class="modal report-modal">
+  <div class="modal wide">
     <h2>Report Preview</h2>
     <div id="report-modal-content"></div>
-    <div style="margin-top:20px">
-      <button class="btn-cancel" style="width:100%" onclick="closeReportModal()">Close</button>
-    </div>
+    <div style="margin-top:20px"><button class="btn-cancel" style="width:100%" onclick="closeModal('report-modal')">Close</button></div>
   </div>
 </div>
 
 <script>
 const API = 'https://career-blueprint-api.raneesh-ifars.workers.dev';
 let adminKey = '';
-let allOrders = [];
-let currentFilter = 'all';
-let verifyingOrder = null;
+let allOrders = [], allCustomers = [], allSessions = [], statsData = {};
+let currentOrderFilter = 'all';
+let verifyingOrder = null, regenOrder = null;
 
-// ── Toast ──
+// ── Toast ──────────────────────────────────────────────
 function showToast(msg, type='') {
   const t = document.getElementById('toast');
   t.textContent = msg; t.className = `toast show ${type}`;
   setTimeout(() => t.classList.remove('show'), 3500);
 }
 
-// ── Login ──
+// ── Login ──────────────────────────────────────────────
 async function doLogin() {
   const key = document.getElementById('admin-key-input').value.trim();
   if (!key) return;
   const btn = document.getElementById('login-btn');
   btn.disabled = true; btn.textContent = 'Checking...';
-
   try {
-    const res = await fetch(`${API}/api/admin/orders`, {
-      headers: { 'Authorization': `Bearer ${key}` }
-    });
+    const res = await fetch(`${API}/api/admin/orders`, { headers: {'Authorization': `Bearer ${key}`} });
     if (res.status === 401) {
       document.getElementById('login-error').textContent = 'Invalid admin key.';
-      btn.disabled = false; btn.textContent = 'Login →';
-      return;
+      btn.disabled = false; btn.textContent = 'Login →'; return;
     }
-    const data = await res.json();
     adminKey = key;
     sessionStorage.setItem('cb_admin_key', key);
-    showDashboard(data.orders || []);
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    await loadAll();
   } catch(e) {
-    document.getElementById('login-error').textContent = 'Connection error. Check your internet.';
+    document.getElementById('login-error').textContent = 'Connection error.';
     btn.disabled = false; btn.textContent = 'Login →';
   }
 }
 
 function doLogout() {
-  adminKey = '';
-  sessionStorage.removeItem('cb_admin_key');
+  adminKey = ''; sessionStorage.removeItem('cb_admin_key');
   document.getElementById('dashboard').style.display = 'none';
   document.getElementById('login-screen').style.display = 'flex';
   document.getElementById('admin-key-input').value = '';
 }
 
-// ── Dashboard ──
-function showDashboard(orders) {
-  document.getElementById('login-screen').style.display = 'none';
-  document.getElementById('dashboard').style.display = 'block';
-  allOrders = orders;
-  renderStats(orders);
-  renderTable(orders);
-  document.getElementById('last-updated').textContent = 'Updated: ' + new Date().toLocaleTimeString();
-}
-
-async function loadOrders() {
-  const btn = document.querySelector('.btn-refresh');
-  btn.textContent = '...'; btn.disabled = true;
+// ── Load All Data ──────────────────────────────────────
+async function loadAll() {
+  const btn = document.querySelector('.btn-sm.green');
+  if (btn) { btn.textContent = '...'; btn.disabled = true; }
   try {
-    const res = await fetch(`${API}/api/admin/orders`, {
-      headers: { 'Authorization': `Bearer ${adminKey}` }
-    });
-    const data = await res.json();
-    allOrders = data.orders || [];
-    renderStats(allOrders);
-    renderTable(allOrders);
+    const [ordersRes, statsRes, customersRes] = await Promise.all([
+      fetch(`${API}/api/admin/orders`, { headers: {'Authorization': `Bearer ${adminKey}`} }),
+      fetch(`${API}/api/admin/stats`, { headers: {'Authorization': `Bearer ${adminKey}`} }),
+      fetch(`${API}/api/admin/customers`, { headers: {'Authorization': `Bearer ${adminKey}`} }),
+    ]);
+    const ordersData = await ordersRes.json();
+    const statsJson = await statsRes.json();
+    const custData = await customersRes.json();
+
+    allOrders = ordersData.orders || [];
+    statsData = statsJson;
+    allCustomers = custData.customers || [];
+
+    updateStats();
+    renderOrdersTable();
+    renderCustomersTable();
+    renderCharts();
+    renderPendingAlerts();
     document.getElementById('last-updated').textContent = 'Updated: ' + new Date().toLocaleTimeString();
-    showToast('Orders refreshed', 'success');
-  } catch(e) {
-    showToast('Refresh failed', 'error');
+    showToast('Data refreshed', 'success');
+  } catch(e) { showToast('Refresh failed: ' + e.message, 'error'); }
+  if (btn) { btn.textContent = '↻ Refresh'; btn.disabled = false; }
+}
+
+// ── Stats ──────────────────────────────────────────────
+function updateStats() {
+  const total = allOrders.length;
+  const pending = allOrders.filter(o => o.status === 'pending').length;
+  const done = allOrders.filter(o => o.session_status === 'report_generated').length;
+  const revenue = allOrders.filter(o => ['paid','report_generated'].includes(o.status) || o.session_status === 'report_generated').length * 199;
+  document.getElementById('st-orders').textContent = total;
+  document.getElementById('st-pending').textContent = pending;
+  document.getElementById('st-reports').textContent = done;
+  document.getElementById('st-customers').textContent = statsData.customers || allCustomers.length;
+  document.getElementById('st-revenue').textContent = '₹' + revenue.toLocaleString('en-IN');
+}
+
+// ── Charts ─────────────────────────────────────────────
+let dailyChart, statusChart, funnelChart;
+function renderCharts() {
+  // Daily orders chart
+  const daily = (statsData.daily || []).slice().reverse();
+  if (dailyChart) dailyChart.destroy();
+  dailyChart = new Chart(document.getElementById('chart-daily'), {
+    type: 'bar',
+    data: {
+      labels: daily.map(d => d.day ? d.day.slice(5) : ''),
+      datasets: [{
+        label: 'Orders', data: daily.map(d => d.orders || 0),
+        backgroundColor: 'rgba(232,160,32,0.6)', borderColor: '#e8a020', borderWidth: 1, borderRadius: 4
+      }]
+    },
+    options: { plugins:{legend:{display:false}}, scales:{x:{ticks:{color:'#8090a0',font:{size:10}}},y:{ticks:{color:'#8090a0'},grid:{color:'rgba(30,45,69,0.5)'},beginAtZero:true}}}
+  });
+
+  // Status pie
+  const statuses = {};
+  allOrders.forEach(o => {
+    const s = o.session_status === 'report_generated' ? 'Report Done' : o.status === 'paid' ? 'Paid' : o.status === 'pending' ? 'Pending' : o.status;
+    statuses[s] = (statuses[s] || 0) + 1;
+  });
+  if (statusChart) statusChart.destroy();
+  statusChart = new Chart(document.getElementById('chart-status'), {
+    type: 'doughnut',
+    data: {
+      labels: Object.keys(statuses),
+      datasets: [{ data: Object.values(statuses), backgroundColor: ['rgba(232,160,32,0.8)','rgba(39,174,96,0.8)','rgba(42,122,106,0.8)','rgba(192,57,43,0.8)'], borderWidth: 0 }]
+    },
+    options: { plugins:{legend:{labels:{color:'#c8c0b0',font:{size:12}}}}, cutout:'65%' }
+  });
+
+  // Funnel chart
+  const sessionCounts = {};
+  (statsData.sessions || []).forEach(s => { sessionCounts[s.status] = s.cnt; });
+  const funnelStages = ['incomplete','awaiting_payment','paid','report_generated'];
+  const funnelLabels = ['Started','Completed Form','Paid','Report Done'];
+  if (funnelChart) funnelChart.destroy();
+  funnelChart = new Chart(document.getElementById('chart-funnel'), {
+    type: 'bar',
+    data: {
+      labels: funnelLabels,
+      datasets: [{ data: funnelStages.map(s => sessionCounts[s] || 0), backgroundColor: ['rgba(42,122,106,0.5)','rgba(42,122,106,0.65)','rgba(232,160,32,0.65)','rgba(232,160,32,0.9)'], borderRadius: 6 }]
+    },
+    options: { indexAxis:'y', plugins:{legend:{display:false}}, scales:{x:{ticks:{color:'#8090a0'},grid:{color:'rgba(30,45,69,0.5)'},beginAtZero:true},y:{ticks:{color:'#c8c0b0'}}}}
+  });
+}
+
+// ── Pending Alerts ─────────────────────────────────────
+function renderPendingAlerts() {
+  const pending = allOrders.filter(o => o.status === 'pending' && o.payment_ref && o.payment_ref !== '—');
+  const paidNoReport = allOrders.filter(o => o.status === 'paid' && o.session_status !== 'report_generated');
+  const el = document.getElementById('pending-alerts');
+
+  let html = '';
+  if (pending.length === 0 && paidNoReport.length === 0) {
+    html = '<div style="color:var(--teal2);font-size:13px;padding:12px 0">✓ All orders up to date</div>';
   }
-  btn.textContent = '↻ Refresh'; btn.disabled = false;
+  pending.forEach(o => {
+    html += `<div style="background:rgba(232,160,32,.08);border:1px solid rgba(232,160,32,.25);border-radius:8px;padding:12px;margin-bottom:10px">
+      <div style="font-size:11px;color:var(--text2);margin-bottom:4px">PAYMENT SUBMITTED</div>
+      <div style="font-family:var(--mono);color:var(--amber);font-size:14px;margin-bottom:8px">${o.order_number}</div>
+      <div style="font-size:12px;color:var(--text);margin-bottom:8px">${o.email} · Ref: ${o.payment_ref}</div>
+      <button class="btn-act btn-verify-act" onclick="openVerifyModal('${o.order_number}','${o.payment_ref || ''}')">✓ Verify & Generate</button>
+    </div>`;
+  });
+  paidNoReport.forEach(o => {
+    html += `<div style="background:rgba(42,122,106,.08);border:1px solid rgba(42,122,106,.25);border-radius:8px;padding:12px;margin-bottom:10px">
+      <div style="font-size:11px;color:var(--text2);margin-bottom:4px">PAID — REPORT MISSING</div>
+      <div style="font-family:var(--mono);color:var(--teal2);font-size:14px;margin-bottom:8px">${o.order_number}</div>
+      <div style="font-size:12px;color:var(--text);margin-bottom:8px">${o.email}</div>
+      <button class="btn-act btn-regen-act" onclick="openRegenModal('${o.order_number}')">↻ Re-generate Report</button>
+    </div>`;
+  });
+  el.innerHTML = html || '<div style="color:var(--teal2);font-size:13px;padding:12px 0">✓ All orders up to date</div>';
 }
 
-function renderStats(orders) {
-  const total = orders.length;
-  const pending = orders.filter(o => o.status === 'pending').length;
-  const generated = orders.filter(o => o.session_status === 'report_generated').length;
-  const revenue = orders.filter(o => o.status === 'paid' || o.status === 'report_generated' || o.session_status === 'report_generated').length * 199;
-
-  document.getElementById('stat-total').textContent = total;
-  document.getElementById('stat-pending').textContent = pending;
-  document.getElementById('stat-generated').textContent = generated;
-  document.getElementById('stat-revenue').textContent = '₹' + revenue.toLocaleString('en-IN');
-}
-
-function setFilter(filter, btn) {
-  currentFilter = filter;
+// ── Orders Table ───────────────────────────────────────
+function setOrderFilter(f, btn) {
+  currentOrderFilter = f;
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  renderTable(allOrders);
+  renderOrdersTable();
 }
 
-function renderTable(orders) {
-  let filtered = orders;
-  if (currentFilter === 'pending') filtered = orders.filter(o => o.status === 'pending');
-  else if (currentFilter === 'paid') filtered = orders.filter(o => o.status === 'paid');
-  else if (currentFilter === 'report_generated') filtered = orders.filter(o => o.session_status === 'report_generated');
+function renderOrdersTable() {
+  let list = allOrders;
+  if (currentOrderFilter === 'pending') list = allOrders.filter(o => o.status === 'pending');
+  else if (currentOrderFilter === 'paid') list = allOrders.filter(o => o.status === 'paid');
+  else if (currentOrderFilter === 'done') list = allOrders.filter(o => o.session_status === 'report_generated');
 
   const tbody = document.getElementById('orders-body');
+  if (!list.length) { tbody.innerHTML = `<tr><td colspan="7"><div class="empty"><div class="empty-icon">📭</div>No orders</div></td></tr>`; return; }
 
-  if (filtered.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="7"><div class="empty"><div class="empty-icon">📭</div>No orders in this category</div></td></tr>`;
-    return;
-  }
+  tbody.innerHTML = list.map(o => {
+    const isDone = o.session_status === 'report_generated';
+    const isPaidNoReport = o.status === 'paid' && !isDone;
+    const isPending = o.status === 'pending';
 
-  tbody.innerHTML = filtered.map(o => {
-    const statusBadge = o.session_status === 'report_generated'
-      ? '<span class="badge badge-generated">Done</span>'
-      : o.status === 'paid'
-        ? '<span class="badge badge-paid">Paid</span>'
-        : o.status === 'pending'
-          ? '<span class="badge badge-pending">Pending</span>'
-          : `<span class="badge badge-failed">${o.status}</span>`;
+    const badge = isDone ? '<span class="badge b-done">Done</span>'
+      : o.status === 'paid' ? '<span class="badge b-paid">Paid</span>'
+      : o.status === 'pending' ? '<span class="badge b-pending">Pending</span>'
+      : `<span class="badge b-failed">${o.status}</span>`;
 
     const paths = [o.career_path_1, o.career_path_2, o.career_path_3].filter(Boolean).join(' · ') || '—';
-    const date = o.created_at ? new Date(o.created_at).toLocaleDateString('en-IN', {day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}) : '—';
-    const ref = o.payment_ref || '—';
+    const date = o.created_at ? new Date(o.created_at).toLocaleDateString('en-IN',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}) : '—';
 
-    const canVerify = (o.status === 'pending' || o.status === 'paid') && o.session_status !== 'report_generated';
-    const hasReport = o.session_status === 'report_generated';
+    const actions = `<div class="action-row">
+      ${isPending ? `<button class="btn-act btn-verify-act" onclick="openVerifyModal('${o.order_number}','${o.payment_ref||''}')">✓ Verify</button>` : ''}
+      ${isPaidNoReport ? `<button class="btn-act btn-regen-act" onclick="openRegenModal('${o.order_number}')">↻ Re-gen</button>` : ''}
+      ${isDone ? `<button class="btn-act btn-view-act" onclick="viewReport('${o.session_token}')">View Report</button>` : ''}
+      ${!isPending && !isPaidNoReport && !isDone ? '<span style="font-size:11px;color:var(--text2)">—</span>' : ''}
+    </div>`;
 
-    return `
-      <tr>
-        <td><span class="order-num">${o.order_number}</span></td>
-        <td>
-          <div class="email-cell">${o.name || '—'}</div>
-          <div style="font-size:11px;color:var(--text2)">${o.email}</div>
-        </td>
-        <td><span class="ref-cell" title="${ref}">${ref}</span></td>
-        <td>${statusBadge}</td>
-        <td><span class="paths-cell">${paths}</span></td>
-        <td><span class="time-cell">${date}</span></td>
-        <td>
-          <div class="action-row">
-            ${canVerify ? `<button class="btn-verify-order" onclick="openVerifyModal('${o.order_number}', '${ref}')">✓ Verify</button>` : ''}
-            ${hasReport ? `<button class="btn-view-report" onclick="viewReport('${o.session_token}')">View Report</button>` : ''}
-            ${!canVerify && !hasReport ? '<span style="font-size:11px;color:var(--text2)">—</span>' : ''}
-          </div>
-        </td>
-      </tr>
-    `;
+    return `<tr>
+      <td><span class="mono">${o.order_number}</span></td>
+      <td><div>${o.name||'—'}</div><div class="sub">${o.email}</div></td>
+      <td><span class="sub" title="${o.payment_ref||''}">${(o.payment_ref||'—').substring(0,16)}</span></td>
+      <td>${badge}</td>
+      <td><span style="font-size:11px;color:var(--text)">${paths}</span></td>
+      <td><span class="sub">${date}</span></td>
+      <td>${actions}</td>
+    </tr>`;
   }).join('');
 }
 
-// ── Verify Modal ──
+// ── Customers Table ────────────────────────────────────
+function renderCustomersTable() {
+  const tbody = document.getElementById('customers-body');
+  if (!allCustomers.length) { tbody.innerHTML = `<tr><td colspan="6"><div class="empty"><div class="empty-icon">👤</div>No customers yet</div></td></tr>`; return; }
+  tbody.innerHTML = allCustomers.map(c => {
+    const badge = c.has_report ? '<span class="badge b-done">Report</span>'
+      : c.last_order_status === 'paid' ? '<span class="badge b-paid">Paid</span>'
+      : c.orders > 0 ? '<span class="badge b-pending">Ordered</span>'
+      : '<span class="sub">Diagnostic only</span>';
+    const date = c.created_at ? new Date(c.created_at).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}) : '—';
+    return `<tr>
+      <td>${c.name||'—'}</td>
+      <td><span class="sub">${c.email}</span></td>
+      <td style="text-align:center">${c.sessions||0}</td>
+      <td style="text-align:center">${c.orders||0}</td>
+      <td>${badge}</td>
+      <td><span class="sub">${date}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+// ── Sessions Tab (loaded on click) ─────────────────────
+let sessionsLoaded = false;
+async function loadSessions() {
+  if (sessionsLoaded) return;
+  sessionsLoaded = true;
+  // Derive from orders data we already have
+  const tbody = document.getElementById('sessions-body');
+  if (!allOrders.length) { tbody.innerHTML = `<tr><td colspan="7"><div class="empty"><div class="empty-icon">📋</div>No sessions yet</div></td></tr>`; return; }
+
+  tbody.innerHTML = allOrders.map(o => {
+    const isDone = o.session_status === 'report_generated';
+    const badge = isDone ? '<span class="badge b-done">Done</span>'
+      : o.session_status === 'paid' ? '<span class="badge b-paid">Paid</span>'
+      : o.session_status === 'awaiting_payment' ? '<span class="badge b-pending">Form done</span>'
+      : '<span class="sub">Incomplete</span>';
+    const date = o.created_at ? new Date(o.created_at).toLocaleDateString('en-IN',{day:'2-digit',month:'short'}) : '—';
+    const paths = [o.career_path_1, o.career_path_2, o.career_path_3].filter(Boolean);
+    return `<tr>
+      <td><div>${o.name||'—'}</div><div class="sub">${o.email}</div></td>
+      <td><span style="font-size:12px;color:var(--text)">${paths[0]||'—'}</span></td>
+      <td><span style="font-size:12px;color:var(--text)">${paths[1]||'—'}</span></td>
+      <td><span class="sub">—</span></td>
+      <td><span class="sub">—</span></td>
+      <td>${badge}</td>
+      <td><span class="sub">${date}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+// ── Tab switching ──────────────────────────────────────
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(id).classList.add('active');
+  if (id === 'tab-sessions') loadSessions();
+}
+
+// ── Verify Modal ───────────────────────────────────────
 function openVerifyModal(orderNum, existingRef) {
   verifyingOrder = orderNum;
   document.getElementById('modal-order-num').textContent = orderNum;
@@ -413,49 +572,65 @@ function openVerifyModal(orderNum, existingRef) {
   document.getElementById('verify-modal').classList.add('open');
 }
 
-function closeModal() {
-  document.getElementById('verify-modal').classList.remove('open');
-  verifyingOrder = null;
-}
-
 async function confirmVerify() {
   const ref = document.getElementById('modal-ref-input').value.trim();
   const notes = document.getElementById('modal-notes-input').value.trim();
   if (!ref) { showToast('Enter UPI transaction reference', 'error'); return; }
-
   const btn = document.getElementById('btn-confirm-verify');
   btn.disabled = true; btn.textContent = 'Generating report...';
-
   try {
     const res = await fetch(`${API}/api/order/verify`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${adminKey}`
-      },
-      body: JSON.stringify({ order_number: verifyingOrder, payment_ref: ref, notes })
+      headers: {'Content-Type':'application/json','Authorization':`Bearer ${adminKey}`},
+      body: JSON.stringify({order_number: verifyingOrder, payment_ref: ref, notes})
     });
     const data = await res.json();
-
-    if (data.error) {
+    if (data.report_generated) {
+      showToast('✓ Report generated!', 'success');
+      closeModal('verify-modal');
+      sessionsLoaded = false;
+      await loadAll();
+    } else if (data.error) {
       showToast('Error: ' + data.error, 'error');
-    } else if (data.report_generated) {
-      showToast('✓ Payment verified & report generated!', 'success');
-      closeModal();
-      setTimeout(loadOrders, 1000);
     } else {
-      showToast('Payment verified. Report generation failed — check Claude key.', 'error');
-      closeModal();
-      setTimeout(loadOrders, 1000);
+      showToast('Verified but report failed — check CLAUDE_KEY', 'error');
+      closeModal('verify-modal');
+      await loadAll();
     }
-  } catch(e) {
-    showToast('Request failed: ' + e.message, 'error');
-  }
-
+  } catch(e) { showToast('Request failed', 'error'); }
   btn.disabled = false; btn.textContent = '✓ Verify & Generate Report';
 }
 
-// ── View Report ──
+// ── Regen Modal ────────────────────────────────────────
+function openRegenModal(orderNum) {
+  regenOrder = orderNum;
+  document.getElementById('regen-order-num').textContent = orderNum;
+  document.getElementById('regen-modal').classList.add('open');
+}
+
+async function confirmRegen() {
+  const btn = document.getElementById('btn-confirm-regen');
+  btn.disabled = true; btn.textContent = 'Generating...';
+  try {
+    const res = await fetch(`${API}/api/admin/regenerate`, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json','Authorization':`Bearer ${adminKey}`},
+      body: JSON.stringify({order_number: regenOrder})
+    });
+    const data = await res.json();
+    if (data.report_generated || data.already_exists) {
+      showToast('✓ Report generated!', 'success');
+      closeModal('regen-modal');
+      sessionsLoaded = false;
+      await loadAll();
+    } else {
+      showToast('Failed: ' + (data.error || 'Unknown error'), 'error');
+    }
+  } catch(e) { showToast('Request failed', 'error'); }
+  btn.disabled = false; btn.textContent = '↻ Re-generate Report';
+}
+
+// ── View Report ────────────────────────────────────────
 async function viewReport(sessionToken) {
   if (!sessionToken || sessionToken === 'undefined') { showToast('No session token', 'error'); return; }
   try {
@@ -463,66 +638,43 @@ async function viewReport(sessionToken) {
     const data = await res.json();
     if (!data.report) { showToast('Report not found', 'error'); return; }
     const r = data.report;
-
     document.getElementById('report-modal-content').innerHTML = `
-      <div class="report-section">
-        <h3>Profile</h3>
-        <p><strong style="color:var(--amber)">${r.dominant_profile || '—'}</strong></p>
-      </div>
-      <div class="report-section">
-        <h3>Personality Narrative</h3>
-        <p>${r.personality_narrative || '—'}</p>
-      </div>
-      <div class="report-section">
-        <h3>Career Paths</h3>
-        ${(r.career_paths || []).map(p => `
-          <div class="path-mini">
-            <div class="path-mini-title">#${p.rank} ${p.title} <span style="font-size:11px;color:var(--teal2)">${p.fit_score}% fit</span></div>
-            <div class="path-mini-meta">${p.entry_route} · ${p.salary_5yr} · AI Risk: ${p.ai_vulnerability}</div>
-          </div>
-        `).join('')}
-      </div>
-      <div class="report-section">
-        <h3>Actions</h3>
-        <ul class="actions-mini">${(r.actions_now || []).map(a => `<li>${a}</li>`).join('')}</ul>
-      </div>
-      <div class="report-section">
-        <h3>Honest Warning</h3>
-        <div class="warning-mini">${r.honest_warning || '—'}</div>
-      </div>
+      <div class="rp-section"><h3>Profile</h3><p><strong style="color:var(--amber);font-size:16px">${r.dominant_profile||'—'}</strong></p></div>
+      <div class="rp-section"><h3>Personality Narrative</h3><p>${r.personality_narrative||'—'}</p></div>
+      <div class="rp-section"><h3>Career Paths</h3>${(r.career_paths||[]).map(p=>`<div class="path-mini"><div class="path-mini-title">#${p.rank} ${p.title} <span style="font-size:11px;color:var(--teal2)">${p.fit_score}% fit · AI: ${p.ai_vulnerability}</span></div><div class="path-mini-meta">${p.entry_route} · ${p.salary_5yr}</div><div style="font-size:12px;color:var(--text2);margin-top:4px">${p.financial_reality||''}</div></div>`).join('')}</div>
+      <div class="rp-section"><h3>Actions Now</h3><ul class="actions-mini">${(r.actions_now||[]).map(a=>`<li>${a}</li>`).join('')}</ul></div>
+      <div class="rp-section"><h3>Honest Warning</h3><div class="warning-mini">${r.honest_warning||'—'}</div></div>
     `;
     document.getElementById('report-modal').classList.add('open');
-  } catch(e) {
-    showToast('Failed to load report', 'error');
-  }
+  } catch(e) { showToast('Failed to load report', 'error'); }
 }
 
-function closeReportModal() {
-  document.getElementById('report-modal').classList.remove('open');
+// ── Modal close ────────────────────────────────────────
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+  verifyingOrder = null; regenOrder = null;
 }
-
-// Close modals on overlay click
-document.getElementById('verify-modal').addEventListener('click', function(e) {
-  if (e.target === this) closeModal();
-});
-document.getElementById('report-modal').addEventListener('click', function(e) {
-  if (e.target === this) closeReportModal();
+document.querySelectorAll('.modal-overlay').forEach(el => {
+  el.addEventListener('click', function(e) { if (e.target === this) closeModal(this.id); });
 });
 
-// ── Auto-login if key saved ──
+// ── Auto-login ─────────────────────────────────────────
 const savedKey = sessionStorage.getItem('cb_admin_key');
 if (savedKey) {
   document.getElementById('admin-key-input').value = savedKey;
   adminKey = savedKey;
-  // Auto-load
-  fetch(`${API}/api/admin/orders`, { headers: { 'Authorization': `Bearer ${savedKey}` }})
+  fetch(`${API}/api/admin/orders`, {headers:{'Authorization':`Bearer ${savedKey}`}})
     .then(r => r.json())
-    .then(data => showDashboard(data.orders || []))
-    .catch(() => {});
+    .then(async data => {
+      allOrders = data.orders || [];
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+      await loadAll();
+    }).catch(() => {});
 }
 
 // Auto-refresh every 2 minutes
-setInterval(() => { if (adminKey) loadOrders(); }, 120000);
+setInterval(() => { if (adminKey) loadAll(); }, 120000);
 </script>
 </body>
 </html>
