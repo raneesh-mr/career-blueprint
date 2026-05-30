@@ -5,6 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Career Blueprint — Scientific Career Selection</title>
 <meta name="description" content="A 12-minute diagnostic that maps your personality, interests, and life goals to find your right career path. Powered by science, not trends.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%231b2236'/%3E%3Cpolygon points='32,10 35,32 32,29 29,32' fill='%23e8a020'/%3E%3Cpolygon points='32,54 35,32 32,35 29,32' fill='%233a4a70'/%3E%3Ccircle cx='32' cy='32' r='3.5' fill='%23e8a020'/%3E%3Ccircle cx='32' cy='32' r='1.5' fill='%231b2236'/%3E%3Cline x1='32' y1='5' x2='32' y2='11' stroke='%23e8a020' stroke-width='2'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='36' fill='%231b2236'/%3E%3Ccircle cx='90' cy='90' r='68' fill='none' stroke='%23e8a020' stroke-width='2' opacity='0.25'/%3E%3Cpolygon points='90,28 97,90 90,83 83,90' fill='%23e8a020'/%3E%3Cpolygon points='90,152 97,90 90,97 83,90' fill='%233a4a70'/%3E%3Ccircle cx='90' cy='90' r='10' fill='%23e8a020'/%3E%3Ccircle cx='90' cy='90' r='4.5' fill='%231b2236'/%3E%3Cline x1='90' y1='14' x2='90' y2='30' stroke='%23e8a020' stroke-width='3.5'/%3E%3C/svg%3E">
+<meta property="og:title" content="Career Blueprint — Find Your Right Path in 12 Minutes">
+<meta property="og:description" content="A science-backed diagnostic that maps your personality, interests and life goals to careers you'll actually thrive in.">
+<meta property="og:image" content="https://career.raneesh.net/og.png">
+<meta property="og:url" content="https://career.raneesh.net">
+<meta name="theme-color" content="#1b2236">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -524,6 +531,34 @@ input[type=range]::-moz-range-thumb {
   padding-top: 16px; border-top: 1px solid var(--border);
 }
 
+/* ── SUBMITTED CONFIRMATION SCREEN ── */
+#screen-submitted { background: radial-gradient(800px 400px at 50% -100px, #16203a, transparent 60%), var(--navy); }
+#screen-submitted.active { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 32px 20px; }
+.submitted-wrap { width: 100%; max-width: 520px; }
+.submitted-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: clamp(32px,6vw,56px); text-align: center; }
+.submitted-icon { margin: 0 auto 28px; width: 72px; height: 72px; animation: compassSpin 8s linear infinite; }
+@keyframes compassSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.submitted-eyebrow { font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--amber); margin-bottom: 14px; font-weight: 600; }
+.submitted-title { font-family: var(--font-head); font-size: clamp(22px,4vw,30px); font-weight: 700; color: var(--cream); line-height: 1.2; margin: 0 0 14px; }
+.submitted-sub { font-size: 15px; line-height: 1.7; color: var(--text2); margin: 0 0 28px; }
+.submitted-email-box { background: rgba(232,160,32,0.08); border: 1px solid rgba(232,160,32,0.25); border-radius: 10px; padding: 16px 20px; margin-bottom: 20px; }
+.submitted-email-label { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--amber); margin-bottom: 6px; }
+.submitted-email-val { font-size: 16px; font-weight: 600; color: var(--cream); word-break: break-all; }
+.submitted-timer-row { display: flex; align-items: center; justify-content: center; gap: 10px; background: var(--card2); border-radius: 8px; padding: 13px 18px; margin-bottom: 28px; }
+.submitted-timer-icon { font-size: 18px; }
+.submitted-timer-text { font-size: 14px; color: var(--text); } .submitted-timer-text strong { color: var(--cream); }
+.submitted-steps { text-align: left; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+.sub-step { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--text2); opacity: 0.45; transition: opacity 0.5s; }
+.sub-step.active { opacity: 1; color: var(--cream); }
+.sub-step-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); flex-shrink: 0; transition: background 0.5s; }
+.sub-step.active .sub-step-dot { background: var(--amber); box-shadow: 0 0 8px rgba(232,160,32,0.6); animation: pulse 1.5s ease-in-out infinite; }
+.sub-step.done .sub-step-dot { background: var(--teal2); }
+.sub-step.done { opacity: 0.7; }
+.submitted-note { font-size: 12px; color: var(--text2); line-height: 1.6; margin-bottom: 20px; }
+.submitted-unlock { padding-top: 20px; border-top: 1px solid var(--border); font-size: 13px; color: var(--text2); }
+.sub-link-btn { background: none; border: none; color: var(--amber); font-size: 13px; font-family: var(--font-body); cursor: pointer; padding: 0; text-decoration: underline; }
+.sub-link-btn:hover { color: var(--amber2); }
+
 /* ── GENERATING SCREEN ── */
 #screen-generating {
   min-height: 100vh; padding: 24px;
@@ -586,7 +621,7 @@ input[type=range]::-moz-range-thumb {
 .rp-masthead { background: var(--navy); color: var(--cream); padding: clamp(34px, 6vw, 56px) clamp(28px, 6vw, 72px) clamp(30px, 5vw, 44px); position: relative; border-bottom: 3px solid var(--gold-bright); }
 .rp-mast-top { display: flex; justify-content: space-between; align-items: center; padding-bottom: 26px; margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.12); }
 .rp-monogram { display: flex; align-items: center; gap: 12px; }
-.rp-mono-mark { width: 38px; height: 38px; border: 1.5px solid var(--amber); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-head); font-weight: 700; color: var(--amber); font-size: 18px; }
+.rp-mono-mark { width: 38px; height: 38px; border: 1.5px solid var(--amber); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 .rp-mono-text { font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--cream2); }
 .rp-mast-doc { text-align: right; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text2); line-height: 1.7; }
 .rp-eyebrow { font-size: 12px; letter-spacing: 0.32em; text-transform: uppercase; color: var(--amber); font-weight: 600; margin-bottom: 16px; }
@@ -1574,6 +1609,71 @@ input[type=range]::-moz-range-thumb {
 <!-- ════════════════════════════════════════════════
      SCREEN 8: GENERATING
 ════════════════════════════════════════════════ -->
+<!-- ════════════════════════════════════════════════
+     SCREEN: SUBMITTED CONFIRMATION
+════════════════════════════════════════════════ -->
+<div id="screen-submitted" class="screen">
+  <div class="submitted-wrap">
+    <div class="submitted-card">
+      <!-- Animated compass icon -->
+      <div class="submitted-icon">
+        <svg width="72" height="72" viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="36" cy="36" r="34" fill="none" stroke="rgba(232,160,32,0.2)" stroke-width="1.5"/>
+          <circle cx="36" cy="36" r="26" fill="none" stroke="rgba(232,160,32,0.12)" stroke-width="1"/>
+          <polygon points="36,10 39.5,36 36,33 32.5,36" fill="#e8a020"/>
+          <polygon points="36,62 39.5,36 36,39 32.5,36" fill="#3a4a70"/>
+          <circle cx="36" cy="36" r="4.5" fill="#e8a020"/>
+          <circle cx="36" cy="36" r="2" fill="#1b2236"/>
+          <line x1="36" y1="5" x2="36" y2="12" stroke="#e8a020" stroke-width="2"/>
+        </svg>
+      </div>
+
+      <div class="submitted-eyebrow">Analysis in progress</div>
+      <h1 class="submitted-title">Your Blueprint is being built.</h1>
+      <p class="submitted-sub">Our diagnostic engine is mapping your 43 responses across personality, interests, life priorities and financial reality.</p>
+
+      <div class="submitted-email-box">
+        <div class="submitted-email-label">Report sent to</div>
+        <div class="submitted-email-val" id="submitted-email-display">your registered email</div>
+      </div>
+
+      <div class="submitted-timer-row">
+        <div class="submitted-timer-icon">⏱</div>
+        <div class="submitted-timer-text">Expect your report within <strong>7 minutes</strong></div>
+      </div>
+
+      <div class="submitted-steps">
+        <div class="sub-step active" id="sub-step-1">
+          <div class="sub-step-dot"></div>
+          <span>Analysing personality profile</span>
+        </div>
+        <div class="sub-step" id="sub-step-2">
+          <div class="sub-step-dot"></div>
+          <span>Mapping interest clusters</span>
+        </div>
+        <div class="sub-step" id="sub-step-3">
+          <div class="sub-step-dot"></div>
+          <span>Matching career paths</span>
+        </div>
+        <div class="sub-step" id="sub-step-4">
+          <div class="sub-step-dot"></div>
+          <span>Running financial reality check</span>
+        </div>
+        <div class="sub-step" id="sub-step-5">
+          <div class="sub-step-dot"></div>
+          <span>Writing your narrative</span>
+        </div>
+      </div>
+
+      <p class="submitted-note">Check your spam folder if you don't see the email. Your report link is valid for 30 days.</p>
+
+      <div class="submitted-unlock">
+        <p>Already paid? <button class="sub-link-btn" onclick="goTo('screen-preview');renderPreviewCharts()">Unlock report now →</button></p>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="screen-generating" class="screen">
   <div class="generating-card">
     <div class="generating-spinner"></div>
@@ -1597,7 +1697,14 @@ input[type=range]::-moz-range-thumb {
     <div class="rp-masthead">
       <div class="rp-mast-top">
         <div class="rp-monogram">
-          <div class="rp-mono-mark">C</div>
+          <div class="rp-mono-mark">
+            <svg width="22" height="22" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+              <polygon points="22,5 24.5,22 22,20 19.5,22" fill="#e8a020"/>
+              <polygon points="22,39 24.5,22 22,24 19.5,22" fill="#4a5a80"/>
+              <circle cx="22" cy="22" r="3" fill="#e8a020"/>
+              <circle cx="22" cy="22" r="1.2" fill="#1b2236"/>
+            </svg>
+          </div>
           <div class="rp-mono-text">Career&nbsp;Blueprint</div>
         </div>
         <div class="rp-mast-doc">Confidential Assessment<br>Ref. <span id="rp-refid">CB-000000</span></div>
@@ -1949,12 +2056,34 @@ function handleRealityNext() {
   state.reality.exams_cleared = exams.length > 0 ? exams.join(',') : null;
   saveState();
 
-  // Save scores to API
+  // Show submitted screen immediately with user email
+  const emailEl = document.getElementById('submitted-email-display');
+  if (emailEl) emailEl.textContent = state.email || 'your registered email';
+
+  goTo('screen-submitted');
+  animateSubmittedSteps();
+
+  // Save scores to API in background
   saveScoresToAPI();
 }
 
+function animateSubmittedSteps() {
+  const steps = [1,2,3,4,5];
+  let current = 0;
+  const interval = setInterval(() => {
+    if (current > 0) {
+      const prev = document.getElementById('sub-step-' + current);
+      if (prev) { prev.classList.remove('active'); prev.classList.add('done'); }
+    }
+    current++;
+    if (current > steps.length) { clearInterval(interval); return; }
+    const el = document.getElementById('sub-step-' + current);
+    if (el) el.classList.add('active');
+  }, 1800);
+}
+
 async function saveScoresToAPI() {
-  if (!state.session_token) { goTo('screen-preview'); renderPreviewCharts(); return; }
+  if (!state.session_token) { return; }
   try {
     const res = await fetch(`${API}/api/session/save-scores`, {
       method: 'POST',
@@ -1969,8 +2098,6 @@ async function saveScoresToAPI() {
     });
     await res.json();
   } catch(e) { console.error(e); }
-  goTo('screen-preview');
-  renderPreviewCharts();
 }
 
 // ── Register ─────────────────────────────
