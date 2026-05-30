@@ -378,7 +378,7 @@ function renderTable(orders) {
     const date = o.created_at ? new Date(o.created_at).toLocaleDateString('en-IN', {day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}) : '—';
     const ref = o.payment_ref || '—';
 
-    const canVerify = o.status === 'pending' && o.session_status !== 'report_generated';
+    const canVerify = (o.status === 'pending' || o.status === 'paid') && o.session_status !== 'report_generated';
     const hasReport = o.session_status === 'report_generated';
 
     return `
