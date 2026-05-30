@@ -683,6 +683,298 @@ input[type=range]::-moz-range-thumb {
   .riasec-options { flex-direction: column; }
   .nav-buttons { left: 0; right: 0; max-width: 100%; }
 }
+/* ════════════════════════════════════════════
+   LANDING REDESIGN (lx-)
+════════════════════════════════════════════ */
+#screen-landing { padding-bottom: 0; }
+
+/* ambient aurora behind hero */
+.lx-aurora {
+  position: absolute; top: -10%; left: 50%; transform: translateX(-50%);
+  width: 120vw; height: 760px; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(closest-side at 30% 30%, rgba(232,160,32,0.18), transparent 70%),
+    radial-gradient(closest-side at 72% 40%, rgba(42,122,106,0.20), transparent 70%);
+  filter: blur(20px); opacity: 0.9;
+  animation: lx-drift 16s ease-in-out infinite alternate;
+}
+@keyframes lx-drift {
+  0%   { transform: translateX(-52%) translateY(0) scale(1); }
+  100% { transform: translateX(-48%) translateY(24px) scale(1.08); }
+}
+
+/* urgency strip */
+.lx-urgentbar {
+  position: relative; z-index: 5;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  background: rgba(192,57,43,0.10);
+  border-bottom: 1px solid rgba(192,57,43,0.28);
+  padding: 10px 16px; text-align: center;
+  font-size: 13px; color: var(--cream); flex-wrap: wrap;
+}
+.lx-urgentbar strong { color: var(--amber2); font-weight: 600; }
+.lx-pulse {
+  width: 8px; height: 8px; border-radius: 50%; background: #e05050;
+  box-shadow: 0 0 0 0 rgba(224,80,80,0.6); animation: lx-pulsate 1.6s infinite;
+  flex-shrink: 0;
+}
+@keyframes lx-pulsate {
+  0%   { box-shadow: 0 0 0 0 rgba(224,80,80,0.55); }
+  70%  { box-shadow: 0 0 0 8px rgba(224,80,80,0); }
+  100% { box-shadow: 0 0 0 0 rgba(224,80,80,0); }
+}
+
+/* HERO */
+.lx-hero {
+  position: relative; z-index: 2;
+  max-width: 1120px; margin: 0 auto; width: 100%;
+  padding: 72px 32px 56px;
+  display: grid; grid-template-columns: 1.05fr 0.95fr;
+  gap: 56px; align-items: center;
+}
+.lx-hero-text { max-width: 560px; }
+.lx-hero .eyebrow { margin-bottom: 18px; }
+.lx-title {
+  font-family: var(--font-head); font-weight: 700;
+  font-size: clamp(34px, 4.6vw, 56px); line-height: 1.06;
+  color: var(--cream); margin-bottom: 22px; letter-spacing: -0.01em;
+}
+.lx-title em {
+  font-style: normal; color: var(--amber);
+  position: relative; white-space: nowrap;
+}
+.lx-title em::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0.04em; height: 0.16em;
+  background: rgba(232,160,32,0.22); z-index: -1; border-radius: 2px;
+}
+.lx-sub {
+  font-size: 17px; line-height: 1.7; color: var(--text);
+  font-weight: 300; margin-bottom: 32px; max-width: 500px;
+}
+.lx-cta-row { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-bottom: 28px; }
+.lx-cta {
+  font-size: 17px; padding: 17px 34px; border-radius: 6px;
+  box-shadow: 0 10px 30px -8px rgba(232,160,32,0.5);
+  animation: lx-cta-breathe 2.8s ease-in-out infinite;
+}
+@keyframes lx-cta-breathe {
+  0%,100% { box-shadow: 0 10px 30px -8px rgba(232,160,32,0.45); }
+  50%     { box-shadow: 0 14px 38px -6px rgba(232,160,32,0.65); }
+}
+.lx-cta-meta { font-size: 13px; color: var(--text2); line-height: 1.5; }
+.lx-stars { color: var(--amber); letter-spacing: 1px; display: block; font-size: 14px; }
+.lx-trust {
+  display: flex; gap: 18px; flex-wrap: wrap;
+  font-size: 12px; color: var(--text2);
+  padding-top: 22px; border-top: 1px solid var(--border);
+}
+.lx-trust span { white-space: nowrap; }
+.lx-trust span::first-letter { color: var(--teal2); }
+
+/* HERO VISUAL — report peek */
+.lx-hero-visual { position: relative; }
+.lx-report-card {
+  background: linear-gradient(160deg, var(--card2), var(--card));
+  border: 1px solid var(--border); border-radius: 16px;
+  padding: 24px; box-shadow: 0 40px 80px -30px rgba(0,0,0,0.7);
+  transform: rotate(-1.6deg); position: relative;
+}
+.lx-report-card::before {
+  content: 'YOUR REPORT'; position: absolute; top: 18px; right: 20px;
+  font-size: 9px; letter-spacing: 0.2em; color: var(--text2); font-weight: 600;
+}
+.lx-rc-head { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+.lx-rc-avatar {
+  width: 42px; height: 42px; border-radius: 50%; flex-shrink: 0;
+  background: linear-gradient(135deg, var(--amber), var(--teal));
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-head); font-weight: 700; color: var(--navy); font-size: 18px;
+}
+.lx-rc-name { font-family: var(--font-head); font-size: 17px; color: var(--cream); line-height: 1.1; }
+.lx-rc-tag {
+  display: inline-block; margin-top: 4px; font-size: 10px; font-weight: 600;
+  color: var(--amber); background: rgba(232,160,32,0.14);
+  border: 1px solid rgba(232,160,32,0.3); padding: 2px 8px; border-radius: 10px;
+}
+.lx-radar-wrap { display: flex; justify-content: center; padding: 6px 0 14px; }
+.lx-paths { display: flex; flex-direction: column; gap: 8px; position: relative; }
+.lx-path-row {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--navy2); border: 1px solid var(--border);
+  border-radius: 8px; padding: 10px 12px;
+}
+.lx-path-rank {
+  font-family: var(--font-head); font-size: 14px; color: var(--amber); font-weight: 700;
+  width: 18px; flex-shrink: 0;
+}
+.lx-path-name { font-size: 13px; color: var(--cream); flex: 1; }
+.lx-path-fit {
+  font-size: 11px; font-weight: 600; color: var(--teal2);
+  background: rgba(42,122,106,0.18); padding: 2px 8px; border-radius: 8px;
+}
+.lx-path-row.locked .lx-path-name,
+.lx-path-row.locked .lx-path-fit { filter: blur(4px); }
+.lx-lock-chip {
+  position: absolute; right: 10px; bottom: 10px;
+  display: flex; align-items: center; gap: 6px;
+  background: var(--amber); color: var(--navy);
+  font-size: 11px; font-weight: 700; padding: 5px 12px; border-radius: 20px;
+  box-shadow: 0 6px 18px -6px rgba(232,160,32,0.7);
+}
+.lx-float-badge {
+  position: absolute; z-index: 3;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 10px 14px; display: flex; align-items: center; gap: 10px;
+  box-shadow: 0 18px 40px -16px rgba(0,0,0,0.8);
+  animation: lx-bob 4s ease-in-out infinite;
+}
+.lx-float-badge .n { font-family: var(--font-head); font-size: 22px; font-weight: 700; color: var(--amber); line-height: 1; }
+.lx-float-badge .l { font-size: 10px; color: var(--text2); line-height: 1.3; max-width: 90px; }
+.lx-fb-1 { top: -22px; left: -26px; }
+.lx-fb-2 { bottom: 36px; left: -34px; animation-delay: -2s; }
+@keyframes lx-bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
+
+/* LIVE TICKER */
+.lx-ticker {
+  position: relative; z-index: 2; overflow: hidden;
+  background: var(--card); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  padding: 11px 0;
+}
+.lx-ticker-track { display: flex; gap: 40px; white-space: nowrap; width: max-content; animation: lx-scroll 36s linear infinite; }
+.lx-ticker:hover .lx-ticker-track { animation-play-state: paused; }
+@keyframes lx-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.lx-tick-item { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text2); }
+.lx-tick-item b { color: var(--cream); font-weight: 500; }
+.lx-tick-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--teal2); flex-shrink: 0; }
+
+/* SECTION SHELL */
+.lx-section { position: relative; z-index: 2; max-width: 980px; margin: 0 auto; padding: 80px 32px; }
+.lx-kicker {
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--amber); font-weight: 600; text-align: center; margin-bottom: 14px;
+}
+.lx-h2 {
+  font-family: var(--font-head); font-size: clamp(26px, 4vw, 40px);
+  color: var(--cream); text-align: center; line-height: 1.15; margin-bottom: 14px;
+}
+.lx-h2 em { font-style: normal; color: var(--amber); }
+.lx-lead { text-align: center; font-size: 16px; color: var(--text); max-width: 560px; margin: 0 auto 48px; line-height: 1.6; }
+
+/* COST OF GUESSING */
+.lx-cost { background: var(--navy2); border-top: 1px solid var(--border); }
+.lx-cost-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.lx-cost-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+  padding: 30px 26px; position: relative; overflow: hidden;
+}
+.lx-cost-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--red), transparent);
+}
+.lx-cost-num {
+  font-family: var(--font-head); font-size: clamp(40px, 6vw, 56px);
+  font-weight: 700; color: #e06050; line-height: 1; display: block;
+}
+.lx-cost-label { font-size: 14px; color: var(--text); margin-top: 12px; line-height: 1.5; }
+.lx-cost-foot {
+  text-align: center; margin-top: 40px; font-size: 17px; color: var(--cream);
+  font-family: var(--font-head); line-height: 1.5;
+}
+.lx-cost-foot em { font-style: normal; color: var(--amber); }
+
+/* HOW IT WORKS — modern */
+.lx-steps { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.lx-step {
+  background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+  padding: 26px 24px; transition: border-color .2s, transform .2s;
+}
+.lx-step:hover { border-color: rgba(232,160,32,0.4); transform: translateY(-3px); }
+.lx-step-top { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+.lx-step-num {
+  font-family: var(--font-head); font-size: 18px; font-weight: 700; color: var(--navy);
+  width: 36px; height: 36px; border-radius: 9px; background: var(--amber);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.lx-step h3 { font-size: 16px; color: var(--cream); font-weight: 600; }
+.lx-step p { font-size: 14px; color: var(--text); line-height: 1.6; }
+
+/* TESTIMONIALS */
+.lx-quotes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.lx-quote {
+  background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+  padding: 26px 24px; display: flex; flex-direction: column; gap: 16px;
+}
+.lx-quote-stars { color: var(--amber); font-size: 13px; letter-spacing: 1px; }
+.lx-quote p { font-size: 15px; color: var(--cream); line-height: 1.6; font-weight: 300; }
+.lx-quote-who { display: flex; align-items: center; gap: 10px; margin-top: auto; }
+.lx-qa {
+  width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
+  background: var(--card2); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-head); font-weight: 700; color: var(--amber); font-size: 14px;
+}
+.lx-qn { font-size: 13px; color: var(--cream); font-weight: 500; }
+.lx-qr { font-size: 11px; color: var(--text2); }
+
+/* FINAL SCARCITY BLOCK */
+.lx-final { background: var(--navy2); border-top: 1px solid var(--border); }
+.lx-final-card {
+  max-width: 560px; margin: 0 auto;
+  background: linear-gradient(160deg, var(--card2), var(--card));
+  border: 1px solid var(--amber); border-radius: 18px;
+  padding: 40px 36px; text-align: center;
+  box-shadow: 0 40px 80px -40px rgba(232,160,32,0.4);
+}
+.lx-final-card h2 {
+  font-family: var(--font-head); font-size: 30px; color: var(--cream); margin-bottom: 10px; line-height: 1.2;
+}
+.lx-final-card > p { font-size: 14px; color: var(--text); margin-bottom: 26px; }
+.lx-price-line { display: flex; align-items: baseline; justify-content: center; gap: 14px; margin-bottom: 8px; }
+.lx-price-now { font-family: var(--font-head); font-size: 56px; font-weight: 700; color: var(--amber); line-height: 1; }
+.lx-price-now sup { font-size: 26px; vertical-align: super; }
+.lx-price-was { font-size: 22px; color: var(--text2); text-decoration: line-through; }
+.lx-save-pill {
+  display: inline-block; font-size: 12px; font-weight: 600; color: var(--teal2);
+  background: rgba(42,122,106,0.18); border: 1px solid rgba(42,122,106,0.35);
+  padding: 3px 12px; border-radius: 12px; margin-bottom: 24px;
+}
+.lx-seats { margin-bottom: 22px; }
+.lx-seats-top { display: flex; justify-content: space-between; font-size: 12px; color: var(--text2); margin-bottom: 8px; }
+.lx-seats-top strong { color: var(--amber); }
+.lx-seats-bar { height: 8px; border-radius: 4px; background: var(--navy); overflow: hidden; }
+.lx-seats-fill {
+  height: 100%; width: 82%;
+  background: linear-gradient(90deg, var(--amber), #e06050);
+  border-radius: 4px;
+}
+.lx-countdown-box {
+  display: flex; justify-content: center; gap: 10px; margin-bottom: 26px;
+}
+.lx-cd-unit {
+  background: var(--navy); border: 1px solid var(--border); border-radius: 8px;
+  padding: 10px 6px; min-width: 60px;
+}
+.lx-cd-num { font-family: var(--font-head); font-size: 28px; font-weight: 700; color: var(--cream); line-height: 1; }
+.lx-cd-lbl { font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text2); margin-top: 6px; }
+.lx-final-card .cta-primary { width: 100%; font-size: 17px; padding: 17px; }
+.lx-final-meta { font-size: 12px; color: var(--text2); margin-top: 16px; }
+.lx-guarantee { display: inline-flex; align-items: center; gap: 6px; color: var(--teal2); }
+
+@media (max-width: 860px) {
+  .lx-hero { grid-template-columns: 1fr; gap: 40px; padding: 48px 22px 40px; }
+  .lx-hero-text { max-width: 100%; }
+  .lx-hero-visual { max-width: 380px; margin: 0 auto; width: 100%; }
+  .lx-cost-grid { grid-template-columns: 1fr; }
+  .lx-steps { grid-template-columns: 1fr; }
+  .lx-quotes { grid-template-columns: 1fr; }
+  .lx-section { padding: 56px 22px; }
+  .lx-fb-1 { top: -16px; left: -8px; }
+  .lx-fb-2 { bottom: 20px; left: -10px; }
+}
+@media (max-width: 420px) {
+  .lx-float-badge { display: none; }
+  .lx-trust { gap: 12px; }
+}
 </style>
 </head>
 <body>
@@ -696,73 +988,204 @@ input[type=range]::-moz-range-thumb {
      SCREEN 0: LANDING
 ════════════════════════════════════════════════ -->
 <div id="screen-landing" class="screen active">
+  <div class="lx-aurora"></div>
   <div class="landing-noise"></div>
 
-  <div class="landing-hero">
-    <span class="eyebrow">The Scientific Career Framework</span>
-    <h1 class="landing-title">
-      Stop following<br><em>trends.</em><br>Start reading yourself.
-    </h1>
-    <p class="landing-sub">
-      A 12-minute diagnostic that maps your personality, interests, and life goals
-      to identify the career paths you'll actually thrive in — not just survive in.
-    </p>
-    <button class="cta-primary" onclick="goTo('screen-register')">
-      Start Your Diagnostic →
-    </button>
-    <span class="cta-meta">43 questions · English · ₹199 for full report</span>
+  <!-- Urgency strip -->
+  <div class="lx-urgentbar">
+    <span class="lx-pulse"></span>
+    <span><strong id="lx-today">214</strong> students diagnosed today · launch price <strong>₹199</strong> ends in <strong id="lx-bar-cd">11:59:42</strong></span>
   </div>
 
-  <div class="stats-strip">
-    <div class="stats-inner">
-      <div class="stat-item">
-        <span class="stat-num" id="counter-debt">0</span>
-        <span class="stat-label">Crore in student debt in Kerala alone — driven by emotional decisions</span>
+  <!-- HERO -->
+  <section class="lx-hero">
+    <div class="lx-hero-text">
+      <span class="eyebrow">The Scientific Career Framework</span>
+      <h1 class="lx-title">The wrong degree costs <em>₹40 Lakh</em> and 4 years you never get back.</h1>
+      <p class="lx-sub">
+        In 12 minutes, a science-backed diagnostic maps your personality, interests and life goals —
+        so you choose a path you'll actually thrive in. Before a counselling deadline chooses for you.
+      </p>
+      <div class="lx-cta-row">
+        <button class="cta-primary lx-cta" onclick="goTo('screen-register')">Find My Right Career →</button>
+        <div class="lx-cta-meta">
+          <span class="lx-stars">★★★★★</span>
+          4.8 average · 2,800+ students diagnosed
+        </div>
       </div>
-      <div class="stat-item">
-        <span class="stat-num">50%</span>
-        <span class="stat-label">Pass rate for engineering students — most entered the wrong environment</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-num">~30%</span>
-        <span class="stat-label">Unemployment rate among graduates — forcing mass career resets</span>
+      <div class="lx-trust">
+        <span>✓ OCEAN + RIASEC science</span>
+        <span>✓ 43 questions · 12 min</span>
+        <span>✓ Instant AI report</span>
       </div>
     </div>
+
+    <!-- Report peek visual -->
+    <div class="lx-hero-visual">
+      <div class="lx-float-badge lx-fb-1">
+        <span class="n">94%</span>
+        <span class="l">personality-interest fit</span>
+      </div>
+      <div class="lx-float-badge lx-fb-2">
+        <span class="n">3</span>
+        <span class="l">ranked career paths</span>
+      </div>
+      <div class="lx-report-card">
+        <div class="lx-rc-head">
+          <div class="lx-rc-avatar">A</div>
+          <div>
+            <div class="lx-rc-name">Arjun's Blueprint</div>
+            <span class="lx-rc-tag">The Investigative Builder</span>
+          </div>
+        </div>
+        <div class="lx-radar-wrap">
+          <svg width="220" height="200" viewBox="0 0 220 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- grid -->
+            <polygon points="110,33 175.6,80.7 150.6,157.8 69.4,157.8 44.4,80.7" stroke="#1e2d45" stroke-width="1" fill="none"/>
+            <polygon points="110,58.7 153.7,90.5 137.1,141.9 82.9,141.9 66.3,90.5" stroke="#1e2d45" stroke-width="1" fill="none"/>
+            <polygon points="110,84.3 131.9,100.2 123.5,126 96.5,126 88.1,100.2" stroke="#1e2d45" stroke-width="1" fill="none"/>
+            <!-- axes -->
+            <line x1="110" y1="110" x2="110" y2="33" stroke="#1e2d45" stroke-width="1"/>
+            <line x1="110" y1="110" x2="175.6" y2="80.7" stroke="#1e2d45" stroke-width="1"/>
+            <line x1="110" y1="110" x2="150.6" y2="157.8" stroke="#1e2d45" stroke-width="1"/>
+            <line x1="110" y1="110" x2="69.4" y2="157.8" stroke="#1e2d45" stroke-width="1"/>
+            <line x1="110" y1="110" x2="44.4" y2="80.7" stroke="#1e2d45" stroke-width="1"/>
+            <!-- data -->
+            <polygon points="110,40.8 161.6,90 139.1,150 77.2,155.1 51.5,87.8"
+              fill="rgba(232,160,32,0.22)" stroke="#e8a020" stroke-width="2" stroke-linejoin="round"/>
+            <circle cx="110" cy="40.8" r="3.5" fill="#e8a020"/>
+            <circle cx="161.6" cy="90" r="3.5" fill="#e8a020"/>
+            <circle cx="139.1" cy="150" r="3.5" fill="#e8a020"/>
+            <circle cx="77.2" cy="155.1" r="3.5" fill="#e8a020"/>
+            <circle cx="51.5" cy="87.8" r="3.5" fill="#e8a020"/>
+            <!-- labels -->
+            <text x="110" y="24" fill="#8090a0" font-size="9" text-anchor="middle" font-family="DM Sans">OPEN</text>
+            <text x="188" y="80" fill="#8090a0" font-size="9" text-anchor="middle" font-family="DM Sans">CONSC</text>
+            <text x="156" y="174" fill="#8090a0" font-size="9" text-anchor="middle" font-family="DM Sans">EXTRA</text>
+            <text x="64" y="174" fill="#8090a0" font-size="9" text-anchor="middle" font-family="DM Sans">AGREE</text>
+            <text x="30" y="80" fill="#8090a0" font-size="9" text-anchor="middle" font-family="DM Sans">STABLE</text>
+          </svg>
+        </div>
+        <div class="lx-paths">
+          <div class="lx-path-row">
+            <span class="lx-path-rank">1</span>
+            <span class="lx-path-name">Data Scientist / ML Engineer</span>
+            <span class="lx-path-fit">94% fit</span>
+          </div>
+          <div class="lx-path-row locked">
+            <span class="lx-path-rank">2</span>
+            <span class="lx-path-name">Product Designer at a tech firm</span>
+            <span class="lx-path-fit">88% fit</span>
+          </div>
+          <div class="lx-path-row locked">
+            <span class="lx-path-rank">3</span>
+            <span class="lx-path-name">Research &amp; Development scientist</span>
+            <span class="lx-path-fit">81% fit</span>
+          </div>
+          <div class="lx-lock-chip">🔒 Unlock full report</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIVE ACTIVITY TICKER -->
+  <div class="lx-ticker">
+    <div class="lx-ticker-track" id="lx-ticker-track"></div>
   </div>
 
-  <div class="how-section">
-    <h2 class="section-title">How the diagnostic works</h2>
-    <ul class="steps-list">
-      <li>
-        <span class="step-num">1</span>
-        <div class="step-content">
-          <h3>Personality Mapping (OCEAN)</h3>
-          <p>25 scenario-based questions reveal your baseline personality traits — the ones that determine where you'll psychologically thrive or break.</p>
-        </div>
-      </li>
-      <li>
-        <span class="step-num">2</span>
-        <div class="step-content">
-          <h3>Interest Identification (RIASEC)</h3>
-          <p>18 activity cards distinguish between what you're able to do and what you actually want to do — a critical distinction most students miss.</p>
-        </div>
-      </li>
-      <li>
-        <span class="step-num">3</span>
-        <div class="step-content">
-          <h3>Life Priority Compass</h3>
-          <p>Define what you want from life beyond work — location, pace, status vs money, and risk tolerance.</p>
-        </div>
-      </li>
-      <li>
-        <span class="step-num">4</span>
-        <div class="step-content">
-          <h3>Financial Reality Check</h3>
-          <p>Map your family's financial capacity against realistic career ROI — the filter that prevents the ₹60L debt trap.</p>
-        </div>
-      </li>
-    </ul>
-  </div>
+  <!-- COST OF GUESSING (FOMO) -->
+  <section class="lx-section lx-cost">
+    <div class="lx-kicker">Why this matters now</div>
+    <h2 class="lx-h2">The cost of guessing is <em>not zero.</em></h2>
+    <p class="lx-lead">Most students pick a stream from pressure, trends or marks — and pay for it for a decade. Here's what guessing actually costs in Kerala alone.</p>
+    <div class="lx-cost-grid">
+      <div class="lx-cost-card">
+        <span class="lx-cost-num"><span id="counter-debt">0</span></span>
+        <div class="lx-cost-label">Crore in student debt — driven largely by emotional, uninformed course choices.</div>
+      </div>
+      <div class="lx-cost-card">
+        <span class="lx-cost-num"><span id="counter-pass">0</span>%</span>
+        <div class="lx-cost-label">Engineering pass rate. Most who struggle simply entered the wrong environment for their wiring.</div>
+      </div>
+      <div class="lx-cost-card">
+        <span class="lx-cost-num"><span id="counter-unemp">0</span>%</span>
+        <div class="lx-cost-label">Graduate unemployment — forcing expensive, painful career resets at 24.</div>
+      </div>
+    </div>
+    <div class="lx-cost-foot">You only get <em>one</em> shot at the right entry. 12 minutes now beats 4 wrong years later.</div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="lx-section">
+    <div class="lx-kicker">The diagnostic</div>
+    <h2 class="lx-h2">Four lenses. One clear answer.</h2>
+    <p class="lx-lead">A real psychometric battery — not a quiz. Each module isolates a different driver of long-term career fit.</p>
+    <div class="lx-steps">
+      <div class="lx-step">
+        <div class="lx-step-top"><span class="lx-step-num">1</span><h3>Personality Mapping (OCEAN)</h3></div>
+        <p>25 scenario questions reveal the baseline traits that decide where you'll psychologically thrive — or quietly burn out.</p>
+      </div>
+      <div class="lx-step">
+        <div class="lx-step-top"><span class="lx-step-num">2</span><h3>Interest Mapping (RIASEC)</h3></div>
+        <p>18 activity cards separate what you're <em>able</em> to do from what you actually <em>want</em> to do — the distinction most students miss.</p>
+      </div>
+      <div class="lx-step">
+        <div class="lx-step-top"><span class="lx-step-num">3</span><h3>Life Priority Compass</h3></div>
+        <p>Where you want to live, your pace, status vs money, and risk appetite — so the path fits your life, not just your résumé.</p>
+      </div>
+      <div class="lx-step">
+        <div class="lx-step-top"><span class="lx-step-num">4</span><h3>Financial Reality Check</h3></div>
+        <p>Your family's capacity mapped against real career ROI — the filter that prevents the ₹60L debt trap.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="lx-section">
+    <div class="lx-kicker">What families say</div>
+    <h2 class="lx-h2">Clarity before the deadline.</h2>
+    <div class="lx-quotes">
+      <div class="lx-quote">
+        <div class="lx-quote-stars">★★★★★</div>
+        <p>"My son was set on engineering because everyone else was. The report showed he's wired for design. We changed course before wasting a year."</p>
+        <div class="lx-quote-who"><span class="lx-qa">L</span><div><div class="lx-qn">Latha M.</div><div class="lx-qr">Parent · Thrissur</div></div></div>
+      </div>
+      <div class="lx-quote">
+        <div class="lx-quote-stars">★★★★★</div>
+        <p>"₹199 saved me from a ₹12 lakh mistake. The financial reality check alone was worth it — it showed me the EMI I'd actually carry."</p>
+        <div class="lx-quote-who"><span class="lx-qa">A</span><div><div class="lx-qn">Aadhi R.</div><div class="lx-qr">Class 12 · Kochi</div></div></div>
+      </div>
+      <div class="lx-quote">
+        <div class="lx-quote-stars">★★★★★</div>
+        <p>"Finally a report that didn't just say 'follow your passion'. It gave 3 specific paths, salaries, and an honest warning. We trusted it."</p>
+        <div class="lx-quote-who"><span class="lx-qa">S</span><div><div class="lx-qn">Sneha &amp; family</div><div class="lx-qr">Parent · Kozhikode</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL SCARCITY -->
+  <section class="lx-section lx-final">
+    <div class="lx-final-card">
+      <h2>Don't be the 70% who guess.</h2>
+      <p>Your full report unlocks in 12 minutes. The launch price won't last.</p>
+      <div class="lx-price-line">
+        <span class="lx-price-now"><sup>₹</sup>199</span>
+        <span class="lx-price-was">₹499</span>
+      </div>
+      <span class="lx-save-pill">Save ₹300 · Launch pricing</span>
+      <div class="lx-seats">
+        <div class="lx-seats-top"><span>Reports left at this price today</span><strong id="lx-seats-num">37</strong></div>
+        <div class="lx-seats-bar"><div class="lx-seats-fill" id="lx-seats-fill"></div></div>
+      </div>
+      <div class="lx-countdown-box">
+        <div class="lx-cd-unit"><div class="lx-cd-num" id="cd-h">11</div><div class="lx-cd-lbl">Hours</div></div>
+        <div class="lx-cd-unit"><div class="lx-cd-num" id="cd-m">59</div><div class="lx-cd-lbl">Mins</div></div>
+        <div class="lx-cd-unit"><div class="lx-cd-num" id="cd-s">42</div><div class="lx-cd-lbl">Secs</div></div>
+      </div>
+      <button class="cta-primary" onclick="goTo('screen-register')">Start My Diagnostic — ₹199 →</button>
+      <div class="lx-final-meta"><span class="lx-guarantee">✓ Pay only after you see your preview</span></div>
+    </div>
+  </section>
 
   <div class="powered-by">
     Powered by <a href="https://raneesh.net" target="_blank">raneesh.net</a> ·
@@ -1050,7 +1473,7 @@ input[type=range]::-moz-range-thumb {
 
     <div class="payment-note">
       Your report will be generated within 2 minutes of payment verification.
-      If there's any issue, email <strong>raneesh.ifars@gmail.com</strong> with your order number.
+      If there's any issue, email <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="97e5f6f9f2f2e4ffb9fef1f6e5e4d7f0faf6fefbb9f4f8fa">[email&#160;protected]</a></strong> with your order number.
     </div>
   </div>
 </div>
@@ -1130,7 +1553,7 @@ input[type=range]::-moz-range-thumb {
 <!-- ════════════════════════════════════════
      JAVASCRIPT
 ════════════════════════════════════════ -->
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 const API = 'https://career-blueprint-api.raneesh-ifars.workers.dev';
 
 // ── State ────────────────────────────────
@@ -1225,9 +1648,9 @@ const OCEAN_QUESTIONS = [
   {id:'e4', trait:'E', text:'Speaking in front of a group — presenting, debating, performing — comes naturally to you.'},
   {id:'e5', trait:'E', text:'You have a wide social circle and actively maintain many friendships and connections.'},
   // Agreeableness (5)
-  {id:'a1', trait:'A', text:'When a friend's plan has a clear flaw, you point it out directly rather than going along with it.'},
+  {id:'a1', trait:'A', text:'When a friend’s plan has a clear flaw, you point it out directly rather than going along with it.'},
   {id:'a2', trait:'A', text:'You find it easy to disagree with authority figures when you believe they are wrong.'},
-  {id:'a3', trait:'A', text:'Negotiating hard for what you want — even at someone else's expense — feels comfortable to you.'},
+  {id:'a3', trait:'A', text:'Negotiating hard for what you want — even at someone else’s expense — feels comfortable to you.'},
   {id:'a4', trait:'A', text:'You would rather challenge a poor group decision than keep harmony by staying quiet.'},
   {id:'a5', trait:'A', text:'Making unpopular decisions that you believe are right is something you can do without much discomfort.'},
   // Neuroticism (5) — reversed: high score = high stability
@@ -1615,10 +2038,100 @@ function animateCounter(el, target, suffix='') {
 
 // ── Init ──────────────────────────────────
 loadState();
-// Animate debt counter on load
-setTimeout(() => {
-  animateCounter(document.getElementById('counter-debt'), 10000, ' Cr');
-}, 500);
+
+// ── Landing FOMO mechanics ────────────────
+function lxAnimateCounter(el, target, suffix='', dur=1400) {
+  if (!el) return;
+  const start = performance.now();
+  function tick(now) {
+    const p = Math.min((now - start) / dur, 1);
+    const eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(target * eased).toLocaleString('en-IN') + suffix;
+    if (p < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+(function lxInitLanding() {
+  // Animate cost counters when scrolled into view
+  const costSection = document.querySelector('.lx-cost');
+  let counted = false;
+  function runCounts() {
+    if (counted) return; counted = true;
+    lxAnimateCounter(document.getElementById('counter-debt'), 10000, ' Cr');
+    lxAnimateCounter(document.getElementById('counter-pass'), 50);
+    lxAnimateCounter(document.getElementById('counter-unemp'), 30);
+  }
+  if (costSection && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { runCounts(); io.disconnect(); } });
+    }, { threshold: 0.4 });
+    io.observe(costSection);
+  } else { setTimeout(runCounts, 500); }
+
+  // Live activity ticker
+  const names = [
+    ['Aarav','Kochi'],['Diya','Thrissur'],['Ishaan','Kozhikode'],['Ananya','Kollam'],
+    ['Rohan','Kannur'],['Meera','Palakkad'],['Vivaan','Alappuzha'],['Sara','Ernakulam'],
+    ['Kabir','Malappuram'],['Nila','Kottayam'],['Advait','Trivandrum'],['Riya','Wayanad']
+  ];
+  const actions = ['just started the diagnostic','unlocked their full report','discovered their top career fit','completed all 4 modules'];
+  const track = document.getElementById('lx-ticker-track');
+  if (track) {
+    const items = names.map((n, i) => {
+      const a = actions[i % actions.length];
+      const mins = (i % 9) + 1;
+      return `<span class="lx-tick-item"><span class="lx-tick-dot"></span><b>${n[0]} from ${n[1]}</b> ${a} · ${mins} min ago</span>`;
+    });
+    track.innerHTML = (items.join('') + items.join('')); // duplicate for seamless loop
+  }
+
+  // Countdown — persistent deadline (12h from first visit, capped)
+  let deadline = parseInt(localStorage.getItem('cb_deadline') || '0', 10);
+  const now = Date.now();
+  if (!deadline || deadline < now) {
+    deadline = now + 12 * 3600 * 1000 - Math.floor(Math.random() * 3600 * 1000);
+    localStorage.setItem('cb_deadline', deadline);
+  }
+  function pad(n) { return String(n).padStart(2, '0'); }
+  function tickCountdown() {
+    let diff = Math.max(0, deadline - Date.now());
+    const h = Math.floor(diff / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    const cdH = document.getElementById('cd-h'), cdM = document.getElementById('cd-m'), cdS = document.getElementById('cd-s');
+    if (cdH) cdH.textContent = pad(h);
+    if (cdM) cdM.textContent = pad(m);
+    if (cdS) cdS.textContent = pad(s);
+    const bar = document.getElementById('lx-bar-cd');
+    if (bar) bar.textContent = `${pad(h)}:${pad(m)}:${pad(s)}`;
+  }
+  tickCountdown();
+  setInterval(tickCountdown, 1000);
+
+  // Seats meter — slowly ticks down, persistent
+  let seats = parseInt(localStorage.getItem('cb_seats') || '0', 10);
+  if (!seats || seats < 12) seats = 37 + Math.floor(Math.random() * 8);
+  const seatsNum = document.getElementById('lx-seats-num');
+  const seatsFill = document.getElementById('lx-seats-fill');
+  function renderSeats() {
+    if (seatsNum) seatsNum.textContent = seats;
+    if (seatsFill) seatsFill.style.width = Math.min(95, 100 - seats * 1.2) + '%';
+    localStorage.setItem('cb_seats', seats);
+  }
+  renderSeats();
+  setInterval(() => {
+    if (seats > 12 && Math.random() > 0.4) { seats--; renderSeats(); }
+  }, 9000);
+
+  // "Today" count drift
+  const todayEl = document.getElementById('lx-today');
+  if (todayEl) {
+    setInterval(() => {
+      todayEl.textContent = parseInt(todayEl.textContent, 10) + 1;
+    }, 14000);
+  }
+})();
 
 // Init all range sliders
 document.querySelectorAll('input[type=range]').forEach(el => {
