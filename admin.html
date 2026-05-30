@@ -488,7 +488,8 @@ function renderOrdersTable() {
     const actions = `<div class="action-row">
       ${isPending ? `<button class="btn-act btn-verify-act" onclick="openVerifyModal('${o.order_number}','${o.payment_ref||''}')">✓ Verify</button>` : ''}
       ${isPaidNoReport ? `<button class="btn-act btn-regen-act" onclick="openRegenModal('${o.order_number}')">↻ Re-gen</button>` : ''}
-      ${isDone ? `<button class="btn-act btn-view-act" onclick="viewReport('${o.session_token}')">View Report</button>` : ''}
+      ${isDone ? `<button class="btn-act btn-view-act" onclick="viewReport('${o.session_token}')">View</button>` : ''}
+      ${isDone ? `<button class="btn-act" style="background:var(--navy2);border:1px solid var(--teal);color:var(--teal2);padding:5px 10px;border-radius:5px;font-size:12px;cursor:pointer" onclick="sendReportEmail('${o.session_token}','${o.order_number}','${o.email}')">✉ Email</button>` : ''}
       ${!isPending && !isPaidNoReport && !isDone ? '<span style="font-size:11px;color:var(--text2)">—</span>' : ''}
     </div>`;
 
@@ -647,6 +648,22 @@ async function viewReport(sessionToken) {
     `;
     document.getElementById('report-modal').classList.add('open');
   } catch(e) { showToast('Failed to load report', 'error'); }
+}
+
+// ── Send Report Email ──────────────────────────────────
+async function sendReportEmail(sessionToken, orderNumber, email) {
+  if (!confirm(`Send report email to ${email}?`)) return;
+  showToast('Sending email...', '');
+  try {
+    const res = await fetch(`${API}/api/email/send-report`, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json','Authorization':`Bearer ${adminKey}`},
+      body: JSON.stringify({session_token: sessionToken, order_number: orderNumber})
+    });
+    const data = await res.json();
+    if (data.success) showToast(`✓ Email sent to ${data.sent_to}`, 'success');
+    else showToast('Failed: ' + (data.error || 'Unknown error'), 'error');
+  } catch(e) { showToast('Request failed', 'error'); }
 }
 
 // ── Modal close ────────────────────────────────────────

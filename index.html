@@ -1026,7 +1026,7 @@ input[type=range]::-moz-range-thumb {
         so you choose a path you'll actually thrive in. Before a counselling deadline chooses for you.
       </p>
       <div class="lx-cta-row">
-        <button class="cta-primary lx-cta" onclick="goTo('screen-register')">Find My Right Career →</button>
+        <button class="cta-primary lx-cta" onclick="goTo('screen-register');setTimeout(()=>{document.getElementById('reg-name').focus()},300)">Find My Right Career →</button>
         <div class="lx-cta-meta">
           <span class="lx-stars">★★★★★</span>
           4.8 average · 2,800+ students diagnosed
@@ -1201,7 +1201,7 @@ input[type=range]::-moz-range-thumb {
         <div class="lx-cd-unit"><div class="lx-cd-num" id="cd-m">59</div><div class="lx-cd-lbl">Mins</div></div>
         <div class="lx-cd-unit"><div class="lx-cd-num" id="cd-s">42</div><div class="lx-cd-lbl">Secs</div></div>
       </div>
-      <button class="cta-primary" onclick="goTo('screen-register')">Start My Diagnostic — ₹199 →</button>
+      <button class="cta-primary" onclick="goTo('screen-register');setTimeout(()=>{document.getElementById('reg-name').focus()},300)">Start My Diagnostic — ₹199 →</button>
       <div class="lx-final-meta"><span class="lx-guarantee">✓ Pay only after you see your preview</span></div>
     </div>
   </section>
@@ -1604,9 +1604,24 @@ function loadState() {
 // ── Navigation ──────────────────────────
 function goTo(screenId) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(screenId).classList.add('active');
-  window.scrollTo(0, 0);
+  const target = document.getElementById(screenId);
+  target.classList.add('active');
   updateProgress(screenId);
+  // Scroll to module header if question screen, else top
+  const questionScreens = ['screen-ocean','screen-riasec','screen-compass','screen-reality'];
+  if (questionScreens.includes(screenId)) {
+    setTimeout(() => {
+      const header = target.querySelector('.module-header');
+      if (header) {
+        const top = header.getBoundingClientRect().top + window.scrollY - 20;
+        window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }, 50);
+  } else {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 }
 
 const screenOrder = ['screen-landing','screen-register','screen-ocean','screen-riasec','screen-compass','screen-reality','screen-preview','screen-payment','screen-generating','screen-report'];
@@ -2237,6 +2252,27 @@ function animateCounter(el, target, suffix='') {
     el.textContent = Math.round(current).toLocaleString('en-IN') + suffix;
     if (current >= target) clearInterval(timer);
   }, 30);
+}
+
+// ── Auto-load report from URL param ──────
+const urlParams = new URLSearchParams(window.location.search);
+const reportToken = urlParams.get('report');
+if (reportToken) {
+  goTo('screen-generating');
+  animateGeneratingSteps();
+  fetch(`${API}/api/report/${reportToken}`)
+    .then(r => r.json())
+    .then(data => {
+      if (data.status === 'report_generated' && data.report) {
+        state.report = data.report;
+        state.session_token = reportToken;
+        renderReport(data.report);
+        goTo('screen-report');
+      } else {
+        goTo('screen-landing');
+        showToast('Report not found. Please check your link.', 'error');
+      }
+    }).catch(() => { goTo('screen-landing'); });
 }
 
 // ── Init ──────────────────────────────────
