@@ -701,10 +701,54 @@ input[type=range]::-moz-range-thumb {
   .rp-colo-grid { grid-template-columns: 1fr; }
 }
 @media print {
-  #progress-bar, #progress-label, .rp-actionbar { display: none !important; }
-  #screen-report { padding: 0 !important; background: white !important; display: block !important; }
-  .rp-sheet { box-shadow: none !important; }
-  @page { margin: 0; }
+  /* Show only the report sheet */
+  body > *:not(#screen-report) { display: none !important; }
+  #screen-report { display: block !important; padding: 0 !important; background: none !important; min-height: auto !important; }
+  .rp-actionbar, #progress-bar, #progress-label { display: none !important; }
+  .rp-sheet { box-shadow: none !important; max-width: 100% !important; border-radius: 0 !important; }
+
+  /* Override ALL CSS variables to print-safe values */
+  #screen-report { 
+    --ink: #1b2236; --ink-soft: #3a4160; --ink-faint: #7a7060;
+    --paper: #f6f2e9; --paper-2: #ede8da; --paper-line: #d0c8b4;
+    --gold: #7a5800; --gold-bright: #9a7010; --teal-ink: #1a5a4a;
+    --rule: #c0b49a; --navy: #1b2236; --amber: #c07a10; --cream: #f0ebe0;
+  }
+
+  /* Body text — force dark */
+  .rp-lede, .rp-narrative, .rp-path-why, .rp-action p,
+  .rp-advisory p, .rp-trait-desc, .rp-glance-row .v,
+  .rp-path-title, .rp-sec-title, .rp-fin-card .v,
+  .rp-fin-card .sub, .rp-fin-note { color: #1b2236 !important; }
+  .rp-body, .rp-section { color: #3a4160 !important; }
+
+  /* Labels / kickers — gold */
+  .rp-sec-no, .rp-sec-kicker, .rp-path-rank-tag,
+  .rp-glance-title, .rp-eyebrow, .rp-trait-band,
+  .rp-fin-card .k, .rp-path-data .k { color: #7a5800 !important; }
+
+  /* Dark header sections - force print colour */
+  .rp-masthead, .rp-masthead * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  .rp-colophon, .rp-colophon * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  .rp-fin-callout, .rp-fin-callout * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+  /* Backgrounds */
+  .rp-sheet, .rp-body { background: #f6f2e9 !important; }
+  .rp-glance, .rp-chart-frame, .rp-fin-card, .rp-path,
+  .rp-advisory, .rp-trait-track, .rp-path-data .cell { 
+    background: #ede8da !important; 
+    -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; 
+  }
+
+  /* Trait bars */
+  .rp-trait-fill { background: #9a7010 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  .rp-trait-fill.teal { background: #1a5a4a !important; }
+  .rp-axis-marker { background: #9a7010 !important; }
+
+  /* Page breaks */
+  .rp-section { page-break-inside: avoid; break-inside: avoid; }
+  .rp-path { page-break-inside: avoid; break-inside: avoid; }
+  @page { margin: 10mm; size: A4; }
 }
 
 /* ── STATUS / TOAST ── */
@@ -2317,32 +2361,56 @@ function renderReport(r) {
 // ── PDF Download ──────────────────────────
 function downloadPDF() {
   const btn = document.getElementById('btn-download-pdf');
-  btn.textContent = '⏳ Preparing...'; btn.disabled = true;
-  const canvases = document.querySelectorAll('#screen-report canvas');
+  btn.textContent = '\u23f3 Preparing PDF...'; btn.disabled = true;
+
+  const sheet = document.querySelector('.rp-sheet');
+  if (!sheet) { btn.textContent = '\u2193 Download PDF Report'; btn.disabled = false; return; }
+
+  // 1. Convert all Chart.js canvases to static images
   const replacements = [];
-  canvases.forEach(canvas => {
-    const img = document.createElement('img');
-    img.src = canvas.toDataURL('image/png');
-    img.style.cssText = 'width:'+canvas.offsetWidth+'px;height:'+canvas.offsetHeight+'px;max-width:100%';
-    canvas.parentNode.insertBefore(img, canvas);
-    canvas.style.display = 'none';
-    replacements.push({canvas, img});
+  sheet.querySelectorAll('canvas').forEach(canvas => {
+    try {
+      const img = document.createElement('img');
+      img.src = canvas.toDataURL('image/png');
+      img.style.cssText = 'width:'+canvas.offsetWidth+'px;height:'+canvas.offsetHeight+'px;max-width:100%;display:block';
+      canvas.parentNode.insertBefore(img, canvas);
+      canvas.style.display = 'none';
+      replacements.push({canvas, img});
+    } catch(e) {}
   });
-  const el = document.getElementById('report-content');
+
+  // 2. Move sheet to a clean isolated wrapper at top-level so html2canvas
+  //    doesn't capture any parent padding/background
+  const wrapper = document.createElement('div');
+  wrapper.style.cssText = 'position:fixed;top:0;left:0;width:860px;background:#f6f2e9;z-index:-9999;overflow:visible;pointer-events:none';
+  const placeholder = document.createElement('div');
+  sheet.parentNode.insertBefore(placeholder, sheet);
+  wrapper.appendChild(sheet);
+  document.body.appendChild(wrapper);
+
+  const restore = () => {
+    placeholder.parentNode.insertBefore(sheet, placeholder);
+    placeholder.remove();
+    wrapper.remove();
+    replacements.forEach(({canvas,img}) => { canvas.style.display=''; img.remove(); });
+  };
+
   const opt = {
     margin: 0,
     filename: 'CareerBlueprint-'+(state.name||'Report')+'.pdf',
     image: {type:'jpeg', quality:0.98},
-    html2canvas: {scale:2, backgroundColor:'#f6f2e9', useCORS:true, logging:false},
+    html2canvas: {scale:2, backgroundColor:'#f6f2e9', useCORS:true, logging:false, width:860},
     jsPDF: {unit:'mm', format:'a4', orientation:'portrait'},
-    pagebreak: {mode:['css','avoid-all']}
+    pagebreak: {mode:['avoid-all']}
   };
-  html2pdf().set(opt).from(el).save().then(() => {
-    replacements.forEach(({canvas,img}) => { canvas.style.display=''; img.remove(); });
-    btn.textContent = '↓ Download PDF Report'; btn.disabled = false;
-  }).catch(() => {
-    replacements.forEach(({canvas,img}) => { canvas.style.display=''; img.remove(); });
-    btn.textContent = '↓ Download PDF Report'; btn.disabled = false;
+
+  html2pdf().set(opt).from(sheet).save().then(() => {
+    restore();
+    btn.textContent = '\u2193 Download PDF Report'; btn.disabled = false;
+  }).catch(e => {
+    restore();
+    btn.textContent = '\u2193 Download PDF Report'; btn.disabled = false;
+    console.error('PDF error:', e);
   });
 }
 
@@ -2360,12 +2428,14 @@ function animateCounter(el, target, suffix='') {
   }, 30);
 }
 
+
+// ── Init ──────────────────────────────────
+loadState();
+
 // ── Auto-load report from URL param ──────
 const urlParams = new URLSearchParams(window.location.search);
 const reportToken = urlParams.get('report');
 if (reportToken) {
-  // Hide all screens, show minimal report-only view
-  document.body.style.background = 'var(--navy)';
   document.getElementById('progress-bar').style.display = 'none';
   document.getElementById('progress-label').style.display = 'none';
   goTo('screen-generating');
@@ -2376,33 +2446,15 @@ if (reportToken) {
       if (data.status === 'report_generated' && data.report) {
         state.report = data.report;
         state.session_token = reportToken;
-        // Try to get order info for print meta
         renderReport(data.report);
         goTo('screen-report');
-        // Hide download row — replace with clean view
-        document.querySelector('.download-row').innerHTML = `
-          <button class="download-btn" id="btn-download-pdf" onclick="downloadPDF()">↓ Download PDF</button>
-          <button class="download-btn secondary" onclick="printReport()">🖨 Print Report</button>
-        `;
-        document.querySelector('.powered-by').style.display = 'none';
       } else {
-        document.body.innerHTML = `<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:DM Sans,sans-serif;color:#c8c0b0;text-align:center;padding:24px">
-          <div>
-            <div style="font-size:48px;margin-bottom:16px">🔒</div>
-            <h2 style="font-size:22px;margin-bottom:8px">Report not found</h2>
-            <p style="font-size:14px;color:#8090a0">This link may be invalid or expired. Contact raneesh.ifars@gmail.com with your order number.</p>
-          </div>
-        </div>`;
+        document.body.innerHTML = '<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#0a0f1e;font-family:DM Sans,sans-serif;color:#c8c0b0;text-align:center;padding:24px"><div><div style="font-size:48px;margin-bottom:16px">\uD83D\uDD12</div><h2 style="font-size:22px;margin-bottom:8px;color:#f0ebe0">Report not found</h2><p style="font-size:14px;color:#8090a0">This link may be invalid or expired.<br>Contact <a href="mailto:raneesh.ifars@gmail.com" style="color:#e8a020">raneesh.ifars@gmail.com</a> with your order number.</p></div></div>';
       }
     }).catch(() => {
-      goTo('screen-landing');
+      document.body.innerHTML = '<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#0a0f1e;font-family:DM Sans,sans-serif;color:#c8c0b0;text-align:center;padding:24px"><div><div style="font-size:48px;margin-bottom:16px">\u26A0\uFE0F</div><h2 style="font-size:22px;color:#f0ebe0">Connection error</h2><p style="font-size:14px;color:#8090a0">Please try again or contact raneesh.ifars@gmail.com</p></div></div>';
     });
 }
-
-// ── Init ──────────────────────────────────
-loadState();
-
-// ── Landing FOMO mechanics ────────────────
 function lxAnimateCounter(el, target, suffix='', dur=1400) {
   if (!el) return;
   const start = performance.now();
