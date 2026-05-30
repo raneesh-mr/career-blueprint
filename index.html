@@ -67,8 +67,10 @@ body {
 
 /* ── LANDING ── */
 #screen-landing {
-  display: flex; flex-direction: column;
-  position: relative; overflow: hidden;
+  position: relative; overflow: hidden; flex-direction: column;
+}
+#screen-landing.active {
+  display: flex;
 }
 
 .landing-noise {
@@ -524,8 +526,10 @@ input[type=range]::-moz-range-thumb {
 
 /* ── GENERATING SCREEN ── */
 #screen-generating {
-  min-height: 100vh; display: flex; align-items: center;
-  justify-content: center; padding: 24px;
+  min-height: 100vh; padding: 24px;
+}
+#screen-generating.active {
+  display: flex; align-items: center; justify-content: center;
 }
 .generating-card { text-align: center; max-width: 400px; }
 .generating-spinner {
@@ -2412,8 +2416,6 @@ function lxAnimateCounter(el, target, suffix='', dur=1400) {
 }
 
 (function lxInitLanding() {
-  // Animate cost counters when scrolled into view
-  const costSection = document.querySelector('.lx-cost');
   let counted = false;
   function runCounts() {
     if (counted) return; counted = true;
@@ -2421,12 +2423,25 @@ function lxAnimateCounter(el, target, suffix='', dur=1400) {
     lxAnimateCounter(document.getElementById('counter-pass'), 50);
     lxAnimateCounter(document.getElementById('counter-unemp'), 30);
   }
-  if (costSection && 'IntersectionObserver' in window) {
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting) { runCounts(); io.disconnect(); } });
-    }, { threshold: 0.4 });
-    io.observe(costSection);
-  } else { setTimeout(runCounts, 500); }
+
+  // Run counters when cost section scrolls into view — or after 1.5s fallback
+  function attachCounterObserver() {
+    const costSection = document.querySelector('.lx-cost');
+    if (!costSection) { setTimeout(runCounts, 1500); return; }
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) { runCounts(); io.disconnect(); } });
+      }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+      io.observe(costSection);
+    } else { setTimeout(runCounts, 1500); }
+  }
+
+  // Attach after DOM ready — landing is already active on load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', attachCounterObserver);
+  } else {
+    attachCounterObserver();
+  }
 
   // Live activity ticker
   const names = [
