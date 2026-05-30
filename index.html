@@ -555,172 +555,152 @@ input[type=range]::-moz-range-thumb {
 .step-dot.active { background: var(--amber); animation: pulse 1s infinite; }
 @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-/* ── REPORT SCREEN ── */
-/* ── REPORT SCREEN ── */
-#screen-report { padding: 80px 24px 80px; max-width: 800px; margin: 0 auto; }
 
-/* Report header */
-.report-header { text-align: center; margin-bottom: 40px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
-.report-header .eyebrow { display: block; margin-bottom: 12px; }
-.report-header h1 { font-family: var(--font-head); font-size: clamp(26px, 5vw, 40px); color: var(--cream); margin-bottom: 8px; }
-.report-header .dominant-profile { display: inline-block; background: rgba(232,160,32,0.15); border: 1px solid var(--amber); color: var(--amber); font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; letter-spacing: 0.05em; margin-top: 12px; }
-
-/* Section titles */
-.report-section { margin-bottom: 40px; }
-.report-section-title { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--amber); font-weight: 600; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
-
-/* Narrative */
-.narrative-text { font-size: 15px; color: var(--text); line-height: 1.8; font-weight: 300; }
-
-/* Charts row */
-.report-charts { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px; }
-.report-chart-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 20px; text-align: center; }
-.report-chart-card h3 { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text2); margin-bottom: 14px; }
-
-/* OCEAN trait bars */
-.trait-bars { display: flex; flex-direction: column; gap: 10px; }
-.trait-row { display: flex; align-items: center; gap: 10px; }
-.trait-name { font-size: 11px; color: var(--text2); width: 90px; flex-shrink: 0; text-align: right; }
-.trait-bar-wrap { flex: 1; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
-.trait-bar-fill { height: 100%; border-radius: 4px; transition: width 1s ease; }
-.trait-val { font-size: 11px; color: var(--amber); width: 32px; flex-shrink: 0; font-weight: 600; }
-
-/* RIASEC hexagon labels */
-.riasec-bars { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.riasec-row { }
-.riasec-label { font-size: 10px; color: var(--text2); margin-bottom: 3px; display: flex; justify-content: space-between; }
-.riasec-bar-wrap { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
-.riasec-bar-fill { height: 100%; border-radius: 3px; background: var(--teal); }
-
-/* PATH CARDS — enhanced */
-.path-card {
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: 14px; padding: 0; margin-bottom: 20px;
-  position: relative; overflow: hidden;
+/* ════════════════════════════════════════════
+   PREMIUM REPORT — "Private Dossier" (rp-)
+   Ivory paper sheet on navy backdrop.
+════════════════════════════════════════════ */
+#screen-report {
+  --ink:        #1b2236;
+  --ink-soft:   #4a5163;
+  --ink-faint:  #9a917d;
+  --paper:      #f6f2e9;
+  --paper-2:    #efe9dc;
+  --paper-line: #ddd4c2;
+  --gold:       #9a7012;
+  --gold-bright:#c08a16;
+  --teal-ink:   #1f6b5c;
+  --rule:       #cfc4ac;
+  background: radial-gradient(1200px 500px at 50% -200px, #16203a, transparent 70%), var(--navy);
+  min-height: 100vh;
+  padding: 56px 20px 72px;
 }
-.path-card-header {
-  padding: 20px 24px 16px; border-bottom: 1px solid var(--border);
-  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+#screen-report .rp-ink-faint { color: #9a917d; }
+.rp-sheet { max-width: 820px; margin: 0 auto; background: var(--paper); color: var(--ink-soft); border-radius: 4px; box-shadow: 0 50px 100px -40px rgba(0,0,0,0.75), 0 0 0 1px rgba(0,0,0,0.2); overflow: hidden; }
+.rp-body { padding: 0 clamp(28px, 6vw, 72px); }
+#screen-report .rp-body h2, #screen-report .rp-body h3 { color: var(--ink); }
+.rp-masthead { background: var(--navy); color: var(--cream); padding: clamp(34px, 6vw, 56px) clamp(28px, 6vw, 72px) clamp(30px, 5vw, 44px); position: relative; border-bottom: 3px solid var(--gold-bright); }
+.rp-mast-top { display: flex; justify-content: space-between; align-items: center; padding-bottom: 26px; margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.12); }
+.rp-monogram { display: flex; align-items: center; gap: 12px; }
+.rp-mono-mark { width: 38px; height: 38px; border: 1.5px solid var(--amber); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-head); font-weight: 700; color: var(--amber); font-size: 18px; }
+.rp-mono-text { font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--cream2); }
+.rp-mast-doc { text-align: right; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text2); line-height: 1.7; }
+.rp-eyebrow { font-size: 12px; letter-spacing: 0.32em; text-transform: uppercase; color: var(--amber); font-weight: 600; margin-bottom: 16px; }
+.rp-mast-title { font-family: var(--font-head); font-weight: 700; font-size: clamp(30px, 5.4vw, 50px); line-height: 1.05; color: var(--cream); letter-spacing: -0.01em; margin-bottom: 8px; }
+.rp-mast-archetype { font-family: var(--font-head); font-style: italic; font-size: clamp(17px, 2.6vw, 23px); color: var(--amber2); }
+.rp-mast-meta { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 34px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.12); }
+.rp-meta-item .k { font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text2); margin-bottom: 5px; }
+.rp-meta-item .v { font-size: 13px; color: var(--cream); font-weight: 500; }
+.rp-section { padding: clamp(38px, 5vw, 52px) 0; border-bottom: 1px solid var(--paper-line); }
+.rp-section:last-of-type { border-bottom: none; }
+.rp-sec-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 26px; }
+.rp-sec-no { font-family: var(--font-head); font-size: 13px; font-weight: 700; color: var(--gold); flex-shrink: 0; letter-spacing: 0.05em; }
+.rp-sec-title { font-family: var(--font-head); font-size: clamp(21px, 3.2vw, 28px); color: var(--ink); line-height: 1.15; }
+.rp-sec-kicker { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); font-weight: 600; margin-bottom: 10px; }
+.rp-exec { display: grid; grid-template-columns: 1fr 270px; gap: 38px; align-items: start; }
+.rp-lede { font-family: var(--font-head); font-size: clamp(18px, 2.5vw, 22px); line-height: 1.5; color: var(--ink); font-weight: 400; margin-bottom: 20px; }
+.rp-narrative { font-size: 15.5px; line-height: 1.85; color: var(--ink-soft); }
+.rp-narrative + .rp-narrative { margin-top: 14px; }
+.rp-glance { background: var(--paper-2); border: 1px solid var(--paper-line); border-radius: 6px; padding: 22px 24px; }
+.rp-glance-title { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); font-weight: 600; margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid var(--paper-line); }
+.rp-glance-row { display: flex; flex-direction: column; gap: 3px; padding: 11px 0; border-bottom: 1px solid var(--paper-line); }
+.rp-glance-row:last-child { border-bottom: none; padding-bottom: 0; }
+.rp-glance-row .k { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #9a917d; }
+.rp-glance-row .v { font-size: 15px; color: var(--ink); font-weight: 600; font-family: var(--font-head); }
+.rp-glance-row .v small { font-family: var(--font-body); font-weight: 500; color: var(--gold); font-size: 12px; }
+.rp-profile-grid { display: grid; grid-template-columns: 300px 1fr; gap: 40px; align-items: center; }
+.rp-chart-frame { background: var(--paper-2); border: 1px solid var(--paper-line); border-radius: 8px; padding: 22px 18px 14px; text-align: center; }
+.rp-chart-frame h4 { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #9a917d; margin-bottom: 6px; font-weight: 600; }
+.rp-chart-canvas-wrap { position: relative; height: 240px; }
+.rp-traits { display: flex; flex-direction: column; gap: 16px; }
+.rp-trait { }
+.rp-trait-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 7px; gap: 12px; }
+.rp-trait-name { font-size: 14px; color: var(--ink); font-weight: 600; white-space: nowrap; }
+.rp-trait-band { font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 600; color: var(--gold); white-space: nowrap; flex-shrink: 0; }
+.rp-trait-track { height: 7px; background: var(--paper-2); border-radius: 4px; overflow: hidden; border: 1px solid var(--paper-line); }
+.rp-trait-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--gold-bright), var(--amber)); }
+.rp-trait-fill.teal { background: linear-gradient(90deg, var(--teal-ink), var(--teal2)); }
+.rp-trait-desc { font-size: 12.5px; color: var(--ink-soft); line-height: 1.55; margin-top: 7px; }
+.rp-holland { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; flex-wrap: wrap; }
+.rp-holland-label { font-size: 12px; color: #9a917d; letter-spacing: 0.08em; }
+.rp-holland-code { display: flex; gap: 8px; }
+.rp-hchip { width: 46px; height: 46px; border-radius: 8px; background: var(--navy); color: var(--amber); display: flex; align-items: center; justify-content: center; font-family: var(--font-head); font-weight: 700; font-size: 22px; }
+.rp-hchip.s2 { background: var(--teal-ink); color: #cfeee5; }
+.rp-hchip.s3 { background: var(--paper-2); color: var(--gold); border: 1px solid var(--rule); }
+.rp-holland-expand { font-size: 13px; color: var(--ink-soft); }
+.rp-holland-expand b { color: var(--ink); }
+.rp-compass { display: flex; flex-direction: column; gap: 26px; }
+.rp-axis-labels { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink-soft); margin-bottom: 9px; }
+.rp-axis-labels .active { color: var(--ink); font-weight: 600; }
+.rp-axis-track { position: relative; height: 4px; background: var(--paper-line); border-radius: 2px; }
+.rp-axis-track::before, .rp-axis-track::after { content: ''; position: absolute; top: 50%; transform: translateY(-50%); width: 7px; height: 7px; border-radius: 50%; background: var(--rule); }
+.rp-axis-track::before { left: 0; } .rp-axis-track::after { right: 0; }
+.rp-axis-marker { position: absolute; top: 50%; transform: translate(-50%, -50%); width: 16px; height: 16px; border-radius: 50%; background: var(--gold-bright); border: 3px solid var(--paper); box-shadow: 0 1px 4px rgba(0,0,0,0.25); }
+.rp-path { border: 1px solid var(--paper-line); border-radius: 10px; padding: 28px clamp(20px, 3vw, 30px); margin-bottom: 20px; background: #fbf8f1; position: relative; }
+.rp-path.rank-1 { border-color: var(--gold-bright); box-shadow: 0 14px 34px -22px rgba(154,112,18,0.55); }
+.rp-path-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 18px; margin-bottom: 16px; }
+.rp-path-rank-tag { display: inline-flex; align-items: center; gap: 7px; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); font-weight: 700; margin-bottom: 8px; }
+.rp-path-rank-tag .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold-bright); }
+.rp-path.rank-2 .rp-path-rank-tag, .rp-path.rank-2 .rp-path-rank-tag .dot { color: var(--teal-ink); }
+.rp-path.rank-2 .rp-path-rank-tag .dot { background: var(--teal-ink); }
+.rp-path-title { font-family: var(--font-head); font-size: clamp(20px, 3vw, 26px); color: var(--ink); line-height: 1.15; }
+.rp-fit-ring { flex-shrink: 0; text-align: center; }
+.rp-fit-ring svg { display: block; }
+.rp-fit-num { font-family: var(--font-head); font-weight: 700; font-size: 20px; fill: var(--ink); }
+.rp-fit-lbl { font-size: 8.5px; letter-spacing: 0.14em; text-transform: uppercase; fill: #9a917d; }
+.rp-ai-pill { display: inline-block; font-size: 10.5px; font-weight: 600; letter-spacing: 0.04em; padding: 4px 11px; border-radius: 20px; margin-bottom: 14px; white-space: nowrap; }
+.rp-ai-low { background: rgba(31,107,92,0.12); color: var(--teal-ink); border: 1px solid rgba(31,107,92,0.3); }
+.rp-ai-medium { background: rgba(154,112,18,0.12); color: var(--gold); border: 1px solid rgba(154,112,18,0.3); }
+.rp-ai-high { background: rgba(168,52,40,0.1); color: #a83428; border: 1px solid rgba(168,52,40,0.3); }
+.rp-path-why { font-size: 14.5px; line-height: 1.7; color: var(--ink-soft); margin-bottom: 20px; }
+.rp-path-data { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--paper-line); border: 1px solid var(--paper-line); border-radius: 8px; overflow: hidden; margin-bottom: 16px; }
+.rp-path-data .cell { background: #fbf8f1; padding: 14px 18px; }
+.rp-path-data .k { font-size: 9.5px; letter-spacing: 0.13em; text-transform: uppercase; color: #9a917d; margin-bottom: 5px; }
+.rp-path-data .v { font-size: 14px; color: var(--ink); font-weight: 600; }
+.rp-fin-note { font-size: 13px; line-height: 1.65; color: var(--ink-soft); background: var(--paper-2); border-left: 3px solid var(--gold-bright); padding: 13px 16px; border-radius: 0 6px 6px 0; }
+.rp-fin-note b { color: var(--ink); }
+.rp-fin-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.rp-fin-card { background: var(--paper-2); border: 1px solid var(--paper-line); border-radius: 8px; padding: 20px 22px; }
+.rp-fin-card .k { font-size: 10px; letter-spacing: 0.13em; text-transform: uppercase; color: #9a917d; margin-bottom: 8px; }
+.rp-fin-card .v { font-family: var(--font-head); font-size: clamp(22px, 3vw, 28px); color: var(--ink); font-weight: 700; line-height: 1.1; }
+.rp-fin-card .sub { font-size: 12px; color: var(--ink-soft); margin-top: 6px; line-height: 1.5; }
+.rp-fin-callout { grid-column: 1 / -1; background: var(--navy); border-radius: 8px; padding: 20px 24px; color: var(--cream); }
+.rp-fin-callout .k { color: var(--amber); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600; margin-bottom: 8px; }
+.rp-fin-callout p { font-size: 14px; line-height: 1.65; color: var(--cream2); }
+.rp-actions { counter-reset: rpstep; display: flex; flex-direction: column; gap: 4px; }
+.rp-action { display: flex; gap: 18px; padding: 18px 0; border-bottom: 1px solid var(--paper-line); }
+.rp-action:last-child { border-bottom: none; }
+.rp-action::before { counter-increment: rpstep; content: counter(rpstep, decimal-leading-zero); font-family: var(--font-head); font-weight: 700; font-size: 16px; color: var(--gold); flex-shrink: 0; width: 30px; line-height: 1.4; }
+.rp-action p { font-size: 15px; line-height: 1.65; color: var(--ink-soft); }
+.rp-advisory { background: var(--paper-2); border: 1px solid var(--rule); border-radius: 10px; padding: 28px clamp(22px, 3vw, 32px); position: relative; }
+.rp-advisory-mark { font-family: var(--font-head); font-size: 56px; color: var(--rule); line-height: 0.6; height: 26px; }
+.rp-advisory p { font-size: 16px; line-height: 1.8; color: var(--ink); font-style: italic; font-family: var(--font-head); font-weight: 400; }
+.rp-advisory .sig { font-style: normal; font-family: var(--font-body); font-size: 12px; color: #9a917d; margin-top: 16px; letter-spacing: 0.04em; }
+.rp-colophon { background: var(--navy); color: var(--cream2); padding: clamp(34px, 5vw, 48px) clamp(28px, 6vw, 72px); }
+.rp-colo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 30px; }
+.rp-colo-block h5 { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--amber); margin-bottom: 12px; font-weight: 600; }
+.rp-colo-block p { font-size: 12.5px; line-height: 1.7; color: var(--text2); }
+.rp-colo-block p b { color: var(--cream2); font-weight: 500; }
+.rp-colo-foot { padding-top: 22px; border-top: 1px solid rgba(255,255,255,0.12); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; font-size: 11px; color: var(--text2); letter-spacing: 0.04em; }
+.rp-actionbar { max-width: 820px; margin: 28px auto 0; display: flex; gap: 14px; flex-wrap: wrap; }
+.rp-btn { flex: 1; min-width: 200px; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 16px; border-radius: 8px; font-family: var(--font-body); font-weight: 600; font-size: 15px; cursor: pointer; transition: all 0.2s; }
+.rp-btn-primary { background: var(--amber); color: var(--navy); border: 1px solid var(--amber); }
+.rp-btn-primary:hover { background: var(--amber2); }
+.rp-btn-ghost { background: transparent; color: var(--cream2); border: 1px solid rgba(255,255,255,0.2); }
+.rp-btn-ghost:hover { border-color: var(--amber); color: var(--amber); }
+@media (max-width: 720px) {
+  .rp-exec { grid-template-columns: 1fr; gap: 26px; }
+  .rp-profile-grid { grid-template-columns: 1fr; gap: 24px; }
+  .rp-mast-meta { grid-template-columns: 1fr 1fr; gap: 16px; }
+  .rp-fin-grid { grid-template-columns: 1fr; }
+  .rp-path-data { grid-template-columns: 1fr; }
+  .rp-colo-grid { grid-template-columns: 1fr; }
 }
-.path-card-header-left {}
-.path-rank { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text2); margin-bottom: 4px; }
-.path-title { font-family: var(--font-head); font-size: 20px; color: var(--cream); margin-bottom: 8px; line-height: 1.2; }
-.path-badges { display: flex; gap: 8px; flex-wrap: wrap; }
-.fit-score { display: inline-block; background: rgba(232,160,32,0.15); color: var(--amber); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 10px; }
-.ai-badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 10px; }
-.ai-low { background: rgba(39,174,96,0.15); color: #40c070; border: 1px solid rgba(39,174,96,0.3); }
-.ai-medium { background: rgba(232,160,32,0.15); color: var(--amber); border: 1px solid rgba(232,160,32,0.3); }
-.ai-high { background: rgba(192,57,43,0.15); color: #e06050; border: 1px solid rgba(192,57,43,0.3); }
-
-/* Fit score circle */
-.fit-circle { width: 64px; height: 64px; flex-shrink: 0; }
-.fit-circle svg { transform: none; }
-.fit-circle-bg { fill: none; stroke: var(--border); stroke-width: 5; }
-.fit-circle-fill { fill: none; stroke-width: 5; stroke-linecap: round; transition: stroke-dashoffset 1.2s ease; }
-
-.path-card-body { padding: 16px 24px; }
-.path-why { font-size: 14px; color: var(--text); line-height: 1.6; margin-bottom: 16px; }
-
-/* Stats row inside path */
-.path-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 16px; }
-.path-stat { background: var(--navy); border-radius: 8px; padding: 12px; text-align: center; }
-.path-stat-label { font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text2); margin-bottom: 4px; }
-.path-stat-value { font-size: 13px; color: var(--cream); font-weight: 500; line-height: 1.3; }
-
-/* Good/Bad domain cards */
-.domain-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
-.domain-card { border-radius: 8px; padding: 12px 14px; }
-.domain-good { background: rgba(42,122,106,0.12); border: 1px solid rgba(42,122,106,0.3); }
-.domain-bad { background: rgba(192,57,43,0.08); border: 1px solid rgba(192,57,43,0.2); }
-.domain-card-title { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
-.domain-good .domain-card-title { color: var(--teal2); }
-.domain-bad .domain-card-title { color: #e06060; }
-.domain-tags { display: flex; flex-wrap: wrap; gap: 5px; }
-.domain-tag { font-size: 11px; padding: 3px 8px; border-radius: 5px; color: var(--cream); }
-.domain-good .domain-tag { background: rgba(42,122,106,0.25); }
-.domain-bad .domain-tag { background: rgba(192,57,43,0.18); }
-
-.financial-reality { background: var(--navy); border-radius: 8px; padding: 12px 16px; font-size: 13px; color: var(--text2); border-left: 3px solid var(--amber); line-height: 1.5; }
-
-/* Accent top border per rank */
-.path-card.rank-1 { border-top: 3px solid var(--amber); }
-.path-card.rank-2 { border-top: 3px solid var(--teal); }
-.path-card.rank-3 { border-top: 3px solid var(--text2); }
-.path-card.rank-2 .fit-circle-fill { stroke: var(--teal); }
-.path-card.rank-3 .fit-circle-fill { stroke: var(--text2); }
-
-/* Actions */
-.actions-list { list-style: none; }
-.actions-list li { display: flex; gap: 12px; padding: 13px 0; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--text); line-height: 1.5; align-items: flex-start; }
-.actions-list li::before { content: "→"; color: var(--amber); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
-
-/* Warning */
-.warning-box { background: rgba(192,57,43,0.08); border: 1px solid rgba(192,57,43,0.25); border-radius: 10px; padding: 20px 24px; }
-.warning-box p { font-size: 14px; color: var(--text); line-height: 1.7; }
-
-/* Download */
-.download-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 32px; }
-.download-btn { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 15px; background: var(--amber); color: var(--navy); border: none; border-radius: 8px; font-family: var(--font-body); font-weight: 700; font-size: 15px; cursor: pointer; transition: all 0.2s; }
-.download-btn:hover { background: var(--amber2); transform: translateY(-1px); }
-.download-btn.secondary { background: transparent; border: 1px solid var(--border); color: var(--text); }
-.download-btn.secondary:hover { border-color: var(--amber); color: var(--amber); background: transparent; transform: none; }
-
-/* Print styles */
 @media print {
-  /* Hide everything except the report */
-  #progress-bar, #progress-label, .download-row, .powered-by,
-  #screen-landing, #screen-register, #screen-ocean, #screen-riasec,
-  #screen-compass, #screen-reality, #screen-preview, #screen-payment,
-  #screen-generating, .toast { display: none !important; }
-
-  /* Force white background throughout */
-  *, *::before, *::after {
-    background: white !important;
-    color: #1a1a2e !important;
-    border-color: #ddd !important;
-    box-shadow: none !important;
-    text-shadow: none !important;
-  }
-
-  body { background: white !important; margin: 0; padding: 0; }
-  #screen-report { display: block !important; padding: 20px !important; max-width: 100% !important; }
-
-  /* Restore specific colours */
-  .report-section-title, .eyebrow, .domain-good .domain-card-title { color: #b8720a !important; }
-  .domain-bad .domain-card-title { color: #c0392b !important; }
-  .path-title, .report-header h1 { color: #1a1a2e !important; font-size: 20px !important; }
-  .fit-score { color: #b8720a !important; background: #fff8ee !important; border: 1px solid #e8a020 !important; }
-  .ai-low { color: #27ae60 !important; background: #f0fff4 !important; border: 1px solid #27ae60 !important; }
-  .ai-medium { color: #b8720a !important; background: #fff8ee !important; }
-  .ai-high { color: #c0392b !important; background: #fff0ee !important; }
-  .financial-reality { display: none !important; }
-  .dominant-profile { color: #b8720a !important; background: #fff8ee !important; border: 1px solid #e8a020 !important; }
-  .trait-val { color: #b8720a !important; }
-  .actions-list li::before { color: #b8720a !important; }
-  .path-card.rank-1 { border-top: 3px solid #e8a020 !important; }
-  .path-card.rank-2 { border-top: 3px solid #2a7a6a !important; }
-  .path-card.rank-3 { border-top: 3px solid #888 !important; }
-  .domain-good { background: #f0fff8 !important; border: 1px solid #2a7a6a !important; }
-  .domain-bad { background: #fff0f0 !important; border: 1px solid #e06060 !important; }
-  .domain-good .domain-tag { background: #e0f5ec !important; color: #1a5a40 !important; }
-  .domain-bad .domain-tag { background: #fde8e8 !important; color: #8a1010 !important; }
-  .path-stat { background: #f5f5f5 !important; border: 1px solid #ddd !important; }
-  .path-stat-label { color: #888 !important; }
-  .report-chart-card { border: 1px solid #ddd !important; }
-  .trait-bar-wrap { background: #eee !important; }
-  .riasec-bar-wrap { background: #eee !important; }
-  .riasec-bar-fill { background: #2a7a6a !important; }
-  .warning-box { background: #fff8f8 !important; border: 1px solid #e06060 !important; }
-
-  /* Print meta header */
-  .print-meta { display: block !important; }
-
-  /* Page breaks */
-  .path-card { page-break-inside: avoid; break-inside: avoid; }
-  .report-section { page-break-inside: avoid; break-inside: avoid; }
-
-  canvas { max-width: 100% !important; }
-  @page { margin: 15mm; }
+  #progress-bar, #progress-label, .rp-actionbar { display: none !important; }
+  #screen-report { padding: 0 !important; background: white !important; display: block !important; }
+  .rp-sheet { box-shadow: none !important; }
+  @page { margin: 0; }
 }
 
 /* ── STATUS / TOAST ── */
@@ -1565,76 +1545,106 @@ input[type=range]::-moz-range-thumb {
      SCREEN 9: REPORT
 ════════════════════════════════════════════════ -->
 <div id="screen-report" class="screen">
-  <div id="report-content">
-    <!-- Print-only header with customer info -->
-    <div class="print-meta" style="display:none;margin-bottom:20px;padding-bottom:16px;border-bottom:2px solid #e8a020">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <div>
-          <div style="font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:#b8720a;margin-bottom:4px">CAREER BLUEPRINT</div>
-          <div style="font-size:18px;font-weight:700;color:#1a1a2e" id="print-name">—</div>
-          <div style="font-size:12px;color:#666" id="print-email">—</div>
+  <div id="report-content" class="rp-sheet">
+    <div class="rp-masthead">
+      <div class="rp-mast-top">
+        <div class="rp-monogram">
+          <div class="rp-mono-mark">C</div>
+          <div class="rp-mono-text">Career&nbsp;Blueprint</div>
         </div>
-        <div style="text-align:right">
-          <div style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#888;margin-bottom:4px">ORDER NUMBER</div>
-          <div style="font-size:14px;font-weight:700;color:#b8720a;font-family:monospace" id="print-order">—</div>
-          <div style="font-size:11px;color:#888" id="print-date">—</div>
+        <div class="rp-mast-doc">Confidential Assessment<br>Ref. <span id="rp-refid">CB-000000</span></div>
+      </div>
+      <div class="rp-eyebrow">Career Intelligence Report</div>
+      <h1 class="rp-mast-title" id="rp-name">Candidate Name</h1>
+      <div class="rp-mast-archetype" id="rp-archetype">The Archetype</div>
+      <div class="rp-mast-meta">
+        <div class="rp-meta-item"><div class="k">Prepared For</div><div class="v" id="rp-meta-name">—</div></div>
+        <div class="rp-meta-item"><div class="k">Date Issued</div><div class="v" id="rp-meta-date">—</div></div>
+        <div class="rp-meta-item"><div class="k">Assessment</div><div class="v">43-item psychometric</div></div>
+        <div class="rp-meta-item"><div class="k">Frameworks</div><div class="v">Big&nbsp;Five · Holland</div></div>
+      </div>
+    </div>
+    <div class="rp-body">
+      <section class="rp-section">
+        <div class="rp-sec-head"><span class="rp-sec-no">01</span><h2 class="rp-sec-title">Executive Summary</h2></div>
+        <div class="rp-exec">
+          <div>
+            <p class="rp-lede" id="rp-lede">—</p>
+            <div id="rp-narrative"></div>
+          </div>
+          <aside class="rp-glance">
+            <div class="rp-glance-title">At a Glance</div>
+            <div class="rp-glance-row"><span class="k">Recommended Path</span><span class="v" id="rp-glance-path">—</span></div>
+            <div class="rp-glance-row"><span class="k">Fit Confidence</span><span class="v" id="rp-glance-fit">—</span></div>
+            <div class="rp-glance-row"><span class="k">Holland Code</span><span class="v" id="rp-glance-holland">—</span></div>
+            <div class="rp-glance-row"><span class="k">Defining Trait</span><span class="v" id="rp-glance-trait">—</span></div>
+          </aside>
         </div>
+      </section>
+      <section class="rp-section">
+        <div class="rp-sec-head"><span class="rp-sec-no">02</span><h2 class="rp-sec-title">Personality Architecture</h2></div>
+        <p class="rp-sec-kicker">Big Five (OCEAN) Profile</p>
+        <div class="rp-profile-grid">
+          <div class="rp-chart-frame"><h4>Trait Map</h4><div class="rp-chart-canvas-wrap"><canvas id="chart-ocean-report"></canvas></div></div>
+          <div class="rp-traits" id="rp-ocean-traits"></div>
+        </div>
+      </section>
+      <section class="rp-section">
+        <div class="rp-sec-head"><span class="rp-sec-no">03</span><h2 class="rp-sec-title">Interest Profile</h2></div>
+        <p class="rp-sec-kicker">Holland Occupational Themes (RIASEC)</p>
+        <div class="rp-holland">
+          <span class="rp-holland-label">Your code</span>
+          <div class="rp-holland-code" id="rp-holland-chips"></div>
+          <span class="rp-holland-expand" id="rp-holland-expand"></span>
+        </div>
+        <div class="rp-profile-grid">
+          <div class="rp-chart-frame"><h4>Interest Map</h4><div class="rp-chart-canvas-wrap"><canvas id="chart-riasec-report"></canvas></div></div>
+          <div class="rp-traits" id="rp-riasec-traits"></div>
+        </div>
+      </section>
+      <section class="rp-section">
+        <div class="rp-sec-head"><span class="rp-sec-no">04</span><h2 class="rp-sec-title">Life Priorities</h2></div>
+        <p class="rp-sec-kicker">What the right path must accommodate</p>
+        <div class="rp-compass" id="rp-compass"></div>
+      </section>
+      <section class="rp-section">
+        <div class="rp-sec-head"><span class="rp-sec-no">05</span><h2 class="rp-sec-title">Recommended Pathways</h2></div>
+        <p class="rp-sec-kicker">Ranked by personality–interest–reality fit</p>
+        <div id="rp-paths"></div>
+      </section>
+      <section class="rp-section">
+        <div class="rp-sec-head"><span class="rp-sec-no">06</span><h2 class="rp-sec-title">Financial Reality</h2></div>
+        <p class="rp-sec-kicker">Your inputs, mapped to repayment reality</p>
+        <div class="rp-fin-grid" id="rp-financial"></div>
+      </section>
+      <section class="rp-section">
+        <div class="rp-sec-head"><span class="rp-sec-no">07</span><h2 class="rp-sec-title">Your Next Steps</h2></div>
+        <p class="rp-sec-kicker">Concrete actions to take this term</p>
+        <div class="rp-actions" id="rp-actions"></div>
+      </section>
+      <section class="rp-section">
+        <div class="rp-sec-head"><span class="rp-sec-no">08</span><h2 class="rp-sec-title">Advisory Note</h2></div>
+        <div class="rp-advisory">
+          <div class="rp-advisory-mark">"</div>
+          <p id="rp-warning">—</p>
+          <div class="sig">— Career Blueprint Assessment Panel</div>
+        </div>
+      </section>
+    </div>
+    <div class="rp-colophon">
+      <div class="rp-colo-grid">
+        <div class="rp-colo-block"><h5>Methodology</h5><p>This report synthesises responses across four instruments: a <b>25-item Big Five (OCEAN)</b> personality inventory, an <b>18-item Holland (RIASEC)</b> interest survey, a life-priorities calibration, and a financial-reality filter. Scores are normalised to a 0–100 scale.</p></div>
+        <div class="rp-colo-block"><h5>Interpretation &amp; Validity</h5><p>Psychometric results describe tendencies, not limits. They are most useful as a structured starting point for conversation with mentors, family and counsellors — not as a verdict. Revisit this assessment as your experience grows.</p></div>
       </div>
-    </div>
-
-    <div class="report-header">
-      <span class="eyebrow">Career Blueprint Report</span>
-      <h1>Your Career Intelligence Report</h1>
-      <div class="dominant-profile" id="report-profile">—</div>
-    </div>
-
-    <div class="report-charts">
-      <div class="report-chart-card">
-        <h3>Personality Profile (OCEAN)</h3>
-        <div class="trait-bars" id="ocean-trait-bars"></div>
+      <div class="rp-colo-foot">
+        <span>© Career Blueprint · Confidential to the named candidate</span>
+        <span>Powered by <a href="https://raneesh.net" target="_blank" style="color:var(--amber)">raneesh.net</a></span>
       </div>
-      <div class="report-chart-card">
-        <h3>Interest Profile (RIASEC)</h3>
-        <div class="riasec-bars" id="riasec-bars-report"></div>
-        <canvas id="chart-riasec-report" style="max-height:160px;margin-top:12px"></canvas>
-      </div>
-    </div>
-
-    <div class="report-section">
-      <div class="report-section-title">Who You Are</div>
-      <p class="narrative-text" id="report-narrative">—</p>
-    </div>
-
-    <div class="report-section">
-      <div class="report-section-title">Your Top 3 Career Paths</div>
-      <div id="report-paths"></div>
-    </div>
-
-    <div class="report-section">
-      <div class="report-section-title">What To Do Right Now</div>
-      <ul class="actions-list" id="report-actions"></ul>
-    </div>
-
-    <div class="report-section">
-      <div class="report-section-title">One Honest Warning</div>
-      <div class="warning-box">
-        <p id="report-warning">—</p>
-      </div>
-    </div>
-
-    <!-- Print footer -->
-    <div class="print-meta" style="display:none;margin-top:32px;padding-top:16px;border-top:1px solid #ddd;font-size:11px;color:#888;text-align:center">
-      Generated by Career Blueprint · career.raneesh.net · Powered by OCEAN + RIASEC framework
     </div>
   </div>
-
-  <div class="download-row">
-    <button class="download-btn" id="btn-download-pdf" onclick="downloadPDF()">↓ Download PDF</button>
-    <button class="download-btn secondary" onclick="printReport()">🖨 Print Report</button>
-  </div>
-
-  <div class="powered-by" style="margin-top:48px">
-    Powered by <a href="https://raneesh.net" target="_blank">raneesh.net</a>
+  <div class="rp-actionbar">
+    <button class="rp-btn rp-btn-primary" id="btn-download-pdf" onclick="downloadPDF()">↓ Download PDF Report</button>
+    <button class="rp-btn rp-btn-ghost" onclick="printReport()">🖨 Print</button>
   </div>
 </div>
 
@@ -2127,264 +2137,213 @@ function animateGeneratingSteps() {
   }, 1800);
 }
 
-// ── Domain tags per career cluster ───────────────────
-const DOMAIN_MAP = {
-  'Digital Marketing': { good: ['Social Media','Content','SEO','Analytics','Brand Strategy','Email Marketing'], bad: ['Deep Technical Coding','Hardware','Surgery','Legal Research','Manufacturing'] },
-  'UX': { good: ['Product Design','Wireframing','User Research','Figma','Mobile Apps','Prototyping'], bad: ['Sales Targets','Outdoor Work','Rigid Processes','Surgery','Accounting'] },
-  'Design': { good: ['Visual Design','Typography','Branding','Creative Direction','Illustration','Motion'], bad: ['Cold Calling','Strict Compliance','Night Shifts','Manual Labor','Data Entry'] },
-  'Business Development': { good: ['Networking','Negotiation','Startup Ecosystem','CRM','Revenue Growth','Partnerships'], bad: ['Lab Research','Creative Arts','Deep Coding','Clinical Work','Teaching'] },
-  'Sales': { good: ['Client Relations','Target-Driven','Performance Bonus','B2B/B2C','Communication','CRM'], bad: ['Introverted Roles','Long Research','Design Work','Government Jobs','Lab Work'] },
-  'Data': { good: ['Python/R','Statistical Analysis','Machine Learning','Dashboards','Pattern Recognition'], bad: ['Public Speaking','Client-Facing Sales','Physical Work','High Ambiguity','Artistic Fields'] },
-  'Engineering': { good: ['Problem Solving','Systems Thinking','Technical Depth','Innovation','R&D'], bad: ['High Social Demand','Emotional Counselling','Artistic Freedom','Sales Pressure'] },
-  'Finance': { good: ['Number Analysis','Risk Assessment','Market Research','Portfolio Management','CA/CFA'], bad: ['Creative Work','Ambiguous Roles','Physical Labour','High Travel','Artistic Fields'] },
-  'Law': { good: ['Argumentation','Research','Policy Work','Client Advocacy','Drafting'], bad: ['Tech Roles','Creative Design','Sales','Manual Work','High-Risk Startups'] },
-  'Medicine': { good: ['Patient Care','Diagnostics','Research','Public Health','Surgery'], bad: ['Marketing','Entrepreneurship','Creative Fields','High Travel','Sales'] },
-  'Teaching': { good: ['Mentoring','Curriculum Design','EdTech','Research','Student Impact'], bad: ['Sales Targets','High-Risk Ventures','Night Work','Manual Labour','Corporate Pressure'] },
-  'default': { good: ['Problem Solving','Communication','Team Work','Learning Agility','Adaptability'], bad: ['Highly Routine Tasks','Extreme Isolation','Physical Hazards','No Growth Path'] }
+// ── Render Report ─────────────────────────
+let reportOceanChart, reportRiasecChart;
+
+const OCEAN_DEFS = {
+  o: {name:'Openness', desc:['Practical and grounded; you prefer proven methods over experimentation.','Balanced between routine and novelty — open to new ideas when they earn their place.','Highly curious and imaginative; you are energised by abstract ideas and the unfamiliar.']},
+  c: {name:'Conscientiousness', desc:['Flexible and spontaneous; you work best with freedom rather than rigid structure.','Dependable when it matters, without being rigid — you balance planning with adaptability.','Highly organised, disciplined and goal-driven; you reliably finish what you start.']},
+  e: {name:'Extraversion', desc:['Reflective and reserved; you do your best thinking in calm, focused settings.','Comfortable in company and alone — you can lead a room or work quietly as needed.','Outgoing and energised by people; you thrive in social, high-interaction environments.']},
+  a: {name:'Agreeableness', desc:['Direct and independent; you prioritise honesty and results over consensus.','Cooperative yet willing to challenge — you balance empathy with candour.','Warm, considerate and collaborative; you naturally build trust and harmony.']},
+  n: {name:'Emotional Stability', desc:['Sensitive to pressure; you feel things deeply and benefit from supportive settings.','Generally steady, with normal sensitivity to stress under heavy load.','Calm and resilient under pressure; setbacks rarely knock you off course.']}
+};
+const RIASEC_DEFS = {
+  r:{name:'Realistic', tag:'Builder', desc:'Hands-on work with tools, machines, systems and tangible results.'},
+  i:{name:'Investigative', tag:'Thinker', desc:'Analysis, research and solving complex, abstract problems.'},
+  a:{name:'Artistic', tag:'Creator', desc:'Self-expression, design and original, unstructured creative work.'},
+  s:{name:'Social', tag:'Helper', desc:'Teaching, guiding and working directly to support other people.'},
+  e:{name:'Enterprising', tag:'Persuader', desc:'Leading, influencing, selling and driving ventures forward.'},
+  c:{name:'Conventional', tag:'Organiser', desc:'Structure, accuracy and managing data, records and processes.'}
 };
 
-function getDomainTags(title) {
-  for (const key of Object.keys(DOMAIN_MAP)) {
-    if (key !== 'default' && title.toLowerCase().includes(key.toLowerCase())) return DOMAIN_MAP[key];
+function bandOf(v){ return v >= 67 ? 2 : v >= 34 ? 1 : 0; }
+function bandLabel(v){ return ['Low','Moderate','High'][bandOf(v)]; }
+
+function renderTraitRows(scores, defs, isTeal){
+  return Object.keys(scores).map(k => {
+    const v = scores[k];
+    const d = defs[k];
+    const desc = Array.isArray(d.desc) ? d.desc[bandOf(v)] : d.desc;
+    return `<div class="rp-trait">
+      <div class="rp-trait-top">
+        <span class="rp-trait-name">${d.name}${d.tag?' <span style="color:#9a917d;font-weight:500">· '+d.tag+'</span>':''}</span>
+        <span class="rp-trait-band">${bandLabel(v)} · ${v}</span>
+      </div>
+      <div class="rp-trait-track"><div class="rp-trait-fill ${isTeal?'teal':''}" style="width:${v}%"></div></div>
+      <div class="rp-trait-desc">${desc}</div>
+    </div>`;
+  }).join('');
+}
+
+function fitRingSVG(score, color){
+  const r = 30, c = 2 * Math.PI * r, off = c * (1 - score/100);
+  return '<svg width="78" height="78" viewBox="0 0 78 78">' +
+    '<circle cx="39" cy="39" r="'+r+'" fill="none" stroke="#e6ddc9" stroke-width="6"/>' +
+    '<circle cx="39" cy="39" r="'+r+'" fill="none" stroke="'+color+'" stroke-width="6" stroke-linecap="round" stroke-dasharray="'+c+'" stroke-dashoffset="'+off+'" transform="rotate(-90 39 39)"/>' +
+    '<text x="39" y="40" text-anchor="middle" class="rp-fit-num">'+score+'<tspan font-size="11">%</tspan></text>' +
+    '<text x="39" y="54" text-anchor="middle" class="rp-fit-lbl">FIT</text></svg>';
+}
+
+function hashStr(s){ let h=0; for(let i=0;i<s.length;i++){h=((h<<5)-h+s.charCodeAt(i))|0;} return h; }
+
+function fmtINR(n){
+  if (n >= 10000000) return String.fromCharCode(8377) + (n/10000000).toFixed(n%10000000?1:0) + ' Cr';
+  if (n >= 100000) return String.fromCharCode(8377) + (n/100000).toFixed(n%100000?1:0) + ' L';
+  return String.fromCharCode(8377) + n.toLocaleString('en-IN');
+}
+
+function buildFinancial(){
+  const re = state.reality || {};
+  const cards = [];
+  const incomeLabels = {200000:'Below ₹2 L / year',500000:'₹2–5 L / year',900000:'₹5–9 L / year',1500000:'₹9–15 L / year',2500000:'₹15–25 L / year',5000000:'Above ₹25 L / year'};
+  const incomeText = re.family_income ? (incomeLabels[re.family_income] || fmtINR(re.family_income)+' / year') : 'Not specified';
+  cards.push('<div class="rp-fin-card"><div class="k">Family Annual Income</div><div class="v" style="font-size:19px">'+incomeText+'</div><div class="sub">The base against which any education loan must be weighed.</div></div>');
+  const marks = re.marks_band || 'Not specified';
+  cards.push('<div class="rp-fin-card"><div class="k">Academic Standing</div><div class="v" style="font-size:19px">'+marks+'</div><div class="sub">'+(re.exams_cleared ? 'Exams: '+re.exams_cleared.split(',').join(', ') : 'No entrance exams recorded.')+'</div></div>');
+  const loan = re.loan_willingness || 0;
+  if (loan > 0) {
+    const rate = 0.10/12, n = 120;
+    const emi = Math.round(loan*rate*Math.pow(1+rate,n)/(Math.pow(1+rate,n)-1));
+    const total = Math.round(emi*n);
+    cards.push('<div class="rp-fin-card"><div class="k">Loan You'd Consider</div><div class="v">'+fmtINR(loan)+'</div><div class="sub">Maximum education debt indicated.</div></div>');
+    cards.push('<div class="rp-fin-card"><div class="k">Projected Monthly EMI</div><div class="v">₹'+emi.toLocaleString('en-IN')+'<span style="font-size:13px;font-weight:500;color:var(--ink-soft)">/mo</span></div><div class="sub">Over 10 years at ~10% — total ≈ '+fmtINR(total)+'.</div></div>');
+    cards.push('<div class="rp-fin-callout"><div class="k">What this means</div><p>That EMI must be comfortably covered by your starting salary. Where earnings sit close to this figure, prioritise scholarships or lower-cost entry points.</p></div>');
+  } else {
+    cards.push('<div class="rp-fin-card"><div class="k">Loan Appetite</div><div class="v" style="font-size:19px">Self-funded only</div><div class="sub">You preferred to avoid education debt.</div></div>');
+    cards.push('<div class="rp-fin-card"><div class="k">Strategy</div><div class="v" style="font-size:19px">Low-cost entry</div><div class="sub">Prioritise government seats, scholarships and merit routes.</div></div>');
+    cards.push('<div class="rp-fin-callout"><div class="k">What this means</div><p>With no loan in play, pathways are weighted toward affordable entry points where skill and portfolio matter more than an expensive degree.</p></div>');
   }
-  // Try partial matches
-  if (title.match(/market|content|social|seo/i)) return DOMAIN_MAP['Digital Marketing'];
-  if (title.match(/ux|ui|product design/i)) return DOMAIN_MAP['UX'];
-  if (title.match(/design|creative|brand/i)) return DOMAIN_MAP['Design'];
-  if (title.match(/business dev|biz dev/i)) return DOMAIN_MAP['Business Development'];
-  if (title.match(/sales|revenue/i)) return DOMAIN_MAP['Sales'];
-  if (title.match(/data|analyst|ml|machine learn/i)) return DOMAIN_MAP['Data'];
-  if (title.match(/engineer|tech|software|developer/i)) return DOMAIN_MAP['Engineering'];
-  if (title.match(/financ|account|ca|cfa/i)) return DOMAIN_MAP['Finance'];
-  if (title.match(/law|legal|advocate/i)) return DOMAIN_MAP['Law'];
-  if (title.match(/medic|doctor|mbbs|health/i)) return DOMAIN_MAP['Medicine'];
-  if (title.match(/teach|educat|tutor/i)) return DOMAIN_MAP['Teaching'];
-  return DOMAIN_MAP['default'];
+  return cards.join('');
 }
 
-function fitCircleSVG(score, color) {
-  const r = 26, cx = 32, cy = 32;
-  const circumference = 2 * Math.PI * r;
-  const offset = circumference - (score / 100) * circumference;
-  return `<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-    <circle class="fit-circle-bg" cx="${cx}" cy="${cy}" r="${r}"/>
-    <circle class="fit-circle-fill" cx="${cx}" cy="${cy}" r="${r}"
-      stroke="${color}" stroke-dasharray="${circumference}"
-      stroke-dashoffset="${offset}" transform="rotate(-90 32 32)"
-      fill="none" stroke-width="5" stroke-linecap="round"/>
-    <text x="32" y="29" text-anchor="middle" fill="${color}" font-size="13" font-weight="700" font-family="DM Sans,sans-serif">${score}%</text>
-    <text x="32" y="42" text-anchor="middle" fill="#8090a0" font-size="8" font-family="DM Sans,sans-serif">FIT</text>
-  </svg>`;
-}
-
-let reportRiasecChart2;
 function renderReport(r) {
-  document.getElementById('report-profile').textContent = r.dominant_profile || '—';
-  document.getElementById('report-narrative').textContent = r.personality_narrative || '—';
-  document.getElementById('report-warning').textContent = r.honest_warning || '—';
+  const name = state.name || 'Candidate';
+  document.getElementById('rp-name').textContent = name;
+  document.getElementById('rp-meta-name').textContent = name;
+  document.getElementById('rp-archetype').textContent = r.dominant_profile || '—';
+  const now = new Date();
+  document.getElementById('rp-meta-date').textContent = now.toLocaleDateString('en-IN', {day:'numeric', month:'short', year:'numeric'});
+  const ref = state.order_number || ('CB-' + String(now.getFullYear()).slice(2) + String(Math.abs(hashStr(name+(state.email||'')))%100000).padStart(5,'0'));
+  document.getElementById('rp-refid').textContent = ref;
 
-  // OCEAN trait bars
-  const oceanLabels = [
-    {key:'o', label:'Openness', color:'#e8a020'},
-    {key:'c', label:'Conscientiousness', color:'#35997f'},
-    {key:'e', label:'Extraversion', color:'#5090e0'},
-    {key:'a', label:'Agreeableness', color:'#9060c0'},
-    {key:'n', label:'Stability', color:'#40c070'},
+  const narr = (r.personality_narrative || '').trim();
+  const sentences = narr.split('. ');
+  const lede = sentences[0] + (sentences.length > 1 ? '.' : '');
+  const rest = sentences.slice(1).join('. ');
+  document.getElementById('rp-lede').textContent = lede || narr;
+  document.getElementById('rp-narrative').innerHTML = rest ? '<p class="rp-narrative">'+rest+'</p>' : '';
+
+  const ocean = {o:state.ocean.o, c:state.ocean.c, e:state.ocean.e, a:state.ocean.a, n:state.ocean.n};
+  document.getElementById('rp-ocean-traits').innerHTML = renderTraitRows(ocean, OCEAN_DEFS, false);
+  const topTrait = Object.keys(ocean).sort((a,b)=>ocean[b]-ocean[a])[0];
+  document.getElementById('rp-glance-trait').innerHTML = OCEAN_DEFS[topTrait].name;
+
+  const riasec = {r:state.riasec.r, i:state.riasec.i, a:state.riasec.a, s:state.riasec.s, e:state.riasec.e, c:state.riasec.c};
+  document.getElementById('rp-riasec-traits').innerHTML = renderTraitRows(riasec, RIASEC_DEFS, true);
+  const topThree = Object.keys(riasec).sort((a,b)=>riasec[b]-riasec[a]).slice(0,3);
+  document.getElementById('rp-holland-chips').innerHTML = topThree.map((k,i)=>
+    '<div class="rp-hchip '+(i===1?'s2':i===2?'s3':'')+'">'+k.toUpperCase()+'</div>').join('');
+  document.getElementById('rp-holland-expand').innerHTML = topThree.map(k=>'<b>'+RIASEC_DEFS[k].name+'</b>').join(' · ');
+  document.getElementById('rp-glance-holland').textContent = topThree.map(k=>k.toUpperCase()).join('');
+
+  const axes = [
+    {l:'Stay local (Kerala / hometown)', r:'Work globally / abroad', v:state.life.location},
+    {l:'Social status & prestige', r:'Earning potential & wealth', v:state.life.status},
+    {l:'Predictable 9-to-5', r:'High-intensity hustle', v:state.life.pace},
+    {l:'Stability & security', r:'High risk, high reward', v:state.life.risk}
   ];
-  const barsEl = document.getElementById('ocean-trait-bars');
-  barsEl.innerHTML = oceanLabels.map(t => {
-    const val = state.ocean[t.key] || 50;
-    const label = val >= 70 ? 'High' : val >= 40 ? 'Mid' : 'Low';
-    return `<div class="trait-row">
-      <div class="trait-name">${t.label}</div>
-      <div class="trait-bar-wrap">
-        <div class="trait-bar-fill" style="width:${val}%;background:${t.color}"></div>
-      </div>
-      <div class="trait-val">${label}</div>
-    </div>`;
+  document.getElementById('rp-compass').innerHTML = axes.map(a=>{
+    const la = a.v < 45, ra = a.v > 55;
+    return '<div><div class="rp-axis-labels"><span class="'+(la?'active':'')+'">'+a.l+'</span><span class="'+(ra?'active':'')+'">'+a.r+'</span></div><div class="rp-axis-track"><div class="rp-axis-marker" style="left:'+a.v+'%"></div></div></div>';
   }).join('');
 
-  // RIASEC bars + radar
-  const riasecItems = [
-    {key:'r', label:'Realistic'},
-    {key:'i', label:'Investigative'},
-    {key:'a', label:'Artistic'},
-    {key:'s', label:'Social'},
-    {key:'e', label:'Enterprising'},
-    {key:'c', label:'Conventional'},
-  ];
-  const riasecBarsEl = document.getElementById('riasec-bars-report');
-  riasecBarsEl.innerHTML = riasecItems.map(t => {
-    const val = state.riasec[t.key] || 0;
-    return `<div class="riasec-row">
-      <div class="riasec-label"><span>${t.label}</span><span style="color:var(--amber);font-weight:600">${val}</span></div>
-      <div class="riasec-bar-wrap"><div class="riasec-bar-fill" style="width:${val}%"></div></div>
-    </div>`;
+  const paths = r.career_paths || [];
+  const ringColors = ['#9a7012','#1f6b5c','#8a8270'];
+  const aiLabels = {low:'High',medium:'Moderate',high:'Lower'};
+  document.getElementById('rp-paths').innerHTML = paths.map((p,i)=>{
+    const aiKey = (p.ai_vulnerability||'').toLowerCase();
+    return '<div class="rp-path rank-'+p.rank+'">' +
+      '<div class="rp-path-head"><div>' +
+      '<div class="rp-path-rank-tag"><span class="dot"></span>'+(p.rank===1?'Primary Recommendation':p.rank===2?'Strong Alternative':'Worth Exploring')+'</div>' +
+      '<div class="rp-path-title">'+p.title+'</div></div>' +
+      '<div class="rp-fit-ring">'+fitRingSVG(p.fit_score, ringColors[i]||ringColors[2])+'</div></div>' +
+      '<span class="rp-ai-pill rp-ai-'+aiKey+'">Automation resilience: '+(aiLabels[aiKey]||p.ai_vulnerability)+'</span>' +
+      '<p class="rp-path-why">'+p.why_it_fits+'</p>' +
+      '<div class="rp-path-data"><div class="cell"><div class="k">Entry Route</div><div class="v">'+p.entry_route+'</div></div>' +
+      '<div class="cell"><div class="k">5-Year Earning Range</div><div class="v">'+p.salary_5yr+'</div></div></div></div>';
   }).join('');
 
-  // RIASEC radar chart
-  if (reportRiasecChart2) reportRiasecChart2.destroy();
-  reportRiasecChart2 = new Chart(document.getElementById('chart-riasec-report'), {
-    type: 'radar',
-    data: {
-      labels: riasecItems.map(t => t.label),
-      datasets: [{ data: riasecItems.map(t => state.riasec[t.key] || 0), backgroundColor: 'rgba(42,122,106,0.15)', borderColor: '#2a7a6a', pointBackgroundColor: '#2a7a6a', borderWidth: 2 }]
-    },
-    options: { scales: { r: { min:0, max:100, ticks:{display:false}, grid:{color:'rgba(255,255,255,0.05)'}, pointLabels:{color:'#8090a0',font:{size:9}} } }, plugins:{legend:{display:false}} }
+  if (paths[0]) {
+    document.getElementById('rp-glance-path').textContent = paths[0].title;
+    document.getElementById('rp-glance-fit').innerHTML = paths[0].fit_score+'% <small>match</small>';
+  }
+
+  document.getElementById('rp-financial').innerHTML = buildFinancial();
+  document.getElementById('rp-actions').innerHTML = (r.actions_now||[]).map(a=>'<div class="rp-action"><p>'+a+'</p></div>').join('');
+  document.getElementById('rp-warning').textContent = r.honest_warning || '—';
+
+  if (typeof Chart === 'undefined') return;
+  const lightOpts = () => ({
+    responsive:true, maintainAspectRatio:false,
+    scales:{r:{min:0,max:100,ticks:{display:false},
+      grid:{color:'rgba(27,34,54,0.10)'}, angleLines:{color:'rgba(27,34,54,0.10)'},
+      pointLabels:{color:'#5a5340',font:{size:11,family:'DM Sans',weight:'500'}}}},
+    plugins:{legend:{display:false}}, elements:{line:{tension:0.05}}
   });
-
-  // Career paths
-  const pathColors = ['#e8a020', '#2a7a6a', '#8090a0'];
-  const pathsEl = document.getElementById('report-paths');
-  pathsEl.innerHTML = (r.career_paths || []).map(p => {
-    const color = pathColors[(p.rank - 1)] || pathColors[2];
-    const domains = getDomainTags(p.title);
-    const aiClass = `ai-${(p.ai_vulnerability||'medium').toLowerCase()}`;
-    return `<div class="path-card rank-${p.rank}">
-      <div class="path-card-header">
-        <div class="path-card-header-left">
-          <div class="path-rank">Career Path #${p.rank}</div>
-          <div class="path-title">${p.title}</div>
-          <div class="path-badges">
-            <span class="fit-score">Fit Score: ${p.fit_score}%</span>
-            <span class="ai-badge ${aiClass}">${p.ai_vulnerability} AI Risk</span>
-          </div>
-        </div>
-        <div class="fit-circle">${fitCircleSVG(p.fit_score, color)}</div>
-      </div>
-      <div class="path-card-body">
-        <div class="path-why">${p.why_it_fits}</div>
-        <div class="path-stats">
-          <div class="path-stat">
-            <div class="path-stat-label">Entry Route</div>
-            <div class="path-stat-value">${p.entry_route}</div>
-          </div>
-          <div class="path-stat">
-            <div class="path-stat-label">5-Year Salary</div>
-            <div class="path-stat-value">${p.salary_5yr}</div>
-          </div>
-          <div class="path-stat">
-            <div class="path-stat-label">AI Resilience</div>
-            <div class="path-stat-value">${p.ai_reason || (p.ai_vulnerability + ' exposure')}</div>
-          </div>
-        </div>
-        <div class="domain-grid">
-          <div class="domain-card domain-good">
-            <div class="domain-card-title">✓ Best work domains</div>
-            <div class="domain-tags">${domains.good.slice(0,5).map(d => `<span class="domain-tag">${d}</span>`).join('')}</div>
-          </div>
-          <div class="domain-card domain-bad">
-            <div class="domain-card-title">✗ Avoid these domains</div>
-            <div class="domain-tags">${domains.bad.slice(0,5).map(d => `<span class="domain-tag">${d}</span>`).join('')}</div>
-          </div>
-        </div>
-      </div>
-    </div>`;
-  }).join('');
-
-  // Actions
-  const actionsEl = document.getElementById('report-actions');
-  actionsEl.innerHTML = (r.actions_now || []).map(a => `<li>${a}</li>`).join('');
+  if (reportOceanChart) reportOceanChart.destroy();
+  if (reportRiasecChart) reportRiasecChart.destroy();
+  reportOceanChart = new Chart(document.getElementById('chart-ocean-report'), {
+    type:'radar',
+    data:{labels:['Open','Consc.','Extra.','Agree.','Stable'],
+      datasets:[{data:[ocean.o,ocean.c,ocean.e,ocean.a,ocean.n],
+        backgroundColor:'rgba(192,138,22,0.18)', borderColor:'#9a7012',
+        pointBackgroundColor:'#9a7012', borderWidth:2, pointRadius:3}]},
+    options:lightOpts()
+  });
+  reportRiasecChart = new Chart(document.getElementById('chart-riasec-report'), {
+    type:'radar',
+    data:{labels:['Realistic','Investig.','Artistic','Social','Enterpr.','Convent.'],
+      datasets:[{data:[riasec.r,riasec.i,riasec.a,riasec.s,riasec.e,riasec.c],
+        backgroundColor:'rgba(31,107,92,0.18)', borderColor:'#1f6b5c',
+        pointBackgroundColor:'#1f6b5c', borderWidth:2, pointRadius:3}]},
+    options:lightOpts()
+  });
 }
 
 // ── PDF Download ──────────────────────────
-function populatePrintMeta() {
-  document.getElementById('print-name').textContent = state.name || '—';
-  document.getElementById('print-email').textContent = state.email || '—';
-  document.getElementById('print-order').textContent = state.order_number || '—';
-  document.getElementById('print-date').textContent = 'Generated: ' + new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
-}
-
 function downloadPDF() {
   const btn = document.getElementById('btn-download-pdf');
-  btn.textContent = '⏳ Preparing PDF...'; btn.disabled = true;
-  populatePrintMeta();
-  document.querySelectorAll('.print-meta').forEach(e => e.style.display = 'block');
-
-  // Convert all Chart.js canvases to static images before capturing
+  btn.textContent = '⏳ Preparing...'; btn.disabled = true;
   const canvases = document.querySelectorAll('#screen-report canvas');
   const replacements = [];
   canvases.forEach(canvas => {
     const img = document.createElement('img');
     img.src = canvas.toDataURL('image/png');
-    img.style.width = canvas.style.width || canvas.offsetWidth + 'px';
-    img.style.height = canvas.style.height || canvas.offsetHeight + 'px';
-    img.style.maxHeight = canvas.style.maxHeight || '';
-    img.style.marginTop = canvas.style.marginTop || '';
+    img.style.cssText = 'width:'+canvas.offsetWidth+'px;height:'+canvas.offsetHeight+'px;max-width:100%';
     canvas.parentNode.insertBefore(img, canvas);
     canvas.style.display = 'none';
-    replacements.push({ canvas, img });
+    replacements.push({canvas, img});
   });
-
   const el = document.getElementById('report-content');
-  const lightStyles = `
-    *{background:white!important;color:#1a1a2e!important;border-color:#ddd!important;box-shadow:none!important}
-    .report-section-title,.eyebrow{color:#b8720a!important}
-    .dominant-profile,.fit-score{color:#b8720a!important;background:#fff8ee!important;border:1px solid #e8a020!important}
-    .path-title,.report-header h1{color:#1a1a2e!important}
-    .domain-good{background:#f0fff8!important;border:1px solid #2a7a6a!important}
-    .domain-bad{background:#fff0f0!important;border:1px solid #e06060!important}
-    .domain-good .domain-card-title{color:#1a6040!important}
-    .domain-bad .domain-card-title{color:#c0392b!important}
-    .domain-good .domain-tag{background:#e0f5ec!important;color:#1a5a40!important}
-    .domain-bad .domain-tag{background:#fde8e8!important;color:#8a1010!important}
-    .path-stat{background:#f5f5f5!important}
-    .trait-val{color:#b8720a!important}
-    .riasec-bar-fill{background:#2a7a6a!important}
-    .ai-low{color:#27ae60!important;background:#f0fff4!important;border:1px solid #27ae60!important}
-    .ai-medium{color:#b8720a!important;background:#fff8ee!important}
-    .ai-high{color:#c0392b!important;background:#fff0f0!important}
-    .warning-box{background:#fff8f8!important;border:1px solid #e06060!important}
-    .path-card.rank-1{border-top:3px solid #e8a020!important}
-    .path-card.rank-2{border-top:3px solid #2a7a6a!important}
-    .path-card.rank-3{border-top:3px solid #888!important}
-    .actions-list li::before{color:#b8720a!important}
-    .download-row,.powered-by,#progress-bar,#progress-label{display:none!important}
-    .print-meta{display:block!important}
-    .report-chart-card{border:1px solid #ddd!important}
-    .trait-bar-wrap{background:#eee!important}
-    .riasec-bar-wrap{background:#eee!important}
-    .fit-circle-bg{stroke:#ddd!important}
-  `;
-
   const opt = {
-    margin: [12, 12, 12, 12],
-    filename: `CareerBlueprint-${state.name || 'Report'}.pdf`,
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: {
-      scale: 2, backgroundColor: '#ffffff', useCORS: true, logging: false,
-      onclone: (doc) => {
-        const s = doc.createElement('style');
-        s.textContent = lightStyles;
-        doc.head.appendChild(s);
-        doc.body.style.background = 'white';
-      }
-    },
-    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    margin: 0,
+    filename: 'CareerBlueprint-'+(state.name||'Report')+'.pdf',
+    image: {type:'jpeg', quality:0.98},
+    html2canvas: {scale:2, backgroundColor:'#f6f2e9', useCORS:true, logging:false},
+    jsPDF: {unit:'mm', format:'a4', orientation:'portrait'},
+    pagebreak: {mode:['css','avoid-all']}
   };
-
   html2pdf().set(opt).from(el).save().then(() => {
-    // Restore canvases
-    replacements.forEach(({ canvas, img }) => {
-      canvas.style.display = '';
-      img.remove();
-    });
-    document.querySelectorAll('.print-meta').forEach(e => e.style.display = 'none');
-    btn.textContent = '↓ Download PDF'; btn.disabled = false;
-  }).catch(err => {
-    replacements.forEach(({ canvas, img }) => { canvas.style.display = ''; img.remove(); });
-    document.querySelectorAll('.print-meta').forEach(e => e.style.display = 'none');
-    btn.textContent = '↓ Download PDF'; btn.disabled = false;
-    showToast('PDF error: ' + err.message, 'error');
+    replacements.forEach(({canvas,img}) => { canvas.style.display=''; img.remove(); });
+    btn.textContent = '↓ Download PDF Report'; btn.disabled = false;
+  }).catch(() => {
+    replacements.forEach(({canvas,img}) => { canvas.style.display=''; img.remove(); });
+    btn.textContent = '↓ Download PDF Report'; btn.disabled = false;
   });
 }
 
-function printReport() {
-  populatePrintMeta();
-  document.querySelectorAll('.print-meta').forEach(e => e.style.display = 'block');
-  window.print();
-  setTimeout(() => { document.querySelectorAll('.print-meta').forEach(e => e.style.display = 'none'); }, 1000);
-}
+function printReport() { window.print(); }
+
 
 // ── Counter animation ─────────────────────
 function animateCounter(el, target, suffix='') {
