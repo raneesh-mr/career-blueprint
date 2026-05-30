@@ -1,0 +1,1630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Career Blueprint — Scientific Career Selection</title>
+<meta name="description" content="A 12-minute diagnostic that maps your personality, interests, and life goals to find your right career path. Powered by science, not trends.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<style>
+:root {
+  --navy: #0a0f1e;
+  --navy2: #111827;
+  --card: #141d2e;
+  --card2: #1a2540;
+  --border: #1e2d45;
+  --cream: #f0ebe0;
+  --cream2: #d8d0c0;
+  --amber: #e8a020;
+  --amber2: #f0b840;
+  --teal: #2a7a6a;
+  --teal2: #35997f;
+  --red: #c0392b;
+  --green: #27ae60;
+  --text: #c8c0b0;
+  --text2: #8090a0;
+  --font-head: 'Playfair Display', Georgia, serif;
+  --font-body: 'DM Sans', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--navy);
+  color: var(--cream);
+  min-height: 100vh;
+  overflow-x: hidden;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* ── SCREENS ── */
+.screen { display: none; min-height: 100vh; }
+.screen.active { display: block; }
+
+/* ── PROGRESS BAR ── */
+#progress-bar {
+  position: fixed; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--border); z-index: 100;
+}
+#progress-fill {
+  height: 100%; background: var(--amber);
+  transition: width 0.4s ease; width: 0%;
+}
+#progress-label {
+  position: fixed; top: 8px; right: 16px;
+  font-size: 11px; color: var(--text2); z-index: 100;
+  font-family: var(--font-body); letter-spacing: 0.05em;
+}
+
+/* ── LANDING ── */
+#screen-landing {
+  display: flex; flex-direction: column;
+  position: relative; overflow: hidden;
+}
+
+.landing-noise {
+  position: absolute; inset: 0; opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+.landing-hero {
+  padding: 80px 24px 48px;
+  max-width: 680px; margin: 0 auto; text-align: center;
+}
+
+.eyebrow {
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--amber); font-weight: 600; margin-bottom: 24px;
+  display: inline-block;
+}
+
+.landing-title {
+  font-family: var(--font-head);
+  font-size: clamp(36px, 8vw, 64px);
+  font-weight: 700; line-height: 1.1;
+  color: var(--cream); margin-bottom: 20px;
+}
+
+.landing-title em { color: var(--amber); font-style: normal; }
+
+.landing-sub {
+  font-size: 17px; color: var(--text); max-width: 480px;
+  margin: 0 auto 40px; font-weight: 300; line-height: 1.7;
+}
+
+.cta-primary {
+  display: inline-block;
+  background: var(--amber); color: var(--navy);
+  font-family: var(--font-body); font-weight: 600;
+  font-size: 16px; padding: 16px 40px;
+  border-radius: 4px; border: none; cursor: pointer;
+  letter-spacing: 0.03em; transition: all 0.2s;
+  text-decoration: none;
+}
+.cta-primary:hover { background: var(--amber2); transform: translateY(-1px); }
+
+.cta-meta {
+  display: block; margin-top: 12px;
+  font-size: 12px; color: var(--text2);
+}
+
+/* Stats strip */
+.stats-strip {
+  background: var(--card); border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 32px 24px; margin: 0;
+}
+.stats-inner {
+  max-width: 800px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 24px; text-align: center;
+}
+.stat-item {}
+.stat-num {
+  font-family: var(--font-head);
+  font-size: clamp(28px, 6vw, 48px);
+  font-weight: 700; color: var(--amber);
+  display: block; line-height: 1;
+}
+.stat-label {
+  font-size: 12px; color: var(--text2);
+  margin-top: 6px; display: block; line-height: 1.4;
+}
+
+/* How it works */
+.how-section {
+  padding: 64px 24px; max-width: 680px; margin: 0 auto;
+}
+.section-title {
+  font-family: var(--font-head); font-size: 28px;
+  color: var(--cream); margin-bottom: 32px; text-align: center;
+}
+.steps-list { list-style: none; }
+.steps-list li {
+  display: flex; gap: 20px; align-items: flex-start;
+  padding: 20px 0; border-bottom: 1px solid var(--border);
+}
+.steps-list li:last-child { border-bottom: none; }
+.step-num {
+  font-family: var(--font-head); font-size: 32px; font-weight: 700;
+  color: var(--amber); opacity: 0.4; min-width: 40px; line-height: 1;
+}
+.step-content h3 {
+  font-size: 16px; font-weight: 600; color: var(--cream);
+  margin-bottom: 4px;
+}
+.step-content p { font-size: 14px; color: var(--text); }
+
+/* Powered by */
+.powered-by {
+  text-align: center; padding: 32px 24px;
+  border-top: 1px solid var(--border);
+  font-size: 12px; color: var(--text2);
+}
+.powered-by a { color: var(--amber); text-decoration: none; }
+
+/* ── FORM SCREEN ── */
+.form-screen {
+  min-height: 100vh; display: flex; align-items: center;
+  justify-content: center; padding: 80px 24px 48px;
+}
+.form-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 40px 32px;
+  max-width: 480px; width: 100%;
+}
+.form-card h2 {
+  font-family: var(--font-head); font-size: 28px;
+  color: var(--cream); margin-bottom: 8px;
+}
+.form-card p { font-size: 14px; color: var(--text); margin-bottom: 32px; }
+
+.field { margin-bottom: 20px; }
+.field label {
+  display: block; font-size: 12px; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--text2); margin-bottom: 8px;
+}
+.field input, .field select {
+  width: 100%; padding: 12px 16px;
+  background: var(--navy2); border: 1px solid var(--border);
+  border-radius: 6px; color: var(--cream);
+  font-family: var(--font-body); font-size: 15px;
+  transition: border-color 0.2s; outline: none;
+}
+.field input:focus, .field select:focus {
+  border-color: var(--amber);
+}
+.field input::placeholder { color: var(--text2); }
+
+.btn-full {
+  width: 100%; padding: 14px;
+  background: var(--amber); color: var(--navy);
+  font-family: var(--font-body); font-weight: 600;
+  font-size: 15px; border: none; border-radius: 6px;
+  cursor: pointer; transition: all 0.2s; margin-top: 8px;
+}
+.btn-full:hover { background: var(--amber2); }
+.btn-full:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ── QUESTION SCREEN ── */
+.question-screen {
+  padding: 80px 24px 120px;
+  max-width: 640px; margin: 0 auto;
+}
+
+.module-header {
+  margin-bottom: 48px;
+}
+.module-tag {
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--amber); font-weight: 600;
+}
+.module-title {
+  font-family: var(--font-head); font-size: clamp(24px, 5vw, 36px);
+  color: var(--cream); margin: 8px 0 12px;
+}
+.module-desc { font-size: 14px; color: var(--text); }
+
+.q-counter {
+  font-size: 12px; color: var(--text2); margin-bottom: 32px;
+  font-weight: 500;
+}
+
+/* OCEAN slider question */
+.q-block {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 28px 24px; margin-bottom: 20px;
+  transition: border-color 0.2s;
+}
+.q-block.answered { border-color: var(--teal); }
+
+.q-text {
+  font-size: 16px; color: var(--cream); margin-bottom: 24px;
+  line-height: 1.5; font-weight: 400;
+}
+.q-trait {
+  font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--text2); margin-bottom: 12px; font-weight: 600;
+}
+
+.slider-wrap { position: relative; padding: 8px 0; }
+.slider-labels {
+  display: flex; justify-content: space-between;
+  font-size: 11px; color: var(--text2); margin-bottom: 10px;
+}
+input[type=range] {
+  width: 100%; -webkit-appearance: none; appearance: none;
+  height: 4px; border-radius: 2px;
+  background: linear-gradient(to right, var(--amber) 0%, var(--amber) 50%, var(--border) 50%, var(--border) 100%);
+  outline: none; cursor: pointer;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--amber); cursor: pointer;
+  border: 3px solid var(--navy); box-shadow: 0 0 0 2px var(--amber);
+}
+input[type=range]::-moz-range-thumb {
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--amber); cursor: pointer;
+  border: 3px solid var(--navy);
+}
+.slider-value {
+  text-align: center; margin-top: 8px;
+  font-size: 12px; color: var(--amber); font-weight: 600;
+}
+
+/* RIASEC card */
+.riasec-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 28px 24px; margin-bottom: 20px;
+}
+.riasec-q { font-size: 16px; color: var(--cream); margin-bottom: 8px; }
+.riasec-sub { font-size: 13px; color: var(--text); margin-bottom: 24px; }
+.riasec-options { display: flex; gap: 10px; }
+.riasec-btn {
+  flex: 1; padding: 12px 8px; border-radius: 6px;
+  border: 1px solid var(--border); background: var(--navy2);
+  color: var(--text); font-family: var(--font-body);
+  font-size: 13px; font-weight: 500; cursor: pointer;
+  transition: all 0.15s; text-align: center;
+}
+.riasec-btn:hover { border-color: var(--amber); color: var(--cream); }
+.riasec-btn.selected-like { background: rgba(42,122,106,0.2); border-color: var(--teal2); color: var(--teal2); }
+.riasec-btn.selected-neutral { background: rgba(232,160,32,0.1); border-color: var(--amber); color: var(--amber); }
+.riasec-btn.selected-dislike { background: rgba(192,57,43,0.15); border-color: var(--red); color: #e05050; }
+
+/* Life compass */
+.compass-block {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 28px 24px; margin-bottom: 20px;
+}
+.compass-axis {
+  font-size: 14px; color: var(--cream); font-weight: 500; margin-bottom: 20px;
+}
+.compass-ends {
+  display: flex; justify-content: space-between;
+  font-size: 12px; color: var(--text2); margin-bottom: 6px;
+}
+.compass-ends span:last-child { text-align: right; }
+
+/* Reality filter */
+.reality-block {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 28px 24px; margin-bottom: 20px;
+}
+.reality-block h3 {
+  font-size: 14px; font-weight: 600; color: var(--cream); margin-bottom: 16px;
+}
+
+/* Nav buttons */
+.nav-buttons {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--navy2); border-top: 1px solid var(--border);
+  padding: 16px 24px; display: flex; gap: 12px;
+  max-width: 640px; margin: 0 auto;
+}
+.btn-back {
+  padding: 12px 24px; background: transparent;
+  border: 1px solid var(--border); color: var(--text);
+  border-radius: 6px; font-family: var(--font-body);
+  font-size: 14px; cursor: pointer; transition: all 0.2s;
+}
+.btn-back:hover { border-color: var(--cream); color: var(--cream); }
+.btn-next {
+  flex: 1; padding: 12px; background: var(--amber); color: var(--navy);
+  border: none; border-radius: 6px; font-family: var(--font-body);
+  font-weight: 600; font-size: 15px; cursor: pointer; transition: all 0.2s;
+}
+.btn-next:hover { background: var(--amber2); }
+.btn-next:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* EMI calculator inline */
+.emi-result {
+  background: var(--navy); border-radius: 6px; padding: 12px 16px;
+  margin-top: 12px; font-size: 13px;
+}
+.emi-result span { color: var(--amber); font-weight: 600; }
+
+/* ── PREVIEW / PAYWALL ── */
+#screen-preview {
+  padding: 80px 24px 60px; max-width: 700px; margin: 0 auto;
+}
+.preview-header { text-align: center; margin-bottom: 40px; }
+.preview-header h2 {
+  font-family: var(--font-head); font-size: 32px; color: var(--cream); margin-bottom: 8px;
+}
+.preview-header p { font-size: 14px; color: var(--text); }
+
+.charts-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 32px;
+}
+.chart-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 20px; text-align: center;
+}
+.chart-card h3 {
+  font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text2); margin-bottom: 16px;
+}
+.chart-card canvas { max-height: 200px; }
+
+/* Blurred locked content */
+.locked-section { position: relative; }
+.locked-content {
+  filter: blur(6px); user-select: none; pointer-events: none;
+  opacity: 0.7;
+}
+.lock-overlay {
+  position: absolute; inset: 0; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; z-index: 10;
+  background: rgba(10,15,30,0.6); border-radius: 10px;
+}
+.lock-icon { font-size: 32px; margin-bottom: 12px; }
+.lock-overlay h3 {
+  font-family: var(--font-head); font-size: 22px;
+  color: var(--cream); margin-bottom: 8px; text-align: center;
+}
+.lock-overlay p { font-size: 13px; color: var(--text); text-align: center; margin-bottom: 20px; }
+
+.fake-path-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 20px; margin-bottom: 12px;
+}
+.fake-path-title {
+  font-size: 18px; font-weight: 600; color: var(--cream); margin-bottom: 8px;
+}
+.fake-path-body { font-size: 14px; color: var(--text); line-height: 1.6; }
+.fake-narrative {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 24px; margin-bottom: 24px;
+}
+.fake-narrative p { font-size: 15px; color: var(--text); line-height: 1.7; }
+.fade-out {
+  position: relative;
+}
+.fade-out::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 60px;
+  background: linear-gradient(transparent, var(--card));
+}
+
+/* Price box */
+.price-box {
+  background: linear-gradient(135deg, var(--card2), var(--card));
+  border: 1px solid var(--amber); border-radius: 12px;
+  padding: 32px; text-align: center; margin-top: 32px;
+}
+.price-amount {
+  font-family: var(--font-head); font-size: 52px; color: var(--amber); font-weight: 700;
+}
+.price-currency { font-size: 24px; vertical-align: super; }
+.price-label { font-size: 14px; color: var(--text); margin-bottom: 20px; }
+.price-features { list-style: none; margin-bottom: 24px; }
+.price-features li {
+  font-size: 14px; color: var(--text); padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+}
+.price-features li::before { content: "✓ "; color: var(--teal2); }
+
+/* ── PAYMENT SCREEN ── */
+#screen-payment {
+  padding: 80px 24px 60px; max-width: 480px; margin: 0 auto;
+}
+.payment-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 32px; text-align: center;
+}
+.payment-card h2 {
+  font-family: var(--font-head); font-size: 28px;
+  color: var(--cream); margin-bottom: 8px;
+}
+.payment-card p { font-size: 14px; color: var(--text); margin-bottom: 24px; }
+
+.order-number-box {
+  background: var(--navy); border: 1px solid var(--amber);
+  border-radius: 8px; padding: 16px; margin-bottom: 24px;
+}
+.order-number-box .label { font-size: 11px; color: var(--text2); letter-spacing: 0.1em; text-transform: uppercase; }
+.order-number-box .value {
+  font-family: var(--font-head); font-size: 24px; color: var(--amber);
+  font-weight: 700; letter-spacing: 0.05em; margin-top: 4px;
+}
+
+.qr-placeholder {
+  width: 180px; height: 180px; margin: 0 auto 20px;
+  background: white; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; color: #333;
+}
+.qr-placeholder img { width: 100%; height: 100%; border-radius: 8px; }
+
+.upi-id {
+  font-size: 16px; font-weight: 600; color: var(--cream);
+  background: var(--navy); padding: 10px 20px; border-radius: 6px;
+  display: inline-block; margin-bottom: 20px; letter-spacing: 0.05em;
+}
+
+.payment-instructions {
+  font-size: 13px; color: var(--text); text-align: left;
+  background: var(--navy); border-radius: 8px; padding: 16px;
+  margin-bottom: 24px;
+}
+.payment-instructions ol { padding-left: 16px; }
+.payment-instructions li { margin-bottom: 6px; }
+
+.ref-field { margin-bottom: 16px; }
+.ref-field label {
+  display: block; font-size: 12px; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--text2); margin-bottom: 6px;
+}
+.ref-field input {
+  width: 100%; padding: 12px 16px;
+  background: var(--navy); border: 1px solid var(--border);
+  border-radius: 6px; color: var(--cream);
+  font-family: var(--font-body); font-size: 15px; outline: none;
+}
+.ref-field input:focus { border-color: var(--amber); }
+
+.btn-verify {
+  width: 100%; padding: 14px;
+  background: var(--teal); color: white;
+  border: none; border-radius: 6px;
+  font-family: var(--font-body); font-weight: 600;
+  font-size: 15px; cursor: pointer; transition: all 0.2s;
+}
+.btn-verify:hover { background: var(--teal2); }
+
+.payment-note {
+  font-size: 12px; color: var(--text2); margin-top: 16px;
+  padding-top: 16px; border-top: 1px solid var(--border);
+}
+
+/* ── GENERATING SCREEN ── */
+#screen-generating {
+  min-height: 100vh; display: flex; align-items: center;
+  justify-content: center; padding: 24px;
+}
+.generating-card { text-align: center; max-width: 400px; }
+.generating-spinner {
+  width: 60px; height: 60px; margin: 0 auto 24px;
+  border: 3px solid var(--border);
+  border-top-color: var(--amber);
+  border-radius: 50%; animation: spin 1s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.generating-card h2 {
+  font-family: var(--font-head); font-size: 24px;
+  color: var(--cream); margin-bottom: 12px;
+}
+.generating-card p { font-size: 14px; color: var(--text); }
+.generating-steps { list-style: none; margin-top: 24px; text-align: left; }
+.generating-steps li {
+  font-size: 13px; color: var(--text2); padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.step-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--border); flex-shrink: 0;
+  transition: background 0.5s;
+}
+.step-dot.done { background: var(--teal2); }
+.step-dot.active { background: var(--amber); animation: pulse 1s infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+/* ── REPORT SCREEN ── */
+#screen-report {
+  padding: 80px 24px 80px; max-width: 720px; margin: 0 auto;
+}
+.report-header {
+  text-align: center; margin-bottom: 48px;
+  padding-bottom: 32px; border-bottom: 1px solid var(--border);
+}
+.report-header .eyebrow { display: block; margin-bottom: 12px; }
+.report-header h1 {
+  font-family: var(--font-head); font-size: clamp(28px, 6vw, 44px);
+  color: var(--cream); margin-bottom: 8px;
+}
+.report-header .dominant-profile {
+  display: inline-block; background: rgba(232,160,32,0.15);
+  border: 1px solid var(--amber); color: var(--amber);
+  font-size: 13px; font-weight: 600; padding: 6px 16px;
+  border-radius: 20px; letter-spacing: 0.05em; margin-top: 12px;
+}
+
+.report-section { margin-bottom: 40px; }
+.report-section-title {
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--amber); font-weight: 600; margin-bottom: 16px;
+  padding-bottom: 8px; border-bottom: 1px solid var(--border);
+}
+
+.narrative-text {
+  font-size: 16px; color: var(--text); line-height: 1.8; font-weight: 300;
+}
+
+.path-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 24px; margin-bottom: 16px;
+  position: relative; overflow: hidden;
+}
+.path-card::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+  width: 4px; background: var(--amber);
+}
+.path-card.rank-2::before { background: var(--teal); }
+.path-card.rank-3::before { background: var(--text2); }
+
+.path-rank {
+  font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--text2); margin-bottom: 6px;
+}
+.path-title {
+  font-family: var(--font-head); font-size: 22px; color: var(--cream);
+  margin-bottom: 4px;
+}
+.fit-score {
+  display: inline-block; background: rgba(232,160,32,0.15);
+  color: var(--amber); font-size: 12px; font-weight: 600;
+  padding: 2px 10px; border-radius: 10px; margin-bottom: 16px;
+}
+
+.path-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px;
+}
+.path-item {}
+.path-item-label {
+  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text2); margin-bottom: 3px;
+}
+.path-item-value { font-size: 13px; color: var(--cream); }
+
+.ai-badge {
+  display: inline-block; font-size: 11px; font-weight: 600;
+  padding: 3px 10px; border-radius: 10px; margin-left: 8px;
+}
+.ai-low { background: rgba(39,174,96,0.15); color: #40c070; border: 1px solid rgba(39,174,96,0.3); }
+.ai-medium { background: rgba(232,160,32,0.15); color: var(--amber); border: 1px solid rgba(232,160,32,0.3); }
+.ai-high { background: rgba(192,57,43,0.15); color: #e06050; border: 1px solid rgba(192,57,43,0.3); }
+
+.path-why { font-size: 14px; color: var(--text); line-height: 1.6; margin-bottom: 12px; }
+.financial-reality {
+  background: var(--navy); border-radius: 6px; padding: 12px 16px;
+  font-size: 13px; color: var(--text2); margin-top: 12px;
+  border-left: 3px solid var(--amber);
+}
+
+.actions-list { list-style: none; }
+.actions-list li {
+  display: flex; gap: 12px; padding: 14px 0;
+  border-bottom: 1px solid var(--border); font-size: 15px; color: var(--text);
+  line-height: 1.5;
+}
+.actions-list li::before {
+  content: "→"; color: var(--amber); font-weight: 700; flex-shrink: 0;
+}
+
+.warning-box {
+  background: rgba(192,57,43,0.08); border: 1px solid rgba(192,57,43,0.25);
+  border-radius: 10px; padding: 20px 24px;
+}
+.warning-box p { font-size: 15px; color: var(--text); line-height: 1.7; }
+
+.report-charts {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 32px;
+}
+.report-chart-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 20px; text-align: center;
+}
+.report-chart-card h3 {
+  font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text2); margin-bottom: 16px;
+}
+
+.download-btn {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: 100%; padding: 16px;
+  background: transparent; border: 1px solid var(--amber);
+  color: var(--amber); border-radius: 8px;
+  font-family: var(--font-body); font-weight: 600; font-size: 15px;
+  cursor: pointer; transition: all 0.2s; margin-top: 32px;
+}
+.download-btn:hover { background: rgba(232,160,32,0.1); }
+
+/* ── STATUS / TOAST ── */
+.toast {
+  position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
+  background: var(--card2); border: 1px solid var(--border);
+  color: var(--cream); padding: 12px 24px; border-radius: 8px;
+  font-size: 14px; z-index: 200; opacity: 0; transition: opacity 0.3s;
+  white-space: nowrap;
+}
+.toast.show { opacity: 1; }
+.toast.error { border-color: var(--red); color: #e08080; }
+.toast.success { border-color: var(--teal); color: #80d0b0; }
+
+/* Mobile */
+@media (max-width: 480px) {
+  .stats-inner { grid-template-columns: 1fr; gap: 16px; }
+  .charts-row { grid-template-columns: 1fr; }
+  .path-grid { grid-template-columns: 1fr; }
+  .report-charts { grid-template-columns: 1fr; }
+  .riasec-options { flex-direction: column; }
+  .nav-buttons { left: 0; right: 0; max-width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<!-- Progress bar -->
+<div id="progress-bar"><div id="progress-fill"></div></div>
+<div id="progress-label"></div>
+<div class="toast" id="toast"></div>
+
+<!-- ════════════════════════════════════════════════
+     SCREEN 0: LANDING
+════════════════════════════════════════════════ -->
+<div id="screen-landing" class="screen active">
+  <div class="landing-noise"></div>
+
+  <div class="landing-hero">
+    <span class="eyebrow">The Scientific Career Framework</span>
+    <h1 class="landing-title">
+      Stop following<br><em>trends.</em><br>Start reading yourself.
+    </h1>
+    <p class="landing-sub">
+      A 12-minute diagnostic that maps your personality, interests, and life goals
+      to identify the career paths you'll actually thrive in — not just survive in.
+    </p>
+    <button class="cta-primary" onclick="goTo('screen-register')">
+      Start Your Diagnostic →
+    </button>
+    <span class="cta-meta">43 questions · English · ₹199 for full report</span>
+  </div>
+
+  <div class="stats-strip">
+    <div class="stats-inner">
+      <div class="stat-item">
+        <span class="stat-num" id="counter-debt">0</span>
+        <span class="stat-label">Crore in student debt in Kerala alone — driven by emotional decisions</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">50%</span>
+        <span class="stat-label">Pass rate for engineering students — most entered the wrong environment</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">~30%</span>
+        <span class="stat-label">Unemployment rate among graduates — forcing mass career resets</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="how-section">
+    <h2 class="section-title">How the diagnostic works</h2>
+    <ul class="steps-list">
+      <li>
+        <span class="step-num">1</span>
+        <div class="step-content">
+          <h3>Personality Mapping (OCEAN)</h3>
+          <p>25 scenario-based questions reveal your baseline personality traits — the ones that determine where you'll psychologically thrive or break.</p>
+        </div>
+      </li>
+      <li>
+        <span class="step-num">2</span>
+        <div class="step-content">
+          <h3>Interest Identification (RIASEC)</h3>
+          <p>18 activity cards distinguish between what you're able to do and what you actually want to do — a critical distinction most students miss.</p>
+        </div>
+      </li>
+      <li>
+        <span class="step-num">3</span>
+        <div class="step-content">
+          <h3>Life Priority Compass</h3>
+          <p>Define what you want from life beyond work — location, pace, status vs money, and risk tolerance.</p>
+        </div>
+      </li>
+      <li>
+        <span class="step-num">4</span>
+        <div class="step-content">
+          <h3>Financial Reality Check</h3>
+          <p>Map your family's financial capacity against realistic career ROI — the filter that prevents the ₹60L debt trap.</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="powered-by">
+    Powered by <a href="https://raneesh.net" target="_blank">raneesh.net</a> ·
+    Built on the OCEAN + RIASEC scientific framework ·
+    Report generated by AI
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     SCREEN 1: REGISTER
+════════════════════════════════════════════════ -->
+<div id="screen-register" class="screen">
+  <div class="form-screen">
+    <div class="form-card">
+      <h2>Let's begin</h2>
+      <p>Your results and report will be linked to your email. No account needed.</p>
+      <div class="field">
+        <label>Your Name</label>
+        <input type="text" id="reg-name" placeholder="e.g. Arjun Krishnan" autocomplete="name">
+      </div>
+      <div class="field">
+        <label>Email Address</label>
+        <input type="email" id="reg-email" placeholder="your@email.com" autocomplete="email">
+      </div>
+      <button class="btn-full" onclick="handleRegister()">Begin Diagnostic →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     SCREEN 2: MODULE 1 — OCEAN
+════════════════════════════════════════════════ -->
+<div id="screen-ocean" class="screen">
+  <div class="question-screen">
+    <div class="module-header">
+      <div class="module-tag">Module 1 of 4</div>
+      <h2 class="module-title">Personality Mapping</h2>
+      <p class="module-desc">Answer honestly — there are no right or wrong answers. Rate how accurately each statement describes you.</p>
+    </div>
+    <div id="ocean-questions"></div>
+  </div>
+  <div class="nav-buttons">
+    <button class="btn-back" onclick="goTo('screen-register')">← Back</button>
+    <button class="btn-next" id="btn-ocean-next" onclick="handleOceanNext()">Next Module →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     SCREEN 3: MODULE 2 — RIASEC
+════════════════════════════════════════════════ -->
+<div id="screen-riasec" class="screen">
+  <div class="question-screen">
+    <div class="module-header">
+      <div class="module-tag">Module 2 of 4</div>
+      <h2 class="module-title">Interest Mapping</h2>
+      <p class="module-desc">For each activity below, tell us how you feel about it. Be honest — this is about genuine interest, not ability.</p>
+    </div>
+    <div id="riasec-questions"></div>
+  </div>
+  <div class="nav-buttons">
+    <button class="btn-back" onclick="goTo('screen-ocean')">← Back</button>
+    <button class="btn-next" id="btn-riasec-next" onclick="handleRiasecNext()">Next Module →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     SCREEN 4: MODULE 3 — LIFE COMPASS
+════════════════════════════════════════════════ -->
+<div id="screen-compass" class="screen">
+  <div class="question-screen">
+    <div class="module-header">
+      <div class="module-tag">Module 3 of 4</div>
+      <h2 class="module-title">Life Priorities</h2>
+      <p class="module-desc">These sliders map what you want from life, not just from work. Move each to where you genuinely sit — not where you think you should be.</p>
+    </div>
+
+    <div class="compass-block">
+      <div class="compass-axis">Where do you want to live and work?</div>
+      <div class="compass-ends"><span>Stay local (Kerala / hometown)</span><span>Work globally / abroad</span></div>
+      <input type="range" min="0" max="100" value="50" id="life-location" oninput="updateSlider(this)">
+      <div class="slider-value" id="val-life-location">50</div>
+    </div>
+
+    <div class="compass-block">
+      <div class="compass-axis">What matters more to you?</div>
+      <div class="compass-ends"><span>Social status & prestige</span><span>Earning potential & wealth</span></div>
+      <input type="range" min="0" max="100" value="50" id="life-status" oninput="updateSlider(this)">
+      <div class="slider-value" id="val-life-status">50</div>
+    </div>
+
+    <div class="compass-block">
+      <div class="compass-axis">What work pace suits you?</div>
+      <div class="compass-ends"><span>Predictable 9-to-5 schedule</span><span>24/7 high-intensity hustle</span></div>
+      <input type="range" min="0" max="100" value="50" id="life-pace" oninput="updateSlider(this)">
+      <div class="slider-value" id="val-life-pace">50</div>
+    </div>
+
+    <div class="compass-block">
+      <div class="compass-axis">What's your risk appetite?</div>
+      <div class="compass-ends"><span>Stable income & security</span><span>High risk, high reward</span></div>
+      <input type="range" min="0" max="100" value="50" id="life-risk" oninput="updateSlider(this)">
+      <div class="slider-value" id="val-life-risk">50</div>
+    </div>
+    <div style="height:80px"></div>
+  </div>
+  <div class="nav-buttons">
+    <button class="btn-back" onclick="goTo('screen-riasec')">← Back</button>
+    <button class="btn-next" onclick="handleCompassNext()">Next Module →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     SCREEN 5: MODULE 4 — REALITY FILTER
+════════════════════════════════════════════════ -->
+<div id="screen-reality" class="screen">
+  <div class="question-screen">
+    <div class="module-header">
+      <div class="module-tag">Module 4 of 4</div>
+      <h2 class="module-title">Financial Reality</h2>
+      <p class="module-desc">This is the filter that prevents the debt trap. Be accurate — this shapes the financial reality check in your report.</p>
+    </div>
+
+    <div class="reality-block">
+      <h3>Family annual income</h3>
+      <div class="field">
+        <select id="family-income">
+          <option value="">Select range</option>
+          <option value="200000">Below ₹2 Lakh / year</option>
+          <option value="500000">₹2–5 Lakh / year</option>
+          <option value="900000">₹5–9 Lakh / year</option>
+          <option value="1500000">₹9–15 Lakh / year</option>
+          <option value="2500000">₹15–25 Lakh / year</option>
+          <option value="5000000">Above ₹25 Lakh / year</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="reality-block">
+      <h3>Maximum education loan you'd consider</h3>
+      <div class="compass-ends" style="margin-bottom:6px"><span>₹0</span><span>₹50 Lakh</span></div>
+      <input type="range" min="0" max="5000000" step="100000" value="0" id="loan-willingness" oninput="updateLoanSlider(this)">
+      <div class="emi-result" id="emi-result">
+        No loan — full self-funded path only
+      </div>
+    </div>
+
+    <div class="reality-block">
+      <h3>Current academic performance</h3>
+      <div class="field">
+        <select id="marks-band">
+          <option value="">Select your marks range</option>
+          <option value="below60">Below 60%</option>
+          <option value="60-70">60–70%</option>
+          <option value="70-80">70–80%</option>
+          <option value="80-90">80–90%</option>
+          <option value="above90">Above 90%</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="reality-block">
+      <h3>Entrance exams cleared or targeting</h3>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+        <label style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text);cursor:pointer">
+          <input type="checkbox" value="JEE" class="exam-check" style="width:auto"> JEE Mains / Advanced
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text);cursor:pointer">
+          <input type="checkbox" value="NEET" class="exam-check" style="width:auto"> NEET
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text);cursor:pointer">
+          <input type="checkbox" value="CLAT" class="exam-check" style="width:auto"> CLAT (Law)
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text);cursor:pointer">
+          <input type="checkbox" value="CAT" class="exam-check" style="width:auto"> CAT (MBA)
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text);cursor:pointer">
+          <input type="checkbox" value="UPSC" class="exam-check" style="width:auto"> UPSC / Civil Services
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text);cursor:pointer">
+          <input type="checkbox" value="None" class="exam-check" style="width:auto"> None yet
+        </label>
+      </div>
+    </div>
+    <div style="height:80px"></div>
+  </div>
+  <div class="nav-buttons">
+    <button class="btn-back" onclick="goTo('screen-compass')">← Back</button>
+    <button class="btn-next" id="btn-reality-next" onclick="handleRealityNext()">See My Results →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     SCREEN 6: PREVIEW / PAYWALL
+════════════════════════════════════════════════ -->
+<div id="screen-preview" class="screen">
+  <div class="preview-header">
+    <h2>Your Diagnostic is Complete</h2>
+    <p>Here's a preview of what your scores reveal. Unlock the full report below.</p>
+  </div>
+
+  <div class="charts-row">
+    <div class="chart-card">
+      <h3>Personality Profile (OCEAN)</h3>
+      <canvas id="chart-ocean-preview"></canvas>
+    </div>
+    <div class="chart-card">
+      <h3>Interest Profile (RIASEC)</h3>
+      <canvas id="chart-riasec-preview"></canvas>
+    </div>
+  </div>
+
+  <div class="locked-section">
+    <div class="locked-content">
+      <div class="fake-narrative fade-out">
+        <p>You are someone who approaches challenges with a distinctive combination of curiosity and analytical depth. Your personality profile reveals a strong capacity for independent thinking, paired with the kind of structured discipline that allows complex ideas to be transformed into real outcomes. The intersection of your Investigative and Artistic interest scores is particularly revealing — it places you...</p>
+      </div>
+      <div class="fake-path-card">
+        <div class="fake-path-title">Career Path #1 — Unlocked after payment</div>
+        <div class="fake-path-body">Based on your OCEAN profile (O:82, C:71) and dominant RIASEC interests, this path offers a 94% personality-interest alignment. Entry route in India, 5-year salary range, and AI vulnerability assessment included...</div>
+      </div>
+      <div class="fake-path-card">
+        <div class="fake-path-title">Career Path #2 — Unlocked after payment</div>
+        <div class="fake-path-body">A secondary path that matches your life priority compass. Financial reality check: loan vs EMI vs starting salary calculated against your family income...</div>
+      </div>
+    </div>
+    <div class="lock-overlay">
+      <div class="lock-icon">🔒</div>
+      <h3>Your full report is ready</h3>
+      <p>3 ranked career paths · AI vulnerability scores · Financial reality check · Personalised action plan</p>
+    </div>
+  </div>
+
+  <div class="price-box">
+    <div class="price-amount"><span class="price-currency">₹</span>199</div>
+    <div class="price-label">One-time payment · No subscription</div>
+    <ul class="price-features">
+      <li>Personalised 400-word career narrative</li>
+      <li>3 ranked career paths with fit scores</li>
+      <li>AI vulnerability rating per path</li>
+      <li>Financial reality check (loan vs salary)</li>
+      <li>3 immediate action steps</li>
+      <li>Honest warning about family expectations</li>
+      <li>Downloadable PDF report</li>
+    </ul>
+    <button class="btn-full" onclick="handleProceedToPayment()">Unlock Full Report — ₹199 →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     SCREEN 7: PAYMENT
+════════════════════════════════════════════════ -->
+<div id="screen-payment" class="screen">
+  <div class="payment-card">
+    <h2>Complete Payment</h2>
+    <p>Scan the QR code or use the UPI ID below to pay ₹199. Use your order number as the payment reference.</p>
+
+    <div class="order-number-box">
+      <div class="label">Your Order Number</div>
+      <div class="value" id="display-order-number">CB-2026-00001</div>
+    </div>
+
+    <div class="qr-placeholder" id="qr-container">
+      <span style="color:#999;font-size:11px">QR Loading...</span>
+    </div>
+
+    <div class="upi-id" id="display-upi-id">Loading...</div>
+
+    <div class="payment-instructions">
+      <strong style="color:var(--cream);display:block;margin-bottom:8px">How to pay:</strong>
+      <ol>
+        <li>Open any UPI app (GPay, PhonePe, Paytm)</li>
+        <li>Scan the QR or enter the UPI ID above</li>
+        <li>Amount: <strong style="color:var(--amber)">₹199</strong></li>
+        <li>In the "Note/Remarks" field, enter your order number</li>
+        <li>Complete payment and note the transaction ID</li>
+      </ol>
+    </div>
+
+    <div class="ref-field">
+      <label>UPI Transaction ID (from your payment app)</label>
+      <input type="text" id="payment-ref" placeholder="e.g. 426789123456">
+    </div>
+
+    <button class="btn-verify" onclick="handlePaymentSubmit()">I've Paid — Verify & Generate Report →</button>
+
+    <div class="payment-note">
+      Your report will be generated within 2 minutes of payment verification.
+      If there's any issue, email <strong>raneesh.ifars@gmail.com</strong> with your order number.
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     SCREEN 8: GENERATING
+════════════════════════════════════════════════ -->
+<div id="screen-generating" class="screen">
+  <div class="generating-card">
+    <div class="generating-spinner"></div>
+    <h2>Generating Your Blueprint</h2>
+    <p>Analysing your 43 responses and building a personalised career report.</p>
+    <ul class="generating-steps">
+      <li><div class="step-dot active" id="dot-1"></div> Analysing personality profile</li>
+      <li><div class="step-dot" id="dot-2"></div> Mapping interest clusters</li>
+      <li><div class="step-dot" id="dot-3"></div> Matching career paths</li>
+      <li><div class="step-dot" id="dot-4"></div> Running financial reality check</li>
+      <li><div class="step-dot" id="dot-5"></div> Writing your narrative</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     SCREEN 9: REPORT
+════════════════════════════════════════════════ -->
+<div id="screen-report" class="screen">
+  <div id="report-content">
+    <div class="report-header">
+      <span class="eyebrow">Career Blueprint Report</span>
+      <h1>Your Career Intelligence Report</h1>
+      <div class="dominant-profile" id="report-profile">—</div>
+    </div>
+
+    <div class="report-charts">
+      <div class="report-chart-card">
+        <h3>Personality (OCEAN)</h3>
+        <canvas id="chart-ocean-report"></canvas>
+      </div>
+      <div class="report-chart-card">
+        <h3>Interests (RIASEC)</h3>
+        <canvas id="chart-riasec-report"></canvas>
+      </div>
+    </div>
+
+    <div class="report-section">
+      <div class="report-section-title">Who You Are</div>
+      <p class="narrative-text" id="report-narrative">—</p>
+    </div>
+
+    <div class="report-section">
+      <div class="report-section-title">Your Top 3 Career Paths</div>
+      <div id="report-paths"></div>
+    </div>
+
+    <div class="report-section">
+      <div class="report-section-title">What To Do Right Now</div>
+      <ul class="actions-list" id="report-actions"></ul>
+    </div>
+
+    <div class="report-section">
+      <div class="report-section-title">One Honest Warning</div>
+      <div class="warning-box">
+        <p id="report-warning">—</p>
+      </div>
+    </div>
+  </div>
+
+  <button class="download-btn" onclick="downloadPDF()">
+    ↓ Download PDF Report
+  </button>
+
+  <div class="powered-by" style="margin-top:48px">
+    Powered by <a href="https://raneesh.net" target="_blank">raneesh.net</a>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════ -->
+<script>
+const API = 'https://career-blueprint-api.raneesh-ifars.workers.dev';
+
+// ── State ────────────────────────────────
+const state = {
+  name: '', email: '',
+  session_token: null, session_id: null, customer_id: null,
+  order_number: null, upi_id: null,
+  ocean: {o:50, c:50, e:50, a:50, n:50},
+  riasec: {r:0, i:0, a:0, s:0, e:0, c:0},
+  riasec_raw: {}, // per-question answers
+  life: {location:50, status:50, pace:50, risk:50},
+  reality: {family_income:null, loan_willingness:0, marks_band:null, exams_cleared:null},
+  report: null
+};
+
+function saveState() { localStorage.setItem('cb_state', JSON.stringify(state)); }
+function loadState() {
+  const s = localStorage.getItem('cb_state');
+  if (s) Object.assign(state, JSON.parse(s));
+}
+
+// ── Navigation ──────────────────────────
+function goTo(screenId) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(screenId).classList.add('active');
+  window.scrollTo(0, 0);
+  updateProgress(screenId);
+}
+
+const screenOrder = ['screen-landing','screen-register','screen-ocean','screen-riasec','screen-compass','screen-reality','screen-preview','screen-payment','screen-generating','screen-report'];
+function updateProgress(screenId) {
+  const idx = screenOrder.indexOf(screenId);
+  const pct = idx <= 1 ? 0 : Math.round((idx / (screenOrder.length - 1)) * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = pct > 0 ? `${pct}%` : '';
+}
+
+// ── Toast ────────────────────────────────
+function showToast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = `toast show ${type}`;
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ── Slider update ─────────────────────────
+function updateSlider(el) {
+  const id = el.id;
+  const valEl = document.getElementById('val-' + id);
+  if (valEl) valEl.textContent = el.value;
+  // Update gradient
+  const pct = (el.value - el.min) / (el.max - el.min) * 100;
+  el.style.background = `linear-gradient(to right, var(--amber) ${pct}%, var(--border) ${pct}%)`;
+}
+
+function updateLoanSlider(el) {
+  const val = parseInt(el.value);
+  const lakhVal = val / 100000;
+  const pct = (el.value - el.min) / (el.max - el.min) * 100;
+  el.style.background = `linear-gradient(to right, var(--amber) ${pct}%, var(--border) ${pct}%)`;
+
+  const emiEl = document.getElementById('emi-result');
+  if (val === 0) {
+    emiEl.innerHTML = 'No loan — full self-funded path only';
+  } else {
+    const principal = val;
+    const rate = 0.10 / 12;
+    const n = 120; // 10 years
+    const emi = Math.round(principal * rate * Math.pow(1+rate, n) / (Math.pow(1+rate, n) - 1));
+    const total = Math.round(emi * n / 100000);
+    emiEl.innerHTML = `Loan: <span>₹${lakhVal}L</span> → EMI: <span>₹${emi.toLocaleString('en-IN')}/mo</span> for 10 yrs → Total repayment: <span>₹${total}L</span>`;
+  }
+}
+
+// ── OCEAN Questions ───────────────────────
+const OCEAN_QUESTIONS = [
+  // Openness (5)
+  {id:'o1', trait:'O', text:'You are handed a complex project with zero instructions. Your first reaction is excitement about figuring it out.'},
+  {id:'o2', trait:'O', text:'You regularly try new things — food, routes, approaches — even when the familiar option is comfortable.'},
+  {id:'o3', trait:'O', text:'Abstract ideas and hypothetical scenarios genuinely interest you, not just practical applications.'},
+  {id:'o4', trait:'O', text:'You enjoy questioning established ways of doing things and imagining alternative approaches.'},
+  {id:'o5', trait:'O', text:'You find yourself drawn to creative work — writing, design, art, music — even outside formal settings.'},
+  // Conscientiousness (5)
+  {id:'c1', trait:'C', text:'Your study materials, notes, and files are typically well-organised and easy to locate.'},
+  {id:'c2', trait:'C', text:'When you commit to something, you follow through — even when motivation drops mid-way.'},
+  {id:'c3', trait:'C', text:'You plan your work before starting it, rather than figuring it out as you go.'},
+  {id:'c4', trait:'C', text:'You rarely miss deadlines — you tend to complete things ahead of time rather than at the last minute.'},
+  {id:'c5', trait:'C', text:'Details matter to you — you notice errors others miss and prefer to do things properly.'},
+  // Extraversion (5)
+  {id:'e1', trait:'E', text:'After a full day of working in a group, you feel energised rather than drained.'},
+  {id:'e2', trait:'E', text:'You are usually the one to start conversations with new people in unfamiliar settings.'},
+  {id:'e3', trait:'E', text:'You prefer working in teams and open environments over working alone in quiet spaces.'},
+  {id:'e4', trait:'E', text:'Speaking in front of a group — presenting, debating, performing — comes naturally to you.'},
+  {id:'e5', trait:'E', text:'You have a wide social circle and actively maintain many friendships and connections.'},
+  // Agreeableness (5)
+  {id:'a1', trait:'A', text:'When a friend's plan has a clear flaw, you point it out directly rather than going along with it.'},
+  {id:'a2', trait:'A', text:'You find it easy to disagree with authority figures when you believe they are wrong.'},
+  {id:'a3', trait:'A', text:'Negotiating hard for what you want — even at someone else's expense — feels comfortable to you.'},
+  {id:'a4', trait:'A', text:'You would rather challenge a poor group decision than keep harmony by staying quiet.'},
+  {id:'a5', trait:'A', text:'Making unpopular decisions that you believe are right is something you can do without much discomfort.'},
+  // Neuroticism (5) — reversed: high score = high stability
+  {id:'n1', trait:'N', text:'The night before a major exam or presentation, you sleep reasonably well.'},
+  {id:'n2', trait:'N', text:'When things go wrong unexpectedly, you adjust quickly without dwelling on it.'},
+  {id:'n3', trait:'N', text:'You rarely experience strong anxiety or worry about things beyond your control.'},
+  {id:'n4', trait:'N', text:'High-pressure situations with real consequences do not significantly affect your performance.'},
+  {id:'n5', trait:'N', text:'You can make important decisions quickly without excessive second-guessing or regret afterward.'},
+];
+
+function renderOceanQuestions() {
+  const container = document.getElementById('ocean-questions');
+  container.innerHTML = OCEAN_QUESTIONS.map((q, i) => `
+    <div class="q-block" id="qblock-${q.id}">
+      <div class="q-trait">${{O:'Openness',C:'Conscientiousness',E:'Extraversion',A:'Agreeableness',N:'Emotional Stability'}[q.trait]}</div>
+      <div class="q-text">${i+1}. ${q.text}</div>
+      <div class="slider-wrap">
+        <div class="slider-labels"><span>Strongly Disagree</span><span>Strongly Agree</span></div>
+        <input type="range" min="1" max="100" value="50" id="ocean-${q.id}"
+          oninput="onOceanChange('${q.id}', '${q.trait}', this)">
+        <div class="slider-value" id="oval-${q.id}">50</div>
+      </div>
+    </div>
+  `).join('');
+  // Init all gradients
+  document.querySelectorAll('#ocean-questions input[type=range]').forEach(el => {
+    el.style.background = `linear-gradient(to right, var(--amber) 50%, var(--border) 50%)`;
+  });
+}
+
+const oceanAnswered = new Set();
+function onOceanChange(qid, trait, el) {
+  const val = parseInt(el.value);
+  document.getElementById('oval-' + qid).textContent = val;
+  const pct = (val - 1) / 99 * 100;
+  el.style.background = `linear-gradient(to right, var(--amber) ${pct}%, var(--border) ${pct}%)`;
+  document.getElementById('qblock-' + qid).classList.add('answered');
+  oceanAnswered.add(qid);
+}
+
+function handleOceanNext() {
+  // Collect all values regardless of whether touched
+  const traitScores = {O:[],C:[],E:[],A:[],N:[]};
+  OCEAN_QUESTIONS.forEach(q => {
+    const val = parseInt(document.getElementById('ocean-' + q.id).value);
+    traitScores[q.trait].push(val);
+  });
+  // Average per trait
+  for (const t in traitScores) {
+    const avg = traitScores[t].reduce((a,b) => a+b, 0) / traitScores[t].length;
+    state.ocean[t.toLowerCase()] = Math.round(avg);
+  }
+  saveState();
+  goTo('screen-riasec');
+}
+
+// ── RIASEC Questions ──────────────────────
+const RIASEC_QUESTIONS = [
+  {id:'r1', type:'R', text:'Building or assembling something physical with your hands', sub:'e.g. setting up equipment, building a model, fixing a machine'},
+  {id:'r2', type:'R', text:'Working with tools, machinery, or technical equipment', sub:'e.g. operating devices, construction, hardware work'},
+  {id:'r3', type:'R', text:'Physical, outdoor, or hands-on work environments', sub:'e.g. fieldwork, manufacturing, trades, sports coaching'},
+  {id:'i1', type:'I', text:'Reading deeply about why something works the way it does', sub:'e.g. research papers, scientific explanations, investigative articles'},
+  {id:'i2', type:'I', text:'Solving complex analytical or technical problems', sub:'e.g. maths puzzles, debugging, research design, data analysis'},
+  {id:'i3', type:'I', text:'Conducting experiments or systematic investigations', sub:'e.g. lab work, user research, testing hypotheses'},
+  {id:'a1', type:'A', text:'Designing something from scratch — visual or structural', sub:'e.g. posters, interfaces, logos, architecture, layouts'},
+  {id:'a2', type:'A', text:'Writing creatively or producing original content', sub:'e.g. stories, scripts, articles, video content, music'},
+  {id:'a3', type:'A', text:'Expressing ideas through an artistic or creative medium', sub:'e.g. photography, illustration, film, performance, product design'},
+  {id:'s1', type:'S', text:'Teaching or explaining a concept to someone who doesn\'t understand it', sub:'e.g. tutoring, training, coaching, mentoring'},
+  {id:'s2', type:'S', text:'Counselling, supporting, or helping someone work through a problem', sub:'e.g. career advice, mental health support, social work'},
+  {id:'s3', type:'S', text:'Organising and leading group activities or community events', sub:'e.g. event management, team building, volunteer coordination'},
+  {id:'e1', type:'E', text:'Persuading or convincing others to adopt your view or buy something', sub:'e.g. sales, debate, negotiation, pitching ideas'},
+  {id:'e2', type:'E', text:'Starting something new from nothing — a project, club, or venture', sub:'e.g. entrepreneurship, launching campaigns, creating new systems'},
+  {id:'e3', type:'E', text:'Leading a team toward a goal and being accountable for outcomes', sub:'e.g. project management, team leadership, executive roles'},
+  {id:'c1', type:'C', text:'Following detailed procedures and checklists precisely', sub:'e.g. accounting, quality control, compliance, administration'},
+  {id:'c2', type:'C', text:'Working with data, numbers, and structured records', sub:'e.g. bookkeeping, data entry, spreadsheet management, finance'},
+  {id:'c3', type:'C', text:'Maintaining order, accuracy, and consistency in processes', sub:'e.g. operations, auditing, record keeping, logistics'},
+];
+
+function renderRiasecQuestions() {
+  const container = document.getElementById('riasec-questions');
+  container.innerHTML = RIASEC_QUESTIONS.map((q, i) => `
+    <div class="riasec-card" id="rcard-${q.id}">
+      <div class="q-trait">${{R:'Realistic',I:'Investigative',A:'Artistic',S:'Social',E:'Enterprising',C:'Conventional'}[q.type]}</div>
+      <div class="riasec-q">${i+1}. ${q.text}</div>
+      <div class="riasec-sub">${q.sub}</div>
+      <div class="riasec-options">
+        <button class="riasec-btn" onclick="selectRiasec('${q.id}', '${q.type}', 'like', this)">👍 Like it</button>
+        <button class="riasec-btn" onclick="selectRiasec('${q.id}', '${q.type}', 'neutral', this)">😐 Neutral</button>
+        <button class="riasec-btn" onclick="selectRiasec('${q.id}', '${q.type}', 'dislike', this)">👎 Dislike it</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function selectRiasec(qid, type, choice, btn) {
+  const card = document.getElementById('rcard-' + qid);
+  card.querySelectorAll('.riasec-btn').forEach(b => b.className = 'riasec-btn');
+  btn.classList.add(choice === 'like' ? 'selected-like' : choice === 'neutral' ? 'selected-neutral' : 'selected-dislike');
+  state.riasec_raw[qid] = {type, choice};
+}
+
+function handleRiasecNext() {
+  // Calculate RIASEC scores
+  const scores = {R:0,I:0,A:0,S:0,E:0,C:0};
+  const counts = {R:0,I:0,A:0,S:0,E:0,C:0};
+  RIASEC_QUESTIONS.forEach(q => {
+    const ans = state.riasec_raw[q.id];
+    const pts = ans ? (ans.choice === 'like' ? 100 : ans.choice === 'neutral' ? 50 : 0) : 50;
+    scores[q.type] += pts;
+    counts[q.type]++;
+  });
+  for (const t in scores) {
+    state.riasec[t.toLowerCase()] = counts[t] > 0 ? Math.round(scores[t] / counts[t]) : 50;
+  }
+  saveState();
+  goTo('screen-compass');
+}
+
+// ── Compass ─────────────────────────────
+function handleCompassNext() {
+  state.life.location = parseInt(document.getElementById('life-location').value);
+  state.life.status = parseInt(document.getElementById('life-status').value);
+  state.life.pace = parseInt(document.getElementById('life-pace').value);
+  state.life.risk = parseInt(document.getElementById('life-risk').value);
+  saveState();
+  goTo('screen-reality');
+}
+
+// ── Reality Filter ───────────────────────
+function handleRealityNext() {
+  state.reality.family_income = parseInt(document.getElementById('family-income').value) || null;
+  state.reality.loan_willingness = parseInt(document.getElementById('loan-willingness').value) || 0;
+  state.reality.marks_band = document.getElementById('marks-band').value || null;
+  const exams = Array.from(document.querySelectorAll('.exam-check:checked')).map(e => e.value);
+  state.reality.exams_cleared = exams.length > 0 ? exams.join(',') : null;
+  saveState();
+
+  // Save scores to API
+  saveScoresToAPI();
+}
+
+async function saveScoresToAPI() {
+  if (!state.session_token) { goTo('screen-preview'); renderPreviewCharts(); return; }
+  try {
+    const res = await fetch(`${API}/api/session/save-scores`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        session_token: state.session_token,
+        ocean: state.ocean,
+        riasec: state.riasec,
+        life: state.life,
+        reality: state.reality
+      })
+    });
+    await res.json();
+  } catch(e) { console.error(e); }
+  goTo('screen-preview');
+  renderPreviewCharts();
+}
+
+// ── Register ─────────────────────────────
+async function handleRegister() {
+  const name = document.getElementById('reg-name').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  if (!name) { showToast('Please enter your name', 'error'); return; }
+  if (!email || !email.includes('@')) { showToast('Please enter a valid email', 'error'); return; }
+
+  state.name = name; state.email = email;
+
+  const btn = document.querySelector('#screen-register .btn-full');
+  btn.disabled = true; btn.textContent = 'Setting up...';
+
+  try {
+    const res = await fetch(`${API}/api/session/create`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({email, name})
+    });
+    const data = await res.json();
+    if (data.session_token) {
+      state.session_token = data.session_token;
+      state.session_id = data.session_id;
+      state.customer_id = data.customer_id;
+      saveState();
+    }
+  } catch(e) { console.error('API error, continuing offline'); }
+
+  btn.disabled = false; btn.textContent = 'Begin Diagnostic →';
+  renderOceanQuestions();
+  renderRiasecQuestions();
+  goTo('screen-ocean');
+}
+
+// ── Preview Charts ────────────────────────
+let previewOceanChart, previewRiasecChart;
+function renderPreviewCharts() {
+  const oceanLabels = ['Openness','Conscientiousness','Extraversion','Agreeableness','Stability'];
+  const oceanData = [state.ocean.o, state.ocean.c, state.ocean.e, state.ocean.a, state.ocean.n];
+  const riasecLabels = ['Realistic','Investigative','Artistic','Social','Enterprising','Conventional'];
+  const riasecData = [state.riasec.r, state.riasec.i, state.riasec.a, state.riasec.s, state.riasec.e, state.riasec.c];
+
+  if (previewOceanChart) previewOceanChart.destroy();
+  if (previewRiasecChart) previewRiasecChart.destroy();
+
+  previewOceanChart = new Chart(document.getElementById('chart-ocean-preview'), {
+    type: 'radar',
+    data: {
+      labels: oceanLabels,
+      datasets: [{data: oceanData, backgroundColor: 'rgba(232,160,32,0.15)', borderColor: '#e8a020', pointBackgroundColor: '#e8a020', borderWidth: 2}]
+    },
+    options: {scales: {r: {min:0, max:100, ticks:{display:false}, grid:{color:'rgba(255,255,255,0.05)'}, pointLabels:{color:'#8090a0',font:{size:10}}}}, plugins:{legend:{display:false}}}
+  });
+
+  previewRiasecChart = new Chart(document.getElementById('chart-riasec-preview'), {
+    type: 'radar',
+    data: {
+      labels: riasecLabels,
+      datasets: [{data: riasecData, backgroundColor: 'rgba(42,122,106,0.15)', borderColor: '#2a7a6a', pointBackgroundColor: '#2a7a6a', borderWidth: 2}]
+    },
+    options: {scales: {r: {min:0, max:100, ticks:{display:false}, grid:{color:'rgba(255,255,255,0.05)'}, pointLabels:{color:'#8090a0',font:{size:10}}}}, plugins:{legend:{display:false}}}
+  });
+}
+
+// ── Payment ──────────────────────────────
+async function handleProceedToPayment() {
+  if (!state.session_token) {
+    showToast('Session error. Please restart.', 'error'); return;
+  }
+  const btn = document.querySelector('#screen-preview .btn-full');
+  btn.disabled = true; btn.textContent = 'Creating order...';
+
+  try {
+    const res = await fetch(`${API}/api/order/create`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({session_token: state.session_token})
+    });
+    const data = await res.json();
+    if (data.already_paid) {
+      pollForReport();
+      return;
+    }
+    state.order_number = data.order_number;
+    state.upi_id = data.upi_id;
+    saveState();
+    document.getElementById('display-order-number').textContent = data.order_number;
+    document.getElementById('display-upi-id').textContent = data.upi_id;
+    // Render QR using Google Charts API
+    const upiLink = encodeURIComponent(data.upi_link || `upi://pay?pa=${data.upi_id}&am=199&cu=INR&tn=${data.order_number}`);
+    document.getElementById('qr-container').innerHTML = `<img src="https://chart.googleapis.com/chart?chs=180x180&cht=qr&chl=${upiLink}" alt="UPI QR Code">`;
+    goTo('screen-payment');
+  } catch(e) {
+    showToast('Error creating order. Try again.', 'error');
+    console.error(e);
+  }
+  btn.disabled = false; btn.textContent = 'Unlock Full Report — ₹199 →';
+}
+
+async function handlePaymentSubmit() {
+  const ref = document.getElementById('payment-ref').value.trim();
+  if (!ref) { showToast('Please enter your UPI transaction ID', 'error'); return; }
+
+  const btn = document.querySelector('.btn-verify');
+  btn.disabled = true; btn.textContent = 'Submitting...';
+
+  // Store ref locally, show generating screen, poll for report
+  showToast('Payment submitted. Generating your report...', 'success');
+  goTo('screen-generating');
+  animateGeneratingSteps();
+  pollForReport(ref);
+
+  btn.disabled = false;
+}
+
+// ── Poll for report ───────────────────────
+async function pollForReport(paymentRef) {
+  if (!state.session_token) return;
+  let attempts = 0;
+  const maxAttempts = 30; // 2.5 minutes
+
+  const poll = setInterval(async () => {
+    attempts++;
+    try {
+      const res = await fetch(`${API}/api/report/${state.session_token}`);
+      const data = await res.json();
+      if (data.status === 'report_generated' && data.report) {
+        clearInterval(poll);
+        state.report = data.report;
+        saveState();
+        renderReport(data.report);
+        goTo('screen-report');
+      } else if (attempts >= maxAttempts) {
+        clearInterval(poll);
+        showToast('Report taking longer than expected. We\'ll email you when it\'s ready.', 'error');
+      }
+    } catch(e) { console.error(e); }
+  }, 5000);
+}
+
+function animateGeneratingSteps() {
+  const dots = [1,2,3,4,5];
+  let i = 0;
+  const interval = setInterval(() => {
+    if (i > 0) document.getElementById(`dot-${i}`)?.classList.replace('active','done');
+    i++;
+    if (i <= dots.length) document.getElementById(`dot-${i}`)?.classList.add('active');
+    else clearInterval(interval);
+  }, 1800);
+}
+
+// ── Render Report ─────────────────────────
+let reportOceanChart, reportRiasecChart;
+function renderReport(r) {
+  document.getElementById('report-profile').textContent = r.dominant_profile || '—';
+  document.getElementById('report-narrative').textContent = r.personality_narrative || '—';
+  document.getElementById('report-warning').textContent = r.honest_warning || '—';
+
+  // Actions
+  const actionsEl = document.getElementById('report-actions');
+  actionsEl.innerHTML = (r.actions_now || []).map(a => `<li>${a}</li>`).join('');
+
+  // Paths
+  const pathsEl = document.getElementById('report-paths');
+  pathsEl.innerHTML = (r.career_paths || []).map(p => `
+    <div class="path-card rank-${p.rank}">
+      <div class="path-rank">Career Path #${p.rank}</div>
+      <div class="path-title">${p.title}
+        <span class="ai-badge ai-${(p.ai_vulnerability||'').toLowerCase()}">${p.ai_vulnerability} AI Risk</span>
+      </div>
+      <div class="fit-score">Fit Score: ${p.fit_score}%</div>
+      <div class="path-why">${p.why_it_fits}</div>
+      <div class="path-grid">
+        <div class="path-item"><div class="path-item-label">Entry Route</div><div class="path-item-value">${p.entry_route}</div></div>
+        <div class="path-item"><div class="path-item-label">5-Year Salary</div><div class="path-item-value">${p.salary_5yr}</div></div>
+      </div>
+      <div class="financial-reality">${p.financial_reality}</div>
+    </div>
+  `).join('');
+
+  // Charts
+  const oceanLabels = ['Openness','Conscientiousness','Extraversion','Agreeableness','Stability'];
+  const oceanData = [state.ocean.o, state.ocean.c, state.ocean.e, state.ocean.a, state.ocean.n];
+  const riasecLabels = ['Realistic','Investigative','Artistic','Social','Enterprising','Conventional'];
+  const riasecData = [state.riasec.r, state.riasec.i, state.riasec.a, state.riasec.s, state.riasec.e, state.riasec.c];
+
+  if (reportOceanChart) reportOceanChart.destroy();
+  if (reportRiasecChart) reportRiasecChart.destroy();
+
+  reportOceanChart = new Chart(document.getElementById('chart-ocean-report'), {
+    type: 'radar',
+    data: {labels: oceanLabels, datasets: [{data: oceanData, backgroundColor: 'rgba(232,160,32,0.15)', borderColor: '#e8a020', pointBackgroundColor: '#e8a020', borderWidth: 2}]},
+    options: {scales: {r: {min:0, max:100, ticks:{display:false}, grid:{color:'rgba(255,255,255,0.05)'}, pointLabels:{color:'#8090a0',font:{size:10}}}}, plugins:{legend:{display:false}}}
+  });
+  reportRiasecChart = new Chart(document.getElementById('chart-riasec-report'), {
+    type: 'radar',
+    data: {labels: riasecLabels, datasets: [{data: riasecData, backgroundColor: 'rgba(42,122,106,0.15)', borderColor: '#2a7a6a', pointBackgroundColor: '#2a7a6a', borderWidth: 2}]},
+    options: {scales: {r: {min:0, max:100, ticks:{display:false}, grid:{color:'rgba(255,255,255,0.05)'}, pointLabels:{color:'#8090a0',font:{size:10}}}}, plugins:{legend:{display:false}}}
+  });
+}
+
+// ── PDF Download ──────────────────────────
+function downloadPDF() {
+  const el = document.getElementById('report-content');
+  const opt = {
+    margin: 10,
+    filename: `CareerBlueprint-${state.name || 'Report'}.pdf`,
+    image: {type: 'jpeg', quality: 0.95},
+    html2canvas: {scale: 2, backgroundColor: '#0a0f1e'},
+    jsPDF: {unit: 'mm', format: 'a4', orientation: 'portrait'}
+  };
+  html2pdf().set(opt).from(el).save();
+}
+
+// ── Counter animation ─────────────────────
+function animateCounter(el, target, suffix='') {
+  let current = 0;
+  const step = target / 60;
+  const timer = setInterval(() => {
+    current = Math.min(current + step, target);
+    el.textContent = Math.round(current).toLocaleString('en-IN') + suffix;
+    if (current >= target) clearInterval(timer);
+  }, 30);
+}
+
+// ── Init ──────────────────────────────────
+loadState();
+// Animate debt counter on load
+setTimeout(() => {
+  animateCounter(document.getElementById('counter-debt'), 10000, ' Cr');
+}, 500);
+
+// Init all range sliders
+document.querySelectorAll('input[type=range]').forEach(el => {
+  const pct = (el.value - el.min) / (el.max - el.min) * 100;
+  el.style.background = `linear-gradient(to right, var(--amber) ${pct}%, var(--border) ${pct}%)`;
+});
+</script>
+</body>
+</html>
