@@ -9,6 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <style>
 :root {
@@ -331,8 +332,20 @@ input[type=range]::-moz-range-thumb {
 .nav-buttons {
   position: fixed; bottom: 0; left: 0; right: 0;
   background: var(--navy2); border-top: 1px solid var(--border);
-  padding: 16px 24px; display: flex; gap: 12px;
-  max-width: 640px; margin: 0 auto;
+  padding: 16px 24px; display: none; gap: 12px;
+  max-width: 640px; margin: 0 auto; z-index: 50;
+}
+.screen.active .nav-buttons {
+  display: flex;
+}
+/* Landing and non-question screens should never show nav */
+#screen-landing .nav-buttons,
+#screen-register .nav-buttons,
+#screen-preview .nav-buttons,
+#screen-payment .nav-buttons,
+#screen-generating .nav-buttons,
+#screen-report .nav-buttons {
+  display: none !important;
 }
 .btn-back {
   padding: 12px 24px; background: transparent;
@@ -1899,9 +1912,16 @@ async function handleProceedToPayment() {
     saveState();
     document.getElementById('display-order-number').textContent = data.order_number;
     document.getElementById('display-upi-id').textContent = data.upi_id;
-    // Render QR using Google Charts API
-    const upiLink = encodeURIComponent(data.upi_link || `upi://pay?pa=${data.upi_id}&am=199&cu=INR&tn=${data.order_number}`);
-    document.getElementById('qr-container').innerHTML = `<img src="https://chart.googleapis.com/chart?chs=180x180&cht=qr&chl=${upiLink}" alt="UPI QR Code">`;
+    // Render QR using QRCode.js
+    const upiString = data.upi_link || `upi://pay?pa=${data.upi_id}&pn=CareerBlueprint&am=199&cu=INR&tn=${data.order_number}`;
+    const qrContainer = document.getElementById('qr-container');
+    qrContainer.innerHTML = '';
+    new QRCode(qrContainer, {
+      text: upiString,
+      width: 180, height: 180,
+      colorDark: '#000000', colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.M
+    });
     goTo('screen-payment');
   } catch(e) {
     showToast('Error creating order. Try again.', 'error');
@@ -1917,20 +1937,36 @@ async function handlePaymentSubmit() {
   const btn = document.querySelector('.btn-verify');
   btn.disabled = true; btn.textContent = 'Submitting...';
 
-  // Store ref locally, show generating screen, poll for report
-  showToast('Payment submitted. Generating your report...', 'success');
-  goTo('screen-generating');
-  animateGeneratingSteps();
-  pollForReport(ref);
+  // Save payment ref to state
+  state.payment_ref = ref;
+  saveState();
+
+  // Try to notify via worker (best effort)
+  try {
+    await fetch(`${API}/api/payment/notify`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        session_token: state.session_token,
+        order_number: state.order_number,
+        payment_ref: ref
+      })
+    });
+  } catch(e) { console.error('notify error', e); }
 
   btn.disabled = false;
+  goTo('screen-generating');
+  animateGeneratingSteps();
+
+  // Poll for up to 5 minutes — admin will verify and trigger report
+  pollForReport(ref);
 }
 
 // ── Poll for report ───────────────────────
 async function pollForReport(paymentRef) {
   if (!state.session_token) return;
   let attempts = 0;
-  const maxAttempts = 30; // 2.5 minutes
+  const maxAttempts = 60; // 5 minutes
 
   const poll = setInterval(async () => {
     attempts++;
@@ -1945,10 +1981,49 @@ async function pollForReport(paymentRef) {
         goTo('screen-report');
       } else if (attempts >= maxAttempts) {
         clearInterval(poll);
-        showToast('Report taking longer than expected. We\'ll email you when it\'s ready.', 'error');
+        // Show waiting screen with manual check button
+        showWaitingScreen();
       }
     } catch(e) { console.error(e); }
   }, 5000);
+}
+
+function showWaitingScreen() {
+  document.getElementById('screen-generating').innerHTML = `
+    <div class="generating-card">
+      <div style="font-size:48px;margin-bottom:20px">⏳</div>
+      <h2>Payment Under Verification</h2>
+      <p style="margin-bottom:24px">Your payment reference <strong style="color:var(--amber)">${state.payment_ref || ''}</strong> has been submitted.<br>Reports are generated within 30 minutes of verification.</p>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:24px;text-align:left">
+        <div style="font-size:12px;color:var(--text2);margin-bottom:6px">ORDER NUMBER</div>
+        <div style="font-size:20px;color:var(--amber);font-weight:700;font-family:var(--font-head)">${state.order_number || ''}</div>
+      </div>
+      <button class="btn-full" onclick="checkReportReady()" style="margin-bottom:12px">Check If My Report Is Ready</button>
+      <p style="font-size:12px;color:var(--text2)">Questions? Email <a href="mailto:raneesh.ifars@gmail.com" style="color:var(--amber)">raneesh.ifars@gmail.com</a> with your order number.</p>
+    </div>
+  `;
+}
+
+async function checkReportReady() {
+  if (!state.session_token) return;
+  const btn = document.querySelector('#screen-generating .btn-full');
+  if (btn) { btn.textContent = 'Checking...'; btn.disabled = true; }
+  try {
+    const res = await fetch(`${API}/api/report/${state.session_token}`);
+    const data = await res.json();
+    if (data.status === 'report_generated' && data.report) {
+      state.report = data.report;
+      saveState();
+      renderReport(data.report);
+      goTo('screen-report');
+    } else {
+      if (btn) { btn.textContent = 'Check If My Report Is Ready'; btn.disabled = false; }
+      showToast('Not ready yet — we\'ll process it shortly.', 'error');
+    }
+  } catch(e) {
+    if (btn) { btn.textContent = 'Check If My Report Is Ready'; btn.disabled = false; }
+    showToast('Connection error. Try again.', 'error');
+  }
 }
 
 function animateGeneratingSteps() {
