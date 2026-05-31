@@ -3,7 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Career Blueprint — Admin</title>
+<title>Career Blueprint — Admin Dashboard</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%231b2236'/%3E%3Cpolygon points='32,10 35,32 32,29 29,32' fill='%23e8a020'/%3E%3Cpolygon points='32,54 35,32 32,35 29,32' fill='%233a4a70'/%3E%3Ccircle cx='32' cy='32' r='3.5' fill='%23e8a020'/%3E%3Ccircle cx='32' cy='32' r='1.5' fill='%231b2236'/%3E%3Cline x1='32' y1='5' x2='32' y2='11' stroke='%23e8a020' stroke-width='2'/%3E%3C/svg%3E">
+<meta name="theme-color" content="#1b2236">
+<meta name="robots" content="noindex,nofollow">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
@@ -33,7 +36,7 @@ body{font-family:var(--font);background:var(--navy);color:var(--cream);min-heigh
 /* DASHBOARD */
 #dashboard{display:none;}
 .topbar{background:var(--card);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
-.topbar-logo{font-size:15px;font-weight:600;color:var(--cream);}
+.topbar-logo{display:flex;align-items:center;gap:10px;}
 .topbar-logo span{color:var(--amber);}
 .topbar-right{display:flex;align-items:center;gap:10px;}
 .btn-sm{padding:7px 14px;border-radius:6px;font-family:var(--font);font-size:12px;font-weight:500;cursor:pointer;transition:all .2s;border:1px solid var(--border);background:transparent;color:var(--text);}
@@ -172,7 +175,20 @@ tr:hover td{background:rgba(255,255,255,.02);}
 <!-- DASHBOARD -->
 <div id="dashboard">
   <div class="topbar">
-    <div class="topbar-logo">Career <span>Blueprint</span> Admin</div>
+    <div class="topbar-logo" style="display:flex;align-items:center;gap:10px">
+      <div style="width:30px;height:30px;border:1.5px solid var(--amber);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <svg width="16" height="16" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="22,5 24.5,22 22,20 19.5,22" fill="#e8a020"/>
+          <polygon points="22,39 24.5,22 22,24 19.5,22" fill="#3a4a70"/>
+          <circle cx="22" cy="22" r="3" fill="#e8a020"/>
+          <circle cx="22" cy="22" r="1.2" fill="#131c2e"/>
+        </svg>
+      </div>
+      <div>
+        <div style="font-size:14px;font-weight:600;color:var(--cream);line-height:1.1">Career <span style="color:var(--amber)">Blueprint</span></div>
+        <div style="font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text2)">Admin Dashboard</div>
+      </div>
+    </div>
     <div class="topbar-right">
       <span id="last-updated" style="font-size:11px;color:var(--text2)"></span>
       <button class="btn-sm green" onclick="loadAll()">↻ Refresh</button>
