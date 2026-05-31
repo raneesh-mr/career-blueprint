@@ -559,6 +559,40 @@ input[type=range]::-moz-range-thumb {
 .sub-link-btn { background: none; border: none; color: var(--amber); font-size: 13px; font-family: var(--font-body); cursor: pointer; padding: 0; text-decoration: underline; }
 .sub-link-btn:hover { color: var(--amber2); }
 
+/* Submitted reveal / FOMO box */
+.submitted-reveal-box { background: linear-gradient(135deg, rgba(232,160,32,0.08), rgba(232,160,32,0.04)); border: 1px solid rgba(232,160,32,0.3); border-radius: 12px; padding: 24px 22px; margin-bottom: 20px; text-align: center; }
+.submitted-reveal-lock { font-size: 28px; margin-bottom: 10px; }
+.submitted-reveal-title { font-family: var(--font-head); font-size: 18px; font-weight: 700; color: var(--cream); margin-bottom: 8px; }
+.submitted-reveal-sub { font-size: 13px; color: var(--text2); line-height: 1.6; margin-bottom: 16px; }
+.submitted-price-row { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+.submitted-price { font-family: var(--font-head); font-size: 28px; font-weight: 700; color: var(--amber); }
+.submitted-price-orig { font-size: 16px; color: var(--text2); text-decoration: line-through; }
+.submitted-price-save { font-size: 11px; background: rgba(232,160,32,0.15); color: var(--amber); padding: 3px 9px; border-radius: 20px; font-weight: 600; letter-spacing: 0.04em; }
+.submitted-cta { width: 100%; background: var(--amber); color: var(--navy); font-family: var(--font-body); font-weight: 700; font-size: 16px; padding: 15px; border-radius: 8px; border: none; cursor: pointer; transition: background 0.2s; margin-bottom: 12px; }
+.submitted-cta:hover { background: var(--amber2); }
+.submitted-email-hint { font-size: 12px; color: var(--text2); margin: 0; } .submitted-email-hint strong { color: var(--cream); }
+
+/* ── FEEDBACK SECTION ── */
+.rp-feedback { max-width: 820px; margin: 0 auto 0; padding: 40px 20px 60px; }
+.rp-fb-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 32px; }
+.rp-fb-title { font-family: var(--font-head); font-size: 20px; color: var(--cream); margin-bottom: 6px; }
+.rp-fb-sub { font-size: 13px; color: var(--text2); margin-bottom: 24px; }
+.rp-stars { display: flex; gap: 8px; margin-bottom: 20px; }
+.rp-star { font-size: 32px; cursor: pointer; color: var(--border); transition: color 0.15s; line-height: 1; }
+.rp-star.lit { color: var(--amber); }
+.rp-fb-types { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+.rp-fb-type { background: var(--card2); border: 1px solid var(--border); border-radius: 20px; padding: 7px 16px; font-size: 13px; color: var(--text); cursor: pointer; transition: all 0.15s; }
+.rp-fb-type.selected { background: rgba(232,160,32,0.12); border-color: var(--amber); color: var(--amber); }
+.rp-fb-textarea { width: 100%; background: var(--card2); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; font-family: var(--font-body); font-size: 14px; color: var(--cream); resize: vertical; min-height: 90px; box-sizing: border-box; }
+.rp-fb-textarea:focus { outline: none; border-color: var(--amber); }
+.rp-fb-submit { margin-top: 14px; background: var(--amber); color: var(--navy); font-family: var(--font-body); font-weight: 700; font-size: 15px; padding: 13px 32px; border-radius: 8px; border: none; cursor: pointer; transition: background 0.2s; }
+.rp-fb-submit:hover { background: var(--amber2); }
+.rp-fb-submit:disabled { opacity: 0.5; cursor: default; }
+.rp-fb-done { text-align: center; padding: 24px 0; }
+.rp-fb-done-icon { font-size: 36px; margin-bottom: 10px; }
+.rp-fb-done-msg { font-size: 15px; color: var(--cream); font-weight: 600; margin-bottom: 4px; }
+.rp-fb-done-sub { font-size: 13px; color: var(--text2); }
+
 /* ── GENERATING SCREEN ── */
 #screen-generating {
   min-height: 100vh; padding: 24px;
@@ -1628,19 +1662,9 @@ input[type=range]::-moz-range-thumb {
         </svg>
       </div>
 
-      <div class="submitted-eyebrow">Analysis in progress</div>
-      <h1 class="submitted-title">Your Blueprint is being built.</h1>
-      <p class="submitted-sub">Our diagnostic engine is mapping your 43 responses across personality, interests, life priorities and financial reality.</p>
-
-      <div class="submitted-email-box">
-        <div class="submitted-email-label">Report sent to</div>
-        <div class="submitted-email-val" id="submitted-email-display">your registered email</div>
-      </div>
-
-      <div class="submitted-timer-row">
-        <div class="submitted-timer-icon">⏱</div>
-        <div class="submitted-timer-text">Expect your report within <strong>7 minutes</strong></div>
-      </div>
+      <div class="submitted-eyebrow">Analysis complete</div>
+      <h1 class="submitted-title">Your Blueprint is ready.</h1>
+      <p class="submitted-sub">We've mapped your 43 responses across personality, interests, life priorities and financial reality. Your career paths are identified.</p>
 
       <div class="submitted-steps">
         <div class="sub-step active" id="sub-step-1">
@@ -1665,11 +1689,22 @@ input[type=range]::-moz-range-thumb {
         </div>
       </div>
 
-      <p class="submitted-note">Check your spam folder if you don't see the email. Your report link is valid for 30 days.</p>
-
-      <div class="submitted-unlock">
-        <p>Already paid? <button class="sub-link-btn" onclick="goTo('screen-preview');renderPreviewCharts()">Unlock report now →</button></p>
+      <div class="submitted-reveal-box">
+        <div class="submitted-reveal-lock">🔒</div>
+        <div class="submitted-reveal-title">Your full report is locked</div>
+        <p class="submitted-reveal-sub">Unlock your personalised career intelligence report — 3 ranked paths, fit scores, financial reality check and your honest advisory note.</p>
+        <div class="submitted-price-row">
+          <span class="submitted-price">₹199</span>
+          <span class="submitted-price-orig">₹499</span>
+          <span class="submitted-price-save">Save ₹300 — launch price</span>
+        </div>
+        <button class="submitted-cta" onclick="goTo('screen-preview');renderPreviewCharts()">
+          Unlock My Report — ₹199 →
+        </button>
+        <p class="submitted-email-hint">Report delivered to <strong id="submitted-email-display">your email</strong> within 7 minutes of payment.</p>
       </div>
+
+      <p class="submitted-note">Already paid? <button class="sub-link-btn" onclick="goTo('screen-preview');renderPreviewCharts()">Go to unlock screen →</button></p>
     </div>
   </div>
 </div>
@@ -1800,6 +1835,29 @@ input[type=range]::-moz-range-thumb {
   <div class="rp-actionbar">
     <button class="rp-btn rp-btn-primary" id="btn-download-pdf" onclick="downloadPDF()">↓ Download PDF Report</button>
     <button class="rp-btn rp-btn-ghost" onclick="printReport()">🖨 Print</button>
+  </div>
+
+  <!-- Feedback -->
+  <div class="rp-feedback">
+    <div class="rp-fb-card" id="rp-feedback-form">
+      <div class="rp-fb-title">How was your experience?</div>
+      <div class="rp-fb-sub">Your feedback helps us improve. Takes 30 seconds.</div>
+      <div class="rp-stars" id="rp-stars">
+        <span class="rp-star" data-v="1">★</span>
+        <span class="rp-star" data-v="2">★</span>
+        <span class="rp-star" data-v="3">★</span>
+        <span class="rp-star" data-v="4">★</span>
+        <span class="rp-star" data-v="5">★</span>
+      </div>
+      <div class="rp-fb-types" id="rp-fb-types">
+        <span class="rp-fb-type" data-v="feedback">💬 Feedback</span>
+        <span class="rp-fb-type" data-v="suggestion">💡 Suggestion</span>
+        <span class="rp-fb-type" data-v="complaint">⚠️ Complaint</span>
+      </div>
+      <textarea class="rp-fb-textarea" id="rp-fb-text" placeholder="Share your thoughts, suggestions or concerns..."></textarea>
+      <br>
+      <button class="rp-fb-submit" onclick="submitFeedback()">Submit Feedback</button>
+    </div>
   </div>
 </div>
 
@@ -2188,7 +2246,7 @@ async function handleProceedToPayment() {
     document.getElementById('display-order-number').textContent = data.order_number;
     document.getElementById('display-upi-id').textContent = data.upi_id;
     // Render QR using QRCode.js
-    const upiString = data.upi_link || `upi://pay?pa=${data.upi_id}&pn=CareerBlueprint&am=199&cu=INR&tn=${data.order_number}`;
+    const upiString = data.upi_link || `upi://pay?pa=${data.upi_id}&pn=CareerBlueprint&am=199&cu=INR&tn=${data.order_number}&tr=${data.order_number}&remarks=${data.order_number}`;
     const qrContainer = document.getElementById('qr-container');
     qrContainer.innerHTML = '';
     new QRCode(qrContainer, {
@@ -2542,6 +2600,64 @@ function downloadPDF() {
 }
 
 function printReport() { window.print(); }
+
+// ── Feedback ──────────────────────────────
+let fbRating = 0, fbType = '';
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.rp-star').forEach(star => {
+    star.addEventListener('click', () => {
+      fbRating = parseInt(star.dataset.v);
+      document.querySelectorAll('.rp-star').forEach(s => {
+        s.classList.toggle('lit', parseInt(s.dataset.v) <= fbRating);
+      });
+    });
+    star.addEventListener('mouseover', () => {
+      const v = parseInt(star.dataset.v);
+      document.querySelectorAll('.rp-star').forEach(s => {
+        s.classList.toggle('lit', parseInt(s.dataset.v) <= v);
+      });
+    });
+  });
+  document.getElementById('rp-stars')?.addEventListener('mouseleave', () => {
+    document.querySelectorAll('.rp-star').forEach(s => {
+      s.classList.toggle('lit', parseInt(s.dataset.v) <= fbRating);
+    });
+  });
+  document.querySelectorAll('.rp-fb-type').forEach(btn => {
+    btn.addEventListener('click', () => {
+      fbType = btn.dataset.v;
+      document.querySelectorAll('.rp-fb-type').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+    });
+  });
+});
+
+async function submitFeedback() {
+  const text = document.getElementById('rp-fb-text')?.value.trim();
+  if (!fbRating && !text) { showToast('Please add a rating or message', 'error'); return; }
+  const btn = document.querySelector('.rp-fb-submit');
+  btn.disabled = true; btn.textContent = 'Submitting...';
+  try {
+    await fetch(`${API}/api/feedback`, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        session_token: state.session_token,
+        order_number: state.order_number,
+        rating: fbRating || null,
+        feedback_type: fbType || null,
+        feedback_text: text || null
+      })
+    });
+  } catch(e) { console.error(e); }
+  document.getElementById('rp-feedback-form').innerHTML = `
+    <div class="rp-fb-done">
+      <div class="rp-fb-done-icon">🙏</div>
+      <div class="rp-fb-done-msg">Thank you for your feedback.</div>
+      <div class="rp-fb-done-sub">It helps us build a better product.</div>
+    </div>`;
+}
 
 
 // ── Counter animation ─────────────────────

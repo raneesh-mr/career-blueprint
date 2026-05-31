@@ -224,7 +224,7 @@ tr:hover td{background:rgba(255,255,255,.02);}
     </div>
     <div class="table-wrap">
       <table>
-        <thead><tr><th>Order #</th><th>Customer</th><th>UPI Ref</th><th>Status</th><th>Career Paths</th><th>Date</th><th>Action</th></tr></thead>
+        <thead><tr><th>Order #</th><th>Customer</th><th>UPI Ref</th><th>Status</th><th>Career Paths</th><th>Feedback</th><th>Date</th><th>Action</th></tr></thead>
         <tbody id="orders-body"><tr><td colspan="7"><div class="empty"><div class="empty-icon">⏳</div>Loading...</div></td></tr></tbody>
       </table>
     </div>
@@ -484,6 +484,10 @@ function renderOrdersTable() {
 
     const paths = [o.career_path_1, o.career_path_2, o.career_path_3].filter(Boolean).join(' · ') || '—';
     const date = o.created_at ? new Date(o.created_at).toLocaleDateString('en-IN',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}) : '—';
+    const stars = o.feedback_rating ? '★'.repeat(o.feedback_rating) + '☆'.repeat(5-o.feedback_rating) : '';
+    const fbBadge = o.feedback_type ? `<span style="font-size:10px;background:rgba(232,160,32,0.15);color:#e8a020;border-radius:10px;padding:2px 7px">${o.feedback_type}</span>` : '';
+    const fbText = o.feedback_text ? `<div style="font-size:11px;color:#8090a0;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${o.feedback_text.replace(/"/g,'')}">${o.feedback_text}</div>` : '';
+    const feedbackCell = stars ? `<div style="color:#e8a020;font-size:13px;letter-spacing:1px">${stars}</div>${fbBadge}${fbText}` : '<span style="color:#3a4060">—</span>';
 
     const actions = `<div class="action-row">
       ${isPending ? `<button class="btn-act btn-verify-act" onclick="openVerifyModal('${o.order_number}','${o.payment_ref||''}')">✓ Verify</button>` : ''}
@@ -499,6 +503,7 @@ function renderOrdersTable() {
       <td><span class="sub" title="${o.payment_ref||''}">${(o.payment_ref||'—').substring(0,16)}</span></td>
       <td>${badge}</td>
       <td><span style="font-size:11px;color:var(--text)">${paths}</span></td>
+      <td>${feedbackCell}</td>
       <td><span class="sub">${date}</span></td>
       <td>${actions}</td>
     </tr>`;
