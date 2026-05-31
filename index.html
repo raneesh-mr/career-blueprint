@@ -2309,6 +2309,8 @@ async function pollForReport(paymentRef) {
       if (data.status === 'report_generated' && data.report) {
         clearInterval(poll);
         state.report = data.report;
+        if (data.name) state.name = data.name;
+        if (data.email) state.email = data.email;
         saveState();
         renderReport(data.report);
         goTo('screen-report');
@@ -2474,10 +2476,13 @@ function renderReport(r) {
   const riasec = {r:state.riasec.r, i:state.riasec.i, a:state.riasec.a, s:state.riasec.s, e:state.riasec.e, c:state.riasec.c};
   document.getElementById('rp-riasec-traits').innerHTML = renderTraitRows(riasec, RIASEC_DEFS, true);
   const topThree = Object.keys(riasec).sort((a,b)=>riasec[b]-riasec[a]).slice(0,3);
+  // Only show Holland chips if there are actual scores
+  const hasRiasec = Object.values(riasec).some(v => v > 0);
   document.getElementById('rp-holland-chips').innerHTML = topThree.map((k,i)=>
     '<div class="rp-hchip '+(i===1?'s2':i===2?'s3':'')+'">'+k.toUpperCase()+'</div>').join('');
   document.getElementById('rp-holland-expand').innerHTML = topThree.map(k=>'<b>'+RIASEC_DEFS[k].name+'</b>').join(' · ');
-  document.getElementById('rp-glance-holland').textContent = topThree.map(k=>k.toUpperCase()).join('');
+  const hollandCode = hasRiasec ? topThree.map(k=>k.toUpperCase()).join('') : (r.dominant_profile || '—');
+  document.getElementById('rp-glance-holland').textContent = hollandCode;
 
   const axes = [
     {l:'Stay local (Kerala / hometown)', r:'Work globally / abroad', v:state.life.location},
@@ -2689,6 +2694,9 @@ if (reportToken) {
       if (data.status === 'report_generated' && data.report) {
         state.report = data.report;
         state.session_token = reportToken;
+        // Restore name + email from API so report header shows correctly
+        if (data.name) state.name = data.name;
+        if (data.email) state.email = data.email;
         renderReport(data.report);
         goTo('screen-report');
       } else {
