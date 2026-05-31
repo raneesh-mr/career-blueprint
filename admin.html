@@ -489,12 +489,19 @@ function renderOrdersTable() {
     const fbText = o.feedback_text ? `<div style="font-size:11px;color:#8090a0;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${o.feedback_text.replace(/"/g,'')}">${o.feedback_text}</div>` : '';
     const feedbackCell = stars ? `<div style="color:#e8a020;font-size:13px;letter-spacing:1px">${stars}</div>${fbBadge}${fbText}` : '<span style="color:#3a4060">—</span>';
 
-    const actions = `<div class="action-row">
-      ${isPending ? `<button class="btn-act btn-verify-act" onclick="openVerifyModal('${o.order_number}','${o.payment_ref||''}')">✓ Verify</button>` : ''}
-      ${isPaidNoReport ? `<button class="btn-act btn-regen-act" onclick="openRegenModal('${o.order_number}')">↻ Re-gen</button>` : ''}
-      ${isDone ? `<button class="btn-act btn-view-act" onclick="viewReport('${o.session_token}')">View</button>` : ''}
-      ${isDone ? `<button class="btn-act" style="background:var(--navy2);border:1px solid var(--teal);color:var(--teal2);padding:5px 10px;border-radius:5px;font-size:12px;cursor:pointer" onclick="sendReportEmail('${o.session_token}','${o.order_number}','${o.email}')">✉ Email</button>` : ''}
-      ${!isPending && !isPaidNoReport && !isDone ? '<span style="font-size:11px;color:var(--text2)">—</span>' : ''}
+    const reportLink = isDone && o.session_token
+      ? `<a href="https://career.raneesh.net/?report=${o.session_token}" target="_blank" style="display:inline-block;font-size:11px;color:var(--amber);text-decoration:none;border:1px solid var(--amber);border-radius:4px;padding:3px 9px;margin-bottom:6px;white-space:nowrap">↗ Open Report</a>`
+      : '';
+
+    const actions = `<div class="action-row" style="display:flex;flex-direction:column;align-items:flex-start;gap:4px">
+      ${reportLink}
+      <div style="display:flex;gap:4px;flex-wrap:wrap">
+        ${isPending ? `<button class="btn-act btn-verify-act" onclick="openVerifyModal('${o.order_number}','${o.payment_ref||''}')">✓ Verify</button>` : ''}
+        ${isPaidNoReport ? `<button class="btn-act btn-regen-act" onclick="openRegenModal('${o.order_number}')">↻ Re-gen</button>` : ''}
+        ${isDone ? `<button class="btn-act btn-view-act" onclick="viewReport('${o.session_token}')">Preview</button>` : ''}
+        ${isDone ? `<button class="btn-act" style="background:var(--navy2);border:1px solid var(--teal);color:var(--teal2);padding:5px 10px;border-radius:5px;font-size:12px;cursor:pointer" onclick="sendReportEmail('${o.session_token}','${o.order_number}','${o.email}')">✉ Email</button>` : ''}
+        ${!isPending && !isPaidNoReport && !isDone ? '<span style="font-size:11px;color:var(--text2)">—</span>' : ''}
+      </div>
     </div>`;
 
     return `<tr>
