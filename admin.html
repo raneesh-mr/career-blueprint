@@ -218,6 +218,7 @@ tr:hover td{background:rgba(255,255,255,.02);}
     <div class="tab" onclick="switchTab('tab-orders',this)">Orders</div>
     <div class="tab" onclick="switchTab('tab-customers',this)">Customers</div>
     <div class="tab" onclick="switchTab('tab-sessions',this)">Sessions</div>
+    <div class="tab" onclick="switchTab('tab-questions',this)">Questions</div>
   </div>
 
   <!-- TAB: OVERVIEW -->
@@ -265,6 +266,38 @@ tr:hover td{background:rgba(255,255,255,.02);}
   </div>
 
   <!-- TAB: SESSIONS -->
+  <div class="tab-panel" id="tab-questions">
+    <div class="sec-header">
+      <div class="sec-title">Question Bank</div>
+      <div style="display:flex;gap:8px">
+        <button class="btn-sm" onclick="loadQuestions()" style="background:var(--teal);border-color:var(--teal)">↻ Refresh</button>
+      </div>
+    </div>
+    <div style="font-size:12px;color:var(--text2);margin-bottom:16px">
+      Toggle questions on/off for A/B testing. Changes take effect immediately — active questions are served to new sessions.
+    </div>
+    <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+      <button onclick="filterQ('ALL')" class="q-filter-btn active" id="qf-ALL">All (43)</button>
+      <button onclick="filterQ('OCEAN')" class="q-filter-btn" id="qf-OCEAN">OCEAN (25)</button>
+      <button onclick="filterQ('RIASEC')" class="q-filter-btn" id="qf-RIASEC">RIASEC (18)</button>
+    </div>
+    <div id="questions-table-wrap">
+      <table class="data-table" id="questions-table">
+        <thead><tr>
+          <th style="width:80px">ID</th>
+          <th style="width:80px">Category</th>
+          <th style="width:60px">Trait</th>
+          <th>Question</th>
+          <th style="width:100px">Sub Text</th>
+          <th style="width:70px">Order</th>
+          <th style="width:80px">Status</th>
+          <th style="width:80px">Action</th>
+        </tr></thead>
+        <tbody id="questions-tbody"><tr><td colspan="8" style="text-align:center;color:var(--text2);padding:32px">Loading questions...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
   <div class="tab-panel" id="tab-sessions">
     <div class="sec-header"><div class="sec-title">Diagnostic Sessions</div></div>
     <div class="table-wrap">
@@ -597,6 +630,7 @@ function switchTab(id, btn) {
   btn.classList.add('active');
   document.getElementById(id).classList.add('active');
   if (id === 'tab-sessions') loadSessions();
+  if (id === 'tab-questions') loadQuestionsAdmin();
 }
 
 // ── Verify Modal ───────────────────────────────────────

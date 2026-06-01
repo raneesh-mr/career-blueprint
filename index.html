@@ -10,8 +10,16 @@
 <meta property="og:title" content="Career Blueprint — Find Your Right Path in 12 Minutes">
 <meta property="og:description" content="A science-backed diagnostic that maps your personality, interests and life goals to careers you'll actually thrive in.">
 <meta property="og:image" content="https://career.realplannet.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:url" content="https://career.realplannet.com">
-<meta name="theme-color" content="#1b2236">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Career Blueprint">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Career Blueprint — Scientific Career Framework">
+<meta name="twitter:description" content="12-minute diagnostic. OCEAN + RIASEC. AI-generated career report. ₹199.">
+<meta name="twitter:image" content="https://career.realplannet.com/og.png">
+<meta name="theme-color" content="#0d1420">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -772,7 +780,7 @@ input[type=range]::-moz-range-thumb {
 @media print {
   /* ── GLOBAL PRINT RESET ── */
   * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-  @page { margin: 12mm 10mm; size: A4; }
+  @page { margin: 8mm; size: A4; }
 
   /* Hide everything except the report */
   body > * { display: none !important; }
@@ -782,7 +790,7 @@ input[type=range]::-moz-range-thumb {
   .rp-sheet { box-shadow: none !important; max-width: 100% !important; border-radius: 0 !important; }
 
   /* ── MASTHEAD ── */
-  .rp-masthead { background: #1b2236 !important; padding: 28px 40px !important; }
+  .rp-masthead { background: #1b2236 !important; padding: 20px 24px !important; }
   .rp-masthead * { color: #f0ebe0 !important; }
   .rp-eyebrow { color: #c08a14 !important; }
   .rp-mast-title { color: #f0ebe0 !important; font-size: 36px !important; }
@@ -794,7 +802,7 @@ input[type=range]::-moz-range-thumb {
   .rp-mast-top { border-bottom: 1px solid rgba(255,255,255,0.15) !important; }
 
   /* ── BODY ── */
-  .rp-body { background: #f6f2e9 !important; padding: 0 40px !important; }
+  .rp-body { background: #f6f2e9 !important; padding: 0 20px !important; }
   .rp-section { 
     padding: 28px 0 !important; 
     border-bottom: 1px solid #d0c8b4 !important;
@@ -808,7 +816,8 @@ input[type=range]::-moz-range-thumb {
   .rp-sec-kicker { color: #9a7010 !important; }
 
   /* ── EXECUTIVE SUMMARY ── */
-  .rp-exec { display: grid !important; grid-template-columns: 1fr 220px !important; gap: 24px !important; }
+  .rp-exec { display: block !important; }
+  .rp-glance { margin-top: 20px !important; }
   .rp-lede { color: #1b2236 !important; font-size: 16px !important; }
   .rp-narrative { color: #3a4160 !important; font-size: 13px !important; }
   .rp-glance { background: #ede8da !important; border: 1px solid #d0c8b4 !important; padding: 16px !important; }
@@ -818,7 +827,8 @@ input[type=range]::-moz-range-thumb {
   .rp-glance-row .v small { color: #9a7010 !important; }
 
   /* ── TRAIT BARS ── */
-  .rp-profile-grid { display: grid !important; grid-template-columns: 240px 1fr !important; gap: 24px !important; align-items: start !important; }
+  .rp-profile-grid { display: block !important; }
+  .rp-chart-frame { margin-bottom: 20px !important; max-width: 280px !important; }
   .rp-chart-frame { background: #ede8da !important; border: 1px solid #d0c8b4 !important; padding: 14px !important; }
   .rp-chart-frame h4 { color: #7a7060 !important; }
   .rp-chart-canvas-wrap { height: 200px !important; }
@@ -876,7 +886,7 @@ input[type=range]::-moz-range-thumb {
   .rp-fit-lbl { fill: #7a7060 !important; }
 
   /* ── FINANCIAL ── */
-  .rp-fin-grid { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
+  .rp-fin-grid { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
   .rp-fin-card { background: #ede8da !important; border: 1px solid #d0c8b4 !important; padding: 14px !important; }
   .rp-fin-card .k { color: #7a7060 !important; font-size: 10px !important; }
   .rp-fin-card .v { color: #1b2236 !important; font-size: 20px !important; }
@@ -2762,6 +2772,11 @@ function downloadPDF() {
 }
 
 function printReport() {
+  // Force desktop-width meta viewport for print on mobile
+  let vp = document.querySelector('meta[name=viewport]');
+  const origVp = vp ? vp.getAttribute('content') : null;
+  if (vp) vp.setAttribute('content', 'width=900');
+
   // Convert Chart.js canvases to static images before print
   const canvases = document.querySelectorAll('#screen-report canvas');
   const replacements = [];
@@ -2777,9 +2792,10 @@ function printReport() {
   });
   setTimeout(() => {
     window.print();
-    // Restore canvases after print dialog closes
+    // Restore canvases + viewport after print dialog closes
     setTimeout(() => {
       replacements.forEach(({canvas, img}) => { canvas.style.display = ''; img.remove(); });
+      if (vp && origVp) vp.setAttribute('content', origVp);
     }, 2000);
   }, 100);
 }
