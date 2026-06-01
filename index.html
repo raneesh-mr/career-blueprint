@@ -961,6 +961,35 @@ input[type=range]::-moz-range-thumb {
 }
 
 /* urgency strip */
+/* ── LANDING NAV ── */
+.lx-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 32px; position: relative; z-index: 10;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.lx-nav-logo { display: flex; align-items: center; gap: 12px; }
+.lx-nav-mark {
+  width: 40px; height: 40px; border: 1.5px solid rgba(232,168,32,0.4);
+  border-radius: 10px; display: flex; align-items: center; justify-content: center;
+  background: rgba(13,26,46,0.8);
+}
+.lx-nav-wordmark { display: flex; flex-direction: column; gap: 1px; }
+.lx-nav-name { font-size: 16px; font-weight: 700; color: var(--cream); line-height: 1.1; }
+.lx-nav-name em { font-style: normal; color: var(--amber); }
+.lx-nav-tag { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.3); }
+.lx-nav-cta {
+  background: transparent; border: 1px solid rgba(232,168,32,0.35);
+  color: var(--amber); padding: 8px 20px; border-radius: 6px;
+  font-family: var(--font-body); font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all 0.2s;
+}
+.lx-nav-cta:hover { background: rgba(232,168,32,0.1); border-color: var(--amber); }
+@media (max-width: 480px) {
+  .lx-nav { padding: 14px 18px; }
+  .lx-nav-tag { display: none; }
+  .lx-nav-name { font-size: 14px; }
+}
+
 .lx-urgentbar {
   position: relative; z-index: 5;
   display: flex; align-items: center; justify-content: center; gap: 10px;
@@ -1247,6 +1276,32 @@ input[type=range]::-moz-range-thumb {
 <div id="screen-landing" class="screen active">
   <div class="lx-aurora"></div>
   <div class="landing-noise"></div>
+
+  <!-- Nav bar -->
+  <nav class="lx-nav">
+    <div class="lx-nav-logo">
+      <div class="lx-nav-mark">
+        <svg width="22" height="22" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+          <rect x="1" y="1" width="62" height="62" rx="10" fill="#0d1a2e"/>
+          <line x1="32" y1="2" x2="32" y2="62" stroke="#1e3a5a" stroke-width="0.8"/>
+          <line x1="2" y1="32" x2="62" y2="32" stroke="#1e3a5a" stroke-width="0.8"/>
+          <line x1="15" y1="2" x2="15" y2="62" stroke="#19304e" stroke-width="0.4"/>
+          <line x1="49" y1="2" x2="49" y2="62" stroke="#19304e" stroke-width="0.4"/>
+          <line x1="2" y1="15" x2="62" y2="15" stroke="#19304e" stroke-width="0.4"/>
+          <line x1="2" y1="49" x2="62" y2="49" stroke="#19304e" stroke-width="0.4"/>
+          <polygon points="32,13 51,32 32,51 13,32" fill="none" stroke="#e8a020" stroke-width="1.8"/>
+          <polygon points="32,22 42,32 32,42 22,32" fill="rgba(232,168,32,0.1)" stroke="#e8a020" stroke-width="1"/>
+          <line x1="32" y1="2" x2="32" y2="10" stroke="#e8a020" stroke-width="2.5"/>
+          <circle cx="32" cy="32" r="3" fill="#e8a020"/>
+        </svg>
+      </div>
+      <div class="lx-nav-wordmark">
+        <span class="lx-nav-name">Career <em>Blueprint</em></span>
+        <span class="lx-nav-tag">Scientific Career Framework</span>
+      </div>
+    </div>
+    <button class="lx-nav-cta" onclick="goTo('screen-register');setTimeout(()=>{document.getElementById('reg-name').focus()},300)">Start Free →</button>
+  </nav>
 
   <!-- Info strip -->
   <div class="lx-urgentbar">
