@@ -25,6 +25,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 <style>
 :root {
@@ -2067,6 +2068,7 @@ input[type=range]::-moz-range-thumb {
 ════════════════════════════════════════ -->
 <script>
 const API = 'https://career-blueprint-api.raneesh-ifars.workers.dev';
+const PAY_API = 'https://realplannet-worker.realplannet-cloudflare.workers.dev'; // Razorpay create-order/verify (Real Plannet worker)
 
 // ── State ────────────────────────────────
 const state = {
@@ -2443,7 +2445,7 @@ function renderPreviewCharts() {
   });
 }
 
-// ── Payment ──────────────────────────────
+// ── Payment (Razorpay) ────────────────────
 async function handleProceedToPayment() {
   if (!state.session_token) {
     showToast('Session error. Please restart.', 'error'); return;
@@ -2463,26 +2465,80 @@ async function handleProceedToPayment() {
       return;
     }
     state.order_number = data.order_number;
-    state.upi_id = data.upi_id;
     saveState();
-    document.getElementById('display-order-number').textContent = data.order_number;
-    document.getElementById('display-upi-id').textContent = data.upi_id;
-    // Render QR using QRCode.js
-    const upiString = data.upi_link || `upi://pay?pa=${data.upi_id}&pn=CareerBlueprint&am=199&cu=INR&tn=${data.order_number}&tr=${data.order_number}&remarks=${data.order_number}`;
-    const qrContainer = document.getElementById('qr-container');
-    qrContainer.innerHTML = '';
-    new QRCode(qrContainer, {
-      text: upiString,
-      width: 180, height: 180,
-      colorDark: '#000000', colorLight: '#ffffff',
-      correctLevel: QRCode.CorrectLevel.M
+
+    // Create the Razorpay order server-side via the Real Plannet worker
+    btn.textContent = 'Opening payment...';
+    const rpOrderRes = await fetch(`${PAY_API}/razorpay/create-order`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        amount: 19900, // ₹199 in paise
+        receipt: data.order_number,
+        notes: { sku: 'RP01', product: 'Career Blueprint', order_number: data.order_number, email: state.email || '' }
+      })
     });
-    goTo('screen-payment');
+    const rpOrder = await rpOrderRes.json();
+    if (!rpOrderRes.ok) throw new Error(rpOrder.error || 'Could not start payment');
+
+    btn.disabled = false; btn.textContent = 'Unlock Full Report — ₹199 →';
+
+    const rzp = new Razorpay({
+      key: rpOrder.key_id,
+      amount: rpOrder.amount,
+      currency: rpOrder.currency,
+      order_id: rpOrder.order_id,
+      name: 'Career Blueprint',
+      description: 'Career Intelligence Report (RP01)',
+      prefill: { name: state.name || '', email: state.email || '' },
+      notes: { order_number: data.order_number },
+      theme: { color: '#e8a020' },
+
+      handler: async function(response) {
+        try {
+          const verifyRes = await fetch(`${PAY_API}/career-blueprint/razorpay/verify`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+              order_number: data.order_number
+            })
+          });
+          const verifyData = await verifyRes.json();
+          if (verifyData.verified) {
+            showToast('Payment received. Generating your report...', 'success');
+            goTo('screen-generating');
+            animateGeneratingSteps();
+            pollForReport();
+          } else {
+            showToast('Payment could not be verified. Contact support@realplannet.com with order number ' + data.order_number, 'error');
+          }
+        } catch (e) {
+          console.error(e);
+          showToast('Verification error. Contact support@realplannet.com with order number ' + data.order_number, 'error');
+        }
+      },
+
+      modal: {
+        ondismiss: function() {
+          btn.disabled = false; btn.textContent = 'Unlock Full Report — ₹199 →';
+        }
+      }
+    });
+
+    rzp.on('payment.failed', function() {
+      showToast('Payment failed. Please try again.', 'error');
+    });
+
+    rzp.open();
+
   } catch(e) {
-    showToast('Error creating order. Try again.', 'error');
+    showToast('Error starting payment. Try again.', 'error');
     console.error(e);
+    btn.disabled = false; btn.textContent = 'Unlock Full Report — ₹199 →';
   }
-  btn.disabled = false; btn.textContent = 'Unlock Full Report — ₹199 →';
 }
 
 async function handlePaymentSubmit() {
