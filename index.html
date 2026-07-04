@@ -2507,11 +2507,13 @@ async function handleProceedToPayment() {
             })
           });
           const verifyData = await verifyRes.json();
-          if (verifyData.verified) {
+          if (verifyData.verified && verifyData.report_triggered) {
             showToast('Payment received. Generating your report...', 'success');
             goTo('screen-generating');
             animateGeneratingSteps();
             pollForReport();
+          } else if (verifyData.verified && !verifyData.report_triggered) {
+            showToast('Payment successful, but report generation could not start automatically. We will email your report shortly — contact support@realplannet.com with order number ' + data.order_number + ' if you don\'t hear back within 30 minutes.', 'error');
           } else {
             showToast('Payment could not be verified. Contact support@realplannet.com with order number ' + data.order_number, 'error');
           }
