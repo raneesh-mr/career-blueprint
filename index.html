@@ -1168,6 +1168,13 @@ input[type=range]::-moz-range-thumb {
   font-family: var(--font-head); line-height: 1.5;
 }
 .lx-cost-foot em { font-style: normal; color: var(--amber); }
+.lx-dossier-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; text-align: left; max-width: 860px; margin: 0 auto 20px; }
+.lx-dossier-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 20px 22px; border-left: 3px solid var(--amber); }
+.lx-dossier-card.teal { border-left-color: var(--teal2); }
+.lx-dossier-num { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--amber); margin-bottom: 6px; }
+.lx-dossier-card.teal .lx-dossier-num { color: var(--teal2); }
+.lx-dossier-title { font-size: 15px; font-weight: 600; color: var(--cream); margin-bottom: 4px; }
+.lx-dossier-desc { font-size: 13px; color: var(--text2); line-height: 1.5; }
 
 /* HOW IT WORKS — modern */
 .lx-steps { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
@@ -1254,6 +1261,7 @@ input[type=range]::-moz-range-thumb {
   .lx-cost-grid { grid-template-columns: 1fr; }
   .lx-steps { grid-template-columns: 1fr; }
   .lx-quotes { grid-template-columns: 1fr; }
+  .lx-dossier-grid { grid-template-columns: 1fr; }
   .lx-section { padding: 56px 22px; }
   .lx-fb-1 { top: -16px; left: -8px; }
   .lx-fb-2 { bottom: 20px; left: -10px; }
@@ -1484,36 +1492,36 @@ input[type=range]::-moz-range-thumb {
     <p style="font-size:15px;color:var(--text2);max-width:560px;margin:0 auto 40px;line-height:1.7">
       Not a generic quiz result. A personalised 8-section career intelligence report built from your exact responses — delivered in 7 minutes.
     </p>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;text-align:left;max-width:860px;margin:0 auto 20px">
-      <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px 22px;border-left:3px solid var(--amber)">
-        <div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--amber);margin-bottom:6px">01</div>
-        <div style="font-size:15px;font-weight:600;color:var(--cream);margin-bottom:4px">Personality Architecture</div>
-        <div style="font-size:13px;color:var(--text2);line-height:1.5">Your Big Five OCEAN profile with trait scores, radar chart and contextual descriptions.</div>
+    <div class="lx-dossier-grid">
+      <div class="lx-dossier-card">
+        <div class="lx-dossier-num">01</div>
+        <div class="lx-dossier-title">Personality Architecture</div>
+        <div class="lx-dossier-desc">Your Big Five OCEAN profile with trait scores, radar chart and contextual descriptions.</div>
       </div>
-      <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px 22px;border-left:3px solid var(--teal2)">
-        <div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal2);margin-bottom:6px">02</div>
-        <div style="font-size:15px;font-weight:600;color:var(--cream);margin-bottom:4px">Interest Profile</div>
-        <div style="font-size:13px;color:var(--text2);line-height:1.5">Your Holland RIASEC interest map — which environments you'll energise in vs burn out of.</div>
+      <div class="lx-dossier-card teal">
+        <div class="lx-dossier-num">02</div>
+        <div class="lx-dossier-title">Interest Profile</div>
+        <div class="lx-dossier-desc">Your Holland RIASEC interest map — which environments you'll energise in vs burn out of.</div>
       </div>
-      <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px 22px;border-left:3px solid var(--amber)">
-        <div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--amber);margin-bottom:6px">03</div>
-        <div style="font-size:15px;font-weight:600;color:var(--cream);margin-bottom:4px">3 Ranked Career Paths</div>
-        <div style="font-size:13px;color:var(--text2);line-height:1.5">Primary recommendation + 2 alternatives — each with fit score, entry route, salary range and AI vulnerability rating.</div>
+      <div class="lx-dossier-card">
+        <div class="lx-dossier-num">03</div>
+        <div class="lx-dossier-title">3 Ranked Career Paths</div>
+        <div class="lx-dossier-desc">Primary recommendation + 2 alternatives — each with fit score, entry route, salary range and AI vulnerability rating.</div>
       </div>
-      <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px 22px;border-left:3px solid var(--teal2)">
-        <div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal2);margin-bottom:6px">04</div>
-        <div style="font-size:15px;font-weight:600;color:var(--cream);margin-bottom:4px">Financial Reality Check</div>
-        <div style="font-size:13px;color:var(--text2);line-height:1.5">Your family income + loan appetite mapped to real EMI vs starting salary — so no path is aspirational and unaffordable.</div>
+      <div class="lx-dossier-card teal">
+        <div class="lx-dossier-num">04</div>
+        <div class="lx-dossier-title">Financial Reality Check</div>
+        <div class="lx-dossier-desc">Your family income + loan appetite mapped to real EMI vs starting salary — so no path is aspirational and unaffordable.</div>
       </div>
-      <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px 22px;border-left:3px solid var(--amber)">
-        <div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--amber);margin-bottom:6px">05</div>
-        <div style="font-size:15px;font-weight:600;color:var(--cream);margin-bottom:4px">3 Immediate Actions</div>
-        <div style="font-size:13px;color:var(--text2);line-height:1.5">Specific steps to take this term — based on your marks band, exam status and recommended path.</div>
+      <div class="lx-dossier-card">
+        <div class="lx-dossier-num">05</div>
+        <div class="lx-dossier-title">3 Immediate Actions</div>
+        <div class="lx-dossier-desc">Specific steps to take this term — based on your marks band, exam status and recommended path.</div>
       </div>
-      <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px 22px;border-left:3px solid var(--teal2)">
-        <div style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal2);margin-bottom:6px">06</div>
-        <div style="font-size:15px;font-weight:600;color:var(--cream);margin-bottom:4px">Honest Advisory Note</div>
-        <div style="font-size:13px;color:var(--text2);line-height:1.5">Names what your family likely expects — then tells you directly whether your data supports it. No flattery.</div>
+      <div class="lx-dossier-card teal">
+        <div class="lx-dossier-num">06</div>
+        <div class="lx-dossier-title">Honest Advisory Note</div>
+        <div class="lx-dossier-desc">Names what your family likely expects — then tells you directly whether your data supports it. No flattery.</div>
       </div>
     </div>
     <p style="font-size:13px;color:var(--text2);margin-top:8px">
