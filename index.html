@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-9Y06EJY03R"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-9Y06EJY03R');
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Career Blueprint — Scientific Career Selection</title>
@@ -2098,11 +2106,32 @@ function loadState() {
 }
 
 // ── Navigation ──────────────────────────
+const funnelStepNames = {
+  'screen-landing': 'Landing',
+  'screen-register': 'Registration',
+  'screen-ocean': 'OCEAN Questions',
+  'screen-riasec': 'RIASEC Questions',
+  'screen-compass': 'Life Priorities',
+  'screen-reality': 'Financial Reality',
+  'screen-submitted': 'Diagnostic Submitted',
+  'screen-preview': 'Preview / Paywall',
+  'screen-payment': 'Legacy Payment Screen',
+  'screen-generating': 'Generating Report',
+  'screen-report': 'Report Viewed'
+};
 function goTo(screenId) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   const target = document.getElementById(screenId);
   target.classList.add('active');
   updateProgress(screenId);
+  if (typeof gtag === 'function') {
+    const stepIdx = screenOrder.indexOf(screenId);
+    gtag('event', 'funnel_step', {
+      step_name: funnelStepNames[screenId] || screenId,
+      step_number: stepIdx >= 0 ? stepIdx + 1 : null,
+      screen_id: screenId
+    });
+  }
   // Scroll to module header if question screen, else top
   const questionScreens = ['screen-ocean','screen-riasec','screen-compass','screen-reality'];
   if (questionScreens.includes(screenId)) {
@@ -2458,6 +2487,9 @@ async function handleProceedToPayment() {
   if (!state.session_token) {
     showToast('Session error. Please restart.', 'error'); return;
   }
+  if (typeof gtag === 'function') {
+    gtag('event', 'begin_checkout', { currency: 'INR', value: 199 });
+  }
   const btn = document.querySelector('#screen-preview .btn-full');
   btn.disabled = true; btn.textContent = 'Creating order...';
 
@@ -2516,6 +2548,14 @@ async function handleProceedToPayment() {
           });
           const verifyData = await verifyRes.json();
           if (verifyData.verified && verifyData.report_triggered) {
+            if (typeof gtag === 'function') {
+              gtag('event', 'purchase', {
+                transaction_id: data.order_number,
+                value: 199,
+                currency: 'INR',
+                items: [{ item_id: 'RP01', item_name: 'Career Blueprint Report', price: 199, quantity: 1 }]
+              });
+            }
             showToast('Payment received. Generating your report...', 'success');
             goTo('screen-generating');
             animateGeneratingSteps();
@@ -2533,12 +2573,18 @@ async function handleProceedToPayment() {
 
       modal: {
         ondismiss: function() {
+          if (typeof gtag === 'function') {
+            gtag('event', 'checkout_abandoned', { currency: 'INR', value: 199 });
+          }
           btn.disabled = false; btn.textContent = 'Unlock Full Report — ₹199 →';
         }
       }
     });
 
     rzp.on('payment.failed', function() {
+      if (typeof gtag === 'function') {
+        gtag('event', 'payment_failed', { currency: 'INR', value: 199 });
+      }
       showToast('Payment failed. Please try again.', 'error');
     });
 
